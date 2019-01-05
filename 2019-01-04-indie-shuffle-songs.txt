@@ -1,0 +1,65 @@
+Song: 1
+Title:  Twist Your Ankle
+Artist: Andy Shauf
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/andy-shauf-twist-your-ankle/
+Album Art Link: https://www.indieshuffle.com/bundles/webbundle/images/artwork/thumb_200_200/1545979146.6054_twist-your-ankle.jpg
+YouTube Link: https://www.youtube.com/watch?v=JUbHJBZPloU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/JUbHJBZPloU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 2
+Title:  Nana
+Artist: Polo & Pan
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/polo-pan-nana/
+Album Art Link: https://i1.sndcdn.com/artworks-000279655802-j2vqwl-t200x200.jpg
+YouTube Link: https://www.youtube.com/watch?v=eMKqjO1jyGU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/eMKqjO1jyGU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 3
+Title:  Get Out
+Artist: Darvid Thor
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/darvid-thor-get-out/
+Album Art Link: https://i.ytimg.com/vi/ulsAXR9zsIY/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=t7IWd-8L_mo
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/t7IWd-8L_mo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 4
+Title:  No Place
+Artist: RÜFÜS
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/rufus-no-place/
+Album Art Link: https://i.ytimg.com/vi/IJKHt4yZZ10/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=-ge8lQfig9Y
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/-ge8lQfig9Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 5
+Title:  Bruise Cruise
+Artist: Puma Blue
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/puma-blue-bruise-cruise/
+Album Art Link: https://i.ytimg.com/vi/PpwkbGziMSY/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=PpwkbGziMSY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/PpwkbGziMSY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+

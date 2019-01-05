@@ -1,0 +1,325 @@
+Song: 1
+Title: Sick and Impatient
+Artist: Citizen
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=0RiEhqJRTB8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/0RiEhqJRTB8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 2
+Title: This Is Water
+Artist: pictures of vernon
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=u9wUCnIgawY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/u9wUCnIgawY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 3
+Title: Nowadays (feat. Landon Cube)
+Artist: lil skies
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=DlFmfxACvig
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/DlFmfxACvig" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 4
+Title: Let's Talk About Your Hair
+Artist: Have Mercy
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=FMwqAfg_e4s
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/FMwqAfg_e4s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 5
+Title: Vibin' out with (((O)))
+Artist: FKJ
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=9Gq9N-sPdYg
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/9Gq9N-sPdYg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 6
+Title: Tony Kukush
+Artist: Dikembe
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=7seFa4z0R0w
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/7seFa4z0R0w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 7
+Title: Wired for Success
+Artist: Dowsing
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=TPjz2URKnkw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/TPjz2URKnkw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 8
+Title: 23
+Artist: Jimmy Eat World
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=0085_FUpics
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/0085_FUpics" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 9
+Title: Chocolate
+Artist: The 1975
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=CHk5SWVO4p8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CHk5SWVO4p8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 10
+Title: Midwest Living
+Artist: Dowsing
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=EqTlaiD0uJw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/EqTlaiD0uJw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 11
+Title: ya'll boots hats? (die angry)
+Artist: Glocca Morra
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=DYF-Rncpz4M
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/DYF-Rncpz4M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 12
+Title: She Hates Me
+Artist: Puddle of Mudd
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=YSvKliG4ZBU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/YSvKliG4ZBU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 13
+Title: Take Me as You Please
+Artist: The Story So Far
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=R72KzrZ6BEY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/R72KzrZ6BEY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 14
+Title: The Shaking of Leaves
+Artist: Into It. Over It.
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=A3ENSaWcyqk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/A3ENSaWcyqk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 15
+Title: Heart Tattoo
+Artist: Joyce Manor
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=J5mHKxXWBpw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/J5mHKxXWBpw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 16
+Title: Falling For The First Time
+Artist: Barenaked Ladies
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=ibsxpihjKmE
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ibsxpihjKmE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 17
+Title: Premonition of the Hex
+Artist: Circa Survive
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=oWYaTxWZt68
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/oWYaTxWZt68" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 18
+Title: Hello, I'm In Delaware
+Artist: City and Colour
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=6f3ugIx3-ig
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/6f3ugIx3-ig" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 19
+Title: Strangers
+Artist: Trash Boat
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=HFs6-TbhlaI
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/HFs6-TbhlaI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 20
+Title: Monster Black Hole
+Artist: Pythius
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=xPzl1-UGky8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/xPzl1-UGky8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 21
+Title: More To Me
+Artist: Balance and Composure
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=JXe2dzkGp7w
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/JXe2dzkGp7w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 22
+Title: Healthy
+Artist: Brave Bird
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=3hV-enyyvKA
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/3hV-enyyvKA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 23
+Title: Your Pain Is Mine Now
+Artist: Title Fight
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=9X9i7Nh_BPo
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/9X9i7Nh_BPo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 24
+Title: Kirk Cameron Crowe
+Artist: Snowing
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=hqxgv1xl7oY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/hqxgv1xl7oY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 25
+Title: Joints & Jam
+Artist: Black Eyed Peas
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=8sbFoDy-emE
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/8sbFoDy-emE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+

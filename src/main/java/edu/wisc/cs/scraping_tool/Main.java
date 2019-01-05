@@ -48,6 +48,7 @@ public class Main extends Application {
     IndieShuffleScraper i;
     Billboard100Scraper bill;
     RedditScraper r;
+    lastFmScraper l;
 
     String playlistId = "";
 
@@ -65,12 +66,17 @@ public class Main extends Application {
     TextField redditSongsToFetch = new TextField();
     TextField redditMinUpvotes = new TextField();
     TextField uniqueSubreddit = new TextField();
+    TextField lastFmSongsToFetch = new TextField();
+    TextField lastFmUsername = new TextField();
+    TextField lastFmPassword = new TextField();
+
 
     // website checks
     CheckBox bCheck = new CheckBox("Beatport");
     CheckBox iCheck = new CheckBox("Indie Shuffle");
     CheckBox billCheck = new CheckBox("Billboard");
     CheckBox redditCheck = new CheckBox("Reddit");
+    CheckBox lastFmCheck = new CheckBox("Last FM");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -133,6 +139,8 @@ public class Main extends Application {
         Label col5 = new Label("BILLBOARD genres to select from:");
 
         Label subredditLbl = new Label("Subreddit to scrape:");
+        Label lfmUsername = new Label("Last.fm Username:");
+        Label lfmPassword = new Label("Last.fm Password:");
 
         // prompt text
         bpSongsToFetch.setPromptText("MAX 100");
@@ -151,10 +159,12 @@ public class Main extends Application {
         // stop.setPrefSize(400, 100);
         submit.setPrefSize(400, 100);
 
-        sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl);
+        sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
+                        lastFmCheck, lfmUsername, lfmPassword);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
-                        redditSongsToFetch, uniqueSubreddit);
+                        redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmUsername,
+                        lastFmPassword);
         upvotes.getChildren().addAll(col3, redditMinUpvotes);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
@@ -260,13 +270,22 @@ public class Main extends Application {
                             playListName += r.getFetchedInfo() + ", ";
                         }
 
-                        // shed off extra comma from end
-                        playListName = playListName.substring(0, playListName.length() - 2);
-                        playlistId = YouTubeScraper.createPlaylist(allVideoIds,
-                                        "MusiCollect Results - " + strDate + ": " + playListName);
-                        System.out.println(
-                                        "Fetching complete. Your YouTube playlist can be found here: https://www.youtube.com/playlist?list="
-                                                        + playlistId);
+                        if (lastFmCheck.isSelected()) {
+                            allVideoIds.addAll(l
+                                            .fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
+                            playListName += l.getFetchedInfo() + ", ";
+                        }
+
+                        if (allVideoIds.size() != 0) {
+                            // shed off extra comma from end
+                            playListName = playListName.substring(0, playListName.length() - 2);
+                            playlistId = YouTubeScraper.createPlaylist(allVideoIds,
+                                            "MusiCollect Results - " + strDate + ": "
+                                                            + playListName);
+                            System.out.println(
+                                            "Fetching complete. Your YouTube playlist can be found here: https://www.youtube.com/playlist?list="
+                                                            + playlistId);
+                        }
                     }
                 };
 
@@ -314,7 +333,7 @@ public class Main extends Application {
         // genre titles and links from beatport, store in a text file (in this directory) and then
         // reference that text file when populating the hashmap. Genre fetching/scraping could
         // probably be done once every few months to keep links accurate.
-        
+
         bpGenreMap.put("Afro House", new Genre("afro-house/89/top-100"));
         bpGenreMap.put("Big Room", new Genre("big-room/79/top-100"));
         bpGenreMap.put("Breaks", new Genre("breaks/9/top-100"));
@@ -392,7 +411,7 @@ public class Main extends Application {
         bpUserGenres = new ArrayList<String>();
 
         if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
-                        && !redditCheck.isSelected()) {
+                        && !redditCheck.isSelected() && !lastFmCheck.isSelected()) {
             System.out.println("Error: Please select a website to scrape.");
             return false;
         } else {
@@ -449,6 +468,20 @@ public class Main extends Application {
                 }
 
             }
+
+            if (lastFmCheck.isSelected()) {
+                l.setUserLogin(lastFmUsername.getText(), lastFmPassword.getText());
+                if (!StringUtils.isNumeric(lastFmSongsToFetch.getText())
+                                || Integer.parseInt(lastFmSongsToFetch.getText()) <= 0
+                                || lastFmUsername.getText().equals("")
+                                || lastFmPassword.getText().equals("")
+                                || !l.verifyUserNamePassword()) {
+                    inputError();
+                    return false;
+                }
+
+            }
+
         }
         return true;
     }
@@ -471,6 +504,7 @@ public class Main extends Application {
         i = new IndieShuffleScraper();
         bill = new Billboard100Scraper();
         r = new RedditScraper();
+        l = new lastFmScraper();
 
         // set hashmaps
         b.setGenreMap(bpGenreMap);
