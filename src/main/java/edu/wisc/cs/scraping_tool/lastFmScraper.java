@@ -61,7 +61,7 @@ public class lastFmScraper {
     @SuppressWarnings("unchecked")
     public ArrayList<String> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
-        System.out.println("Fetching from Last.fm: ");
+        Main.output("Fetching from Last.fm suggested tracks: ");
 
         File output = new File(strDate + "-last-fm.txt"); // keep local txt file as well
         PrintWriter writer = null;
@@ -83,13 +83,13 @@ public class lastFmScraper {
             items = (List<HtmlElement>) mainPage
                             .getByXPath(".//div[@class='recs-feed-inner-wrap']");
         } catch (Exception e) {
-            System.out.println("ERROR: Invalid username or password");
+            Main.output("ERROR: Invalid username or password");
             client.close();
             return null;
         }
 
         if (items.size() == 0) {
-            System.out.println(
+            Main.output(
                             "Error fetching from last.fm -- username or password may be typed incorrectly.");
         }
         int songPos = 1;
@@ -124,12 +124,12 @@ public class lastFmScraper {
             try {
                 videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
             } catch (NoSuchElementException e) {
-                System.out.println("No videos found for: " + strArtist + " " + strTitle
+                Main.output("No videos found for: " + strArtist + " " + strTitle
                                 + "\nSearching for: " + strTitle);
                 try {
                     videoIds = y.search("", strTitle, 1); // simplify parameters
                 } catch (NoSuchElementException ee) {
-                    System.out.println("Error finding song: " + strTitle
+                    Main.output("Error finding song: " + strTitle
                                     + "\nSkipping to next track...");
                     break;
                 }
@@ -146,25 +146,9 @@ public class lastFmScraper {
             // get genre by clicking on song link and grabbings tags (will slow it down,tho)
             song.setYoutubeLink(strYouTubeLink);
             song.setYoutubeEmbedLink(strYouTubeEmbedLink);
-            // searches for the song on youtube, returns the first video, if nothing
-            // is
-            // found, the program narrows down the search by shedding the "artist"
-            // parameter
-            try {
-                videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
-            } catch (NoSuchElementException e) {
-                System.out.println("No videos found for: " + strArtist + " " + strTitle
-                                + "\nSearching for: " + strTitle);
-                try {
-                    videoIds = y.search("", strTitle, 1); // simplify parameters
-                } catch (NoSuchElementException ee) {
-                    System.out.println("Error finding song: " + strTitle
-                                    + "\nSkipping to next track...");
-                    break;
-                }
-            }
+
             // print detailed information to console
-            System.out.println(
+            Main.output(
                             "Song " + songPos + ": " + song.getArtist() + " - " + song.getTitle());
             writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
 
@@ -217,13 +201,13 @@ public class lastFmScraper {
                 items = (List<HtmlElement>) mainPage
                                 .getByXPath(".//div[@class='recs-feed-inner-wrap']");
             } catch (Exception e) {
-                System.out.println("ERROR: Invalid username or password");
+                Main.output("ERROR: Invalid username or password");
                 client.close();
                 return false;
             }
 
             if (items.size() == 0) {
-                System.out.println(
+                Main.output(
                                 "Error fetching from last.fm -- username or password may be typed incorrectly.");
                 return false;
             }

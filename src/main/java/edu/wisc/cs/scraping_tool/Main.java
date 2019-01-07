@@ -2,7 +2,6 @@ package edu.wisc.cs.scraping_tool;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.google.inject.internal.Errors;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -69,8 +67,8 @@ public class Main extends Application {
     TextField lastFmSongsToFetch = new TextField();
     TextField lastFmUsername = new TextField();
     TextField lastFmPassword = new TextField();
-    
-    TextArea ta;
+
+    static TextArea ta;
 
 
     // website checks
@@ -117,8 +115,19 @@ public class Main extends Application {
         // output business
         ta = new TextArea();
         ta.setEditable(false);
-        ta.setPrefHeight(2000);
+        ta.setPrefHeight(698);
         ta.setWrapText(true);
+
+        //
+        // ta.textProperty().addListener(new ChangeListener<Object>() {
+        // @Override
+        // public void changed(ObservableValue<?> observable, Object oldValue,
+        // Object newValue) {
+        // ta.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+        // //use Double.MIN_VALUE to scroll to the top
+        // }
+        // });
+
         // TextAreaOutputStream taos = new TextAreaOutputStream(ta, 100);
         // PrintStream ps = new PrintStream(taos);
         // System.setOut(ps);
@@ -152,7 +161,7 @@ public class Main extends Application {
         redditSongsToFetch.setPromptText("MAX 100");
         redditMinUpvotes.setText("1");
         uniqueSubreddit.setText("listentothis");
-        
+
         shuffleSongsCheck.setPrefSize(400, 100);
 
         // buttons
@@ -211,7 +220,7 @@ public class Main extends Application {
         center.add(billRandomCheck, 4, 1);
 
         bottom.getChildren().addAll(submit, exit, shuffleSongsCheck);
-        
+
         root.setCenter(center);
         root.setBottom(bottom);
 
@@ -237,18 +246,18 @@ public class Main extends Application {
                             try {
                                 allVideoIds.addAll(b.fetch(
                                                 Integer.parseInt(bpSongsToFetch.getText()),
-                                                bpUserGenres, bpRandomCheck.isSelected()));
+                                                bpUserGenres, bpRandomCheck.isSelected(), false));
                                 playListName += b.getFetchedInfo() + ", ";
                             } catch (FailingHttpStatusCodeException e) {
-                                System.out.println("HTTP ERROR: Trying again...");
+                                Main.output("HTTP ERROR: Trying again...");
                                 try {
                                     allVideoIds.addAll(b.fetch(
                                                     Integer.parseInt(bpSongsToFetch.getText()),
-                                                    bpUserGenres, bpRandomCheck.isSelected()));
+                                                    bpUserGenres, bpRandomCheck.isSelected(),
+                                                    false));
                                     playListName += b.getFetchedInfo() + ", ";
                                 } catch (FailingHttpStatusCodeException e1) {
-                                    System.out.println(
-                                                    "HTTP ERROR: Exiting Beatport Scraping procedure.");
+                                    Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
                                 }
 
                             }
@@ -289,14 +298,13 @@ public class Main extends Application {
 
                             // shed off extra comma from end
                             playListName = playListName.substring(0, playListName.length() - 2);
-                            
+
                             playlistId = YouTubeScraper.createPlaylist(allVideoIds,
                                             "MusiCollect Results - " + strDate + ": "
                                                             + playListName);
-                            System.out.println(
-                                            "Fetching complete. Your YouTube playlist can be found"
-                                                            + " here: https://www.youtube.com/playlist?list="
-                                                            + playlistId);
+                            Main.output("Fetching complete. Your YouTube playlist can be found"
+                                            + " here: https://www.youtube.com/playlist?list="
+                                            + playlistId);
                         }
                     }
                 };
@@ -337,7 +345,6 @@ public class Main extends Application {
     }
 
     private ArrayList<String> shuffleArray(ArrayList<String> original) {
-        System.out.println("Old size: " + original.size());
         ArrayList<String> newArray = new ArrayList<String>();
         while (original.size() != 0) {
             int size = original.size();
@@ -345,7 +352,6 @@ public class Main extends Application {
             newArray.add(original.get(pick));
             original.remove((int) pick);
         }
-        System.out.println("New size: " + newArray.size());
         return newArray;
     }
 
@@ -437,7 +443,7 @@ public class Main extends Application {
 
         if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
                         && !redditCheck.isSelected() && !lastFmCheck.isSelected()) {
-            System.out.println("Error: Please select a website to scrape.");
+            Main.output("Error: Please select a website to scrape.");
             return false;
         } else {
             if (bCheck.isSelected()) {
@@ -516,8 +522,7 @@ public class Main extends Application {
      * 
      */
     private void inputError() {
-        System.out.println(
-                        "Input error.  Make sure a website is selected and a number of songs to be fetched is correctly typed into the input box.");
+        Main.output("Input error.  Make sure a website is selected and a number of songs to be fetched is correctly typed into the input box.");
     }
 
     /**
@@ -542,8 +547,9 @@ public class Main extends Application {
         playListName = "";
 
     }
-    
+
     public static synchronized void output(String msg) {
-        
+        ta.setText(ta.getText() + "\n" + msg);
+        ta.appendText("");
     }
 }

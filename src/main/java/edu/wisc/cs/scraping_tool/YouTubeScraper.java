@@ -298,7 +298,7 @@ public class YouTubeScraper {
         // item's unique playlistItem ID.
 
         try {
-        System.out.println(
+            Main.output(
                         "Adding PlaylistItem: " + returnedPlaylistItem.getSnippet().getTitle());
         } catch (Exception e) {
             e.printStackTrace();

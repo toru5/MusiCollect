@@ -1,343 +1,44 @@
 Song: 1
-Title: Hellraiser
-Artist: The Beatnuts
+Title: Death By Red Eye
+Artist: Charmer
 Album: null
 Record Label: null
 Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=fSV4nlYm3Ro
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/fSV4nlYm3Ro" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=vViAGG3DmOI
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/vViAGG3DmOI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
 Song: 2
-Title: comethru
-Artist: Jeremy Zucker
+Title: Need I Remind You
+Artist: Major League
 Album: null
 Record Label: null
 Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=k5zWajAL5Fw
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/k5zWajAL5Fw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=Fo0NIAtoZt8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Fo0NIAtoZt8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
 Song: 3
-Title: Someone That Loves You
-Artist: Honne
+Title: Tui
+Artist: FKJ
 Album: null
 Record Label: null
 Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=LQC3dBWS_FE
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/LQC3dBWS_FE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=XKNzeGxDHog
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/XKNzeGxDHog" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
 Song: 4
-Title: Skyline
-Artist: Command Strange & Alibi
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=pmZkf2tz_6E
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/pmZkf2tz_6E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 5
-Title: I Don't Mind
-Artist: Defeater
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=J1IdKeZU8hs
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/J1IdKeZU8hs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 6
-Title: First As Tragedy, Second As Farce
-Artist: Prawn
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=Itqzr77-xnY
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Itqzr77-xnY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 7
-Title: Four Superbowls, No Rings
-Artist: Such Gold
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=WAedERaq0wM
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/WAedERaq0wM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 8
-Title: Hear You Me
-Artist: Jimmy Eat World
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=9pQo9OQlIB8
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/9pQo9OQlIB8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 9
-Title: Magic
-Artist: Moe Shop
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=CNLJhhJdhk8
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CNLJhhJdhk8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 10
-Title: Eastside
-Artist: benny blanco, Halsey & Khalid
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=56WBK4ZK_cw
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/56WBK4ZK_cw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 11
-Title: Tunnel Vision
-Artist: Circa Survive
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=gW2v_fPXyMU
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/gW2v_fPXyMU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 12
-Title: Head In The Ceiling Fan
-Artist: Title Fight
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=Tu9KgGqXDyw
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Tu9KgGqXDyw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 13
-Title: broken cigarettes
-Artist: Glocca Morra
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=aoO49B2wZuo
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/aoO49B2wZuo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 14
-Title: Here Tonight
-Artist: Oh, Weatherly
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=ZkW-Y7N1RiA
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ZkW-Y7N1RiA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 15
-Title: Choosing Cages
-Artist: Such Gold
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=GVMjvqGphBI
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/GVMjvqGphBI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 16
-Title: The Tension And The Terror
-Artist: Straylight Run
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=ZOI2D_ZDI5A
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ZOI2D_ZDI5A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 17
-Title: Paper, Pencil, Copyright
-Artist: MCCAFFERTY
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=Gf3tpU4-P54
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Gf3tpU4-P54" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 18
-Title: Silver Lining
-Artist: Mt. Joy
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=ktjmXcfxMok
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ktjmXcfxMok" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 19
-Title: Daughter
-Artist: Pearl Jam
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=RiqgTPmkfek
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/RiqgTPmkfek" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 20
-Title: Living Dead
-Artist: Have Mercy
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=fFE0xEJtbIw
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/fFE0xEJtbIw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 21
-Title: Shit Twins
-Artist: Dads
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=6SX3KNG6exM
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/6SX3KNG6exM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 22
-Title: Jubel
-Artist: Klingande
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=b6vSf0cA9qY
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/b6vSf0cA9qY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 23
-Title: Crown Shyness
-Artist: Trash Boat
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=__5b5oag_SA
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/__5b5oag_SA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 24
-Title: Forever Please
-Artist: pictures of vernon
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=fDIK_EhzHGU
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/fDIK_EhzHGU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 25
-Title: Cinema (Skrillex Remix)
-Artist: Benny Benassi
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=Ua0KpfJsxKo
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ua0KpfJsxKo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 26
-Title: Gravity Rides Everything
-Artist: Modest Mouse
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=U6XhVj5GF0I
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/U6XhVj5GF0I" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 27
-Title: Grand Paradise
+Title: Rory
 Artist: Foxing
 Album: null
 Record Label: null
@@ -345,76 +46,11 @@ Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=5tsGkPxO8iY
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/5tsGkPxO8iY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=fablzPZTJiw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/fablzPZTJiw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
-Song: 28
-Title: We Don't Care
-Artist: Kanye West
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=0Tdpq3FRGhY
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/0Tdpq3FRGhY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 29
-Title: Cold Raviolis
-Artist: Graduating Life
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=ukbdI91MaDo
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ukbdI91MaDo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 30
-Title: Think I'm Still In Love With You
-Artist: Joyce Manor
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=iMns-abKjWw
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/iMns-abKjWw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 31
-Title: Chemicals
-Artist: Tigers Jaw
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=eGs-V81rKkM
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/eGs-V81rKkM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 32
-Title: now THIS is podracing
-Artist: Mom Jeans.
-Album: null
-Record Label: null
-Release Date: null
-Genre: null
-Link: null
-Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=XeWjjeMSB40
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/XeWjjeMSB40" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-General Embed Linknull
-
-Song: 33
+Song: 5
 Title: I Still Shut My Eyes
 Artist: Citizen
 Album: null
@@ -427,29 +63,263 @@ YouTube Link: https://www.youtube.com/watch?v=CN4I88C7wyU
 YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CN4I88C7wyU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
-Song: 34
-Title: Shake It Out
-Artist: Manchester Orchestra
+Song: 6
+Title: Home
+Artist: Spraynard
 Album: null
 Record Label: null
 Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=FHSfyypZtag
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/FHSfyypZtag" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=A6hdwUvcEZc
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/A6hdwUvcEZc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 
-Song: 35
-Title: Last Nite
-Artist: The Strokes
+Song: 7
+Title: glamorous
+Artist: Mom Jeans.
 Album: null
 Record Label: null
 Release Date: null
 Genre: null
 Link: null
 Album Art Link: null
-YouTube Link: https://www.youtube.com/watch?v=TOypSnKFHrE
-YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/TOypSnKFHrE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+YouTube Link: https://www.youtube.com/watch?v=vcNJSRrlcVQ
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/vcNJSRrlcVQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 8
+Title: Dead Quote Olympics
+Artist: The Hives
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=0voFdZHmBY0
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/0voFdZHmBY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 9
+Title: A Little Bit Like Magic
+Artist: King Harvest
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=8nu6dLpgYQk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/8nu6dLpgYQk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 10
+Title: Constant Headache
+Artist: Joyce Manor
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=EvIGgN-McsY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/EvIGgN-McsY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 11
+Title: January 10th, 2014
+Artist: The World Is a Beautiful Place & I Am No Longer Afraid to Die
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=mVg0lBtzgQQ
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/mVg0lBtzgQQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 12
+Title: Pretty Over College
+Artist: Charmer
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=CPMxntmMRgU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CPMxntmMRgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 13
+Title: Somebody Someone
+Artist: Korn
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=FBEE-t-uyI0
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/FBEE-t-uyI0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 14
+Title: Come and Get It
+Artist: I Prevail
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=lrAOUEyYbQc
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/lrAOUEyYbQc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 15
+Title: Instant Need
+Artist: FKJ
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=CMZ9mYGh9Lw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CMZ9mYGh9Lw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 16
+Title: Dear Father
+Artist: Defeater
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=60vR0Ejy0hM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/60vR0Ejy0hM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 17
+Title: I Got My Brand On You
+Artist: Muddy Waters
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=5TlB7yBMLRQ
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/5TlB7yBMLRQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 18
+Title: wildfire
+Artist: Jeremy Zucker
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=b3BxuL3ZeW4
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/b3BxuL3ZeW4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 19
+Title: I Would Hate You If I Could
+Artist: Turnover
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=3eN0-UztnXU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/3eN0-UztnXU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 20
+Title: Diazepam
+Artist: Turnover
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=SRv4uhFAnbY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/SRv4uhFAnbY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 21
+Title: I Love To Be Chill
+Artist: sports.
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=uxZYiOagVO0
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/uxZYiOagVO0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 22
+Title: Fuck Love (Feat. Trippie Redd)
+Artist: XXXTentacion
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=JcWOSgImiRw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/JcWOSgImiRw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 23
+Title: False Confidence
+Artist: Noah Kahan
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=dWRWuY3pV2c
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/dWRWuY3pV2c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 24
+Title: Life Sucks
+Artist: Heart Attack Man
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=129OUK9kUz8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/129OUK9kUz8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 25
+Title: Don't Open Your Eyes
+Artist: Trash Boat
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=RJOaLix7juM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/RJOaLix7juM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 General Embed Linknull
 

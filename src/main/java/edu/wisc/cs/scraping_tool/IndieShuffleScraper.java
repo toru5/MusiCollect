@@ -37,7 +37,7 @@ public class IndieShuffleScraper {
     public ArrayList<String> fetch(int songsToFetch)
                     throws FailingHttpStatusCodeException {
 
-        System.out.println("Fetching from Indie Shuffle");
+        Main.output("Fetching from Indie Shuffle");
 
         File output = new File(strDate + "-indie-shuffle-songs.txt"); // keep local txt file as well
         PrintWriter writer = null;
@@ -65,7 +65,7 @@ public class IndieShuffleScraper {
             List<HtmlElement> items = (List<HtmlElement>) mainPage
                             .getByXPath(".//div[@class='sortable-item']");
             if (items.isEmpty()) {
-                System.out.println("No items found");
+                Main.output("No items found");
             } else {
                 int count = 0;
                 for (HtmlElement htmlItem : items) {
@@ -98,12 +98,12 @@ public class IndieShuffleScraper {
                     try {
                         videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
                     } catch (NoSuchElementException e) {
-                        System.out.println("No videos found for: " + strArtist + " " + strTitle
+                        Main.output("No videos found for: " + strArtist + " " + strTitle
                                         + "\nSearching for: " + title.asText());
                         try {
                             videoIds = y.search("", strTitle, 1); // simplify parameters
                         } catch (NoSuchElementException ee) {
-                            System.out.println("Error finding song: " + title.asText()
+                            Main.output("Error finding song: " + title.asText()
                                             + "\nSkipping to next track...");
                             break;
                         }
@@ -126,7 +126,7 @@ public class IndieShuffleScraper {
                     song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
                     // print detailed information to console
-                    System.out.println(song.getGenre() + " - Position " + (count + 1) + ": "
+                    Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
                                     + song.getArtist() + " - " + song.getTitle());
                     writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
 

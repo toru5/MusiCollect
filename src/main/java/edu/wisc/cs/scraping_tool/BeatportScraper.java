@@ -44,11 +44,11 @@ public class BeatportScraper {
      * @throws FailingHttpStatusCodeException
      */
     public ArrayList<String> fetch(int songsToFetch, ArrayList<String> userGenres,
-                    boolean randomSongs) {
+                    boolean randomSongs, boolean getExtraInfo) {
 
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
-        System.out.println("Fetching from Beatport: " + prettyGenreList);
+        Main.output("Fetching from Beatport: " + prettyGenreList);
 
         String baseUrl = "https://www.beatport.com/genre/";
         WebClient client = new WebClient();
@@ -99,14 +99,18 @@ public class BeatportScraper {
             List<HtmlElement> items = (List<HtmlElement>) mainPage
                             .getByXPath(".//li[@class='bucket-item ec-item track']");
             if (items.isEmpty()) {
-                System.out.println("No items found");
+                Main.output("No items found");
                 break;
             } else {
                 for (HtmlElement htmlItem : items) {
+
+                    // create song object
+                    Song song = new Song();
                     // extract items
                     if (randomSongs && !randoms.contains(count)) {
 
                     } else {
+
                         HtmlElement title = ((HtmlElement) htmlItem.getFirstByXPath(
                                         ".//span[@class='buk-track-primary-title']"));
                         HtmlElement mix = ((HtmlElement) htmlItem
@@ -123,50 +127,60 @@ public class BeatportScraper {
                                         .getFirstByXPath(".//p[@class='buk-track-remixers']"));
                         String strRemixer = remixer == null ? "" : remixer.asText();
 
+                        // get a bunch of extra stuff that will add a costly penalty to the runtime
+                        // of the application
+                        if (getExtraInfo) {
+                            HtmlAnchor releaseBtn = ((HtmlAnchor) htmlItem
+                                            .getFirstByXPath(".//p[@class='buk-track-title']/a"));
+                            HtmlPage releasePage = null;
 
-                        HtmlAnchor releaseBtn = ((HtmlAnchor) htmlItem
-                                        .getFirstByXPath(".//p[@class='buk-track-title']/a"));
-                        HtmlPage releasePage = null;
+                            try {
+                                releasePage = releaseBtn.click();
+                            } catch (IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                                continue;
+                            }
 
-                        try {
-                            releasePage = releaseBtn.click();
-                        } catch (IOException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                            continue;
+
+                            HtmlElement albumContainer = releasePage.getFirstByXPath(
+                                            ".//li[@class='interior-track-releases-artwork-container ec-item']");
+                            String strAlbum = albumContainer.getAttribute("data-ec-name");
+
+
+
+                            HtmlElement releaseContainer = releasePage.getFirstByXPath(
+                                            ".//li[@class='interior-track-content-item interior-track-released']");
+                            HtmlElement releaseDate = releaseContainer
+                                            .getFirstByXPath(".//span[@class='value']");
+                            String strReleaseDate = releaseDate.asText();
+
+                            HtmlElement recordLabel = ((HtmlElement) htmlItem
+                                            .getFirstByXPath(".//p[@class='buk-track-labels']"));
+                            String strRecordLabel = recordLabel.asText();
+
+                            HtmlElement albumArtContainer =
+                                            ((HtmlElement) releasePage.getFirstByXPath(
+                                                            ".//img[@class='interior-track-release-artwork']"));
+                            String albumArtLink = albumArtContainer.getAttribute("src");
+
+
+                            HtmlElement link = releasePage.getFirstByXPath(
+                                            ".//input[@class='share-embed-drop-copy-text']");
+                            String strLink = link.getAttribute("value");
+
+
+                            HtmlElement embedLink = releasePage.getFirstByXPath(
+                                            ".//input[@class='share-embed-drop-copy-text'][2]");
+                            String strEmbedLink = embedLink.getAttribute("value");
+
+                            song.setReleaseDate(strReleaseDate);
+                            song.setRecordLabel(strRecordLabel);
+                            song.setAlbumArtLink(albumArtLink);
+                            song.setLink(strLink);
+                            song.setEmbedLink(strEmbedLink);
+                            song.setAlbum(strAlbum);
                         }
-
-
-                        HtmlElement albumContainer = releasePage.getFirstByXPath(
-                                        ".//li[@class='interior-track-releases-artwork-container ec-item']");
-                        String strAlbum = albumContainer.getAttribute("data-ec-name");
-
-
-
-                        HtmlElement releaseContainer = releasePage.getFirstByXPath(
-                                        ".//li[@class='interior-track-content-item interior-track-released']");
-                        HtmlElement releaseDate =
-                                        releaseContainer.getFirstByXPath(".//span[@class='value']");
-                        String strReleaseDate = releaseDate.asText();
-
-                        HtmlElement recordLabel = ((HtmlElement) htmlItem
-                                        .getFirstByXPath(".//p[@class='buk-track-labels']"));
-                        String strRecordLabel = recordLabel.asText();
-
-                        HtmlElement albumArtContainer = ((HtmlElement) releasePage.getFirstByXPath(
-                                        ".//img[@class='interior-track-release-artwork']"));
-                        String albumArtLink = albumArtContainer.getAttribute("src");
-
-
-                        HtmlElement link = releasePage.getFirstByXPath(
-                                        ".//input[@class='share-embed-drop-copy-text']");
-                        String strLink = link.getAttribute("value");
-
-
-                        HtmlElement embedLink = releasePage.getFirstByXPath(
-                                        ".//input[@class='share-embed-drop-copy-text'][2]");
-                        String strEmbedLink = embedLink.getAttribute("value");
-
 
                         YouTubeScraper y = new YouTubeScraper();
                         String yTitle;
@@ -180,19 +194,18 @@ public class BeatportScraper {
 
                         List<String> videoIds;
 
-
                         // searches for the song on youtube, returns the first video, if nothing is
                         // found, the program narrows down the search by shedding the "artist"
                         // parameter
                         try {
                             videoIds = y.search(strArtist, yTitle, 1); // fetch 1 video
                         } catch (NoSuchElementException e) {
-                            System.out.println("No videos found for: " + strArtist + " " + yTitle
+                            Main.output("No videos found for: " + strArtist + " " + yTitle
                                             + "\nSearching for: " + title.asText());
                             try {
                                 videoIds = y.search("", title.asText(), 1); // simplify parameters
                             } catch (NoSuchElementException ee) {
-                                System.out.println("Error finding song: " + title.asText()
+                                Main.output("Error finding song: " + title.asText()
                                                 + "\nSkipping to next track...");
                                 break;
                             }
@@ -204,24 +217,16 @@ public class BeatportScraper {
                                         YouTubeScraper.generateEmbedLink(videoIds.get(0));
                         allVideoIds.add(videoIds.get(0));
 
-                        // create song object
-                        Song song = new Song();
-
                         song.setTitle(strTitle);
                         song.setArtist(strArtist);
                         song.setRemixer(strRemixer);
-                        song.setAlbum(strAlbum);
                         song.setGenre(genres.get(genreCount));
-                        song.setReleaseDate(strReleaseDate);
-                        song.setRecordLabel(strRecordLabel);
-                        song.setAlbumArtLink(albumArtLink);
-                        song.setLink(strLink);
-                        song.setEmbedLink(strEmbedLink);
+
                         song.setYoutubeLink(strYouTubeLink);
                         song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
                         // print detailed information to console
-                        System.out.println(song.getGenre() + " - Position " + (count + 1) + ": "
+                        Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
                                         + song.getArtist() + " - " + song.getTitle());
                         writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
 

@@ -44,7 +44,7 @@ public class Billboard100Scraper {
 
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
-        System.out.println("Fetching from Billboard: " + prettyGenreList);
+        Main.output("Fetching from Billboard: " + prettyGenreList);
 
         String baseUrl = "https://www.billboard.com/charts/";
         WebClient client = new WebClient();
@@ -67,7 +67,7 @@ public class Billboard100Scraper {
 
         int genreCount = 0;
 
-        
+
         // r-b-hip
         for (String s : genreLinks) {
             int maxSongs = 0;
@@ -87,7 +87,7 @@ public class Billboard100Scraper {
                     songsToFetch = 50;
                 }
                 maxSongs = 50;
-            }else if (s.contains("contemporary")) {
+            } else if (s.contains("contemporary")) {
                 if (songsToFetch > 30) {
                     songsToFetch = 30;
                 }
@@ -124,8 +124,6 @@ public class Billboard100Scraper {
                                 .getFirstByXPath(".//div[@class='chart-number-one__artist']");
                 String strOneArtist = oneArtist.asText();
 
-
-                @SuppressWarnings("unchecked")
                 // this is where you collect all the items
                 // List<HtmlElement> items = (List<HtmlElement>) mainPage
                 // .getByXPath(".//div[@class='chart-details ']");
@@ -157,12 +155,12 @@ public class Billboard100Scraper {
                             try {
                                 videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
                             } catch (NoSuchElementException e) {
-                                System.out.println("No videos found for: " + strArtist + " "
+                                Main.output("No videos found for: " + strArtist + " "
                                                 + strTitle + "\nSearching for: " + strTitle);
                                 try {
                                     videoIds = y.search("", strTitle, 1); // simplify parameters
                                 } catch (NoSuchElementException ee) {
-                                    System.out.println("Error finding song: " + strTitle
+                                    Main.output("Error finding song: " + strTitle
                                                     + "\nSkipping to next track...");
                                     break;
                                 }
@@ -188,12 +186,12 @@ public class Billboard100Scraper {
                             try {
                                 videoIds = y.search(strOneArtist, strOneTitle, 1); // fetch 1 video
                             } catch (NoSuchElementException e) {
-                                System.out.println("No videos found for: " + strOneArtist + " "
+                                Main.output("No videos found for: " + strOneArtist + " "
                                                 + strOneTitle + "\nSearching for: " + strOneTitle);
                                 try {
                                     videoIds = y.search("", strOneTitle, 1); // simplify parameters
                                 } catch (NoSuchElementException ee) {
-                                    System.out.println("Error finding song: " + strOneTitle
+                                    Main.output("Error finding song: " + strOneTitle
                                                     + "\nSkipping to next track...");
                                     break;
                                 }
@@ -213,7 +211,7 @@ public class Billboard100Scraper {
                             song.setYoutubeEmbedLink(strYouTubeEmbedLink);
                         }
                         // print detailed information to console
-                        System.out.println(song.getGenre() + " - Position " + songPos + ": "
+                        Main.output(song.getGenre() + " - Position " + songPos + ": "
                                         + song.getArtist() + " - " + song.getTitle());
                         writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
 

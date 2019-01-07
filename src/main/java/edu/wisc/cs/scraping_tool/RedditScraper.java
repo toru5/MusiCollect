@@ -48,7 +48,7 @@ public class RedditScraper {
 
     public ArrayList<String> fetch(String subreddit, int songsToFetch, int minUpvotes) {
         List<Submission> songs = getTopSubmissions(subreddit, songsToFetch);
-        System.out.println("Fetching from: reddit/r/" + subreddit);
+        Main.output("Fetching from: reddit/r/" + subreddit);
 
         File output = new File(strDate + "-reddit-" + subreddit + "-songs.txt"); // keep local txt
                                                                                  // file as well
@@ -140,7 +140,7 @@ public class RedditScraper {
             song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
             // print detailed information to console
-            System.out.println(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist()
+            Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist()
                             + " - " + song.getTitle());
             writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
             count++;
