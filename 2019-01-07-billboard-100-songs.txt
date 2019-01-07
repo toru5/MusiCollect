@@ -1,0 +1,91 @@
+Song: 1
+Title: Better Now
+Artist: Post Malone
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=UYwF-jdcVjY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/UYwF-jdcVjY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 15
+Title: Sicko Mode
+Artist: Travis Scott
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=6ONRf7h3Mdk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/6ONRf7h3Mdk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 13
+Title: Close To Me
+Artist: Ellie Goulding X Diplo Featuring Swae Lee
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=ajN57m_OSpY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ajN57m_OSpY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 6
+Title: Eastside
+Artist: Benny Blanco, Halsey & Khalid
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=56WBK4ZK_cw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/56WBK4ZK_cw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 7
+Title: Youngblood
+Artist: 5 Seconds Of Summer
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=-RJSbO8UZVY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/-RJSbO8UZVY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 37
+Title: I Found You
+Artist: Benny Blanco & Calvin Harris
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=yNXDxUQ4c9U
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/yNXDxUQ4c9U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 39
+Title: 1999
+Artist: Charli XCX & Troye Sivan
+Album: null
+Record Label: null
+Release Date: null
+Genre: Pop
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=6-v1b9waHWY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/6-v1b9waHWY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+

@@ -48,10 +48,10 @@ public class lastFmScraper {
     }
 
     /**
-     * THE METHOD verifyUsernamePassword() MUST BE CALLED BEFORE CALLING THIS METHOD
-     * Main method that fetches an arbitrary number of songs (up to 100) from each given genre.
-     * Genres are passed via ArrayList and must be a particular string (associated with Beatport's
-     * Genre conventions)
+     * THE METHOD verifyUsernamePassword() MUST BE CALLED BEFORE CALLING THIS METHOD Main method
+     * that fetches an arbitrary number of songs (up to 100) from each given genre. Genres are
+     * passed via ArrayList and must be a particular string (associated with Beatport's Genre
+     * conventions)
      * 
      * @param songsToFetch The amount of songs (from each genre) to fetch
      * @param userGenres The genres that the user would like to fetch from
@@ -99,16 +99,19 @@ public class lastFmScraper {
                             .getFirstByXPath(".//a[@class='link-block-target']");
             String strTitle = title.asText();
 
-            // trim song length from the end
-            int i = strTitle.length() - 1;
-            char[] chTitle = strTitle.toCharArray();
-            while (chTitle[i] != '(') {
+            if (strTitle.charAt(strTitle.length() - 1) == ')') {
+                // trim song length from the end
+                int i = strTitle.length() - 1;
+                char[] chTitle = strTitle.toCharArray();
+                while (chTitle[i] != '(') {
+                    chTitle[i] = ' ';
+                    i--;
+                }
                 chTitle[i] = ' ';
-                i--;
-            }
-            chTitle[i] = ' ';
 
-            strTitle = new String(chTitle);
+                strTitle = new String(chTitle);
+            }
+            
             strTitle = strTitle.trim();
             HtmlElement artist = (HtmlElement) htmlItem
                             .getFirstByXPath(".//p[@class='recs-feed-description']/a");

@@ -64,7 +64,6 @@ public class YouTubeScraper {
         return playlistId;
     }
 
-
     public List<String> search(String artistName, String songTitle, long numberOfVideosReturned)
                     throws NoSuchElementException {
         List<String> ids = null;

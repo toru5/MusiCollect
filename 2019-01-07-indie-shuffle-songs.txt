@@ -1,0 +1,65 @@
+Song: 1
+Title:  Tired Boy
+Artist: Joey Pecoraro
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/joey-pecoraro-tired-boy/
+Album Art Link: https://i1.sndcdn.com/artworks-000148605398-rsegvk-t200x200.jpg
+YouTube Link: https://www.youtube.com/watch?v=F7khiq25Xr0
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/F7khiq25Xr0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 2
+Title:  I'm Not Your Man
+Artist: Grady
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/grady-im-not-your-man/
+Album Art Link: https://i.ytimg.com/vi/2eNMxtLcCCs/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=2eNMxtLcCCs
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/2eNMxtLcCCs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 3
+Title:  Drab Measure
+Artist: Crack Cloud
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/crack-cloud-drab-measure/
+Album Art Link: https://i.ytimg.com/vi/a0hINiuO0OY/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=a0hINiuO0OY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/a0hINiuO0OY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 4
+Title:  don't you open up that window {shopper}
+Artist: HAMITR
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/hamitr-dont-you-open-up-that-window-shopper/
+Album Art Link: https://i1.sndcdn.com/artworks-000449841072-ga2yko-t200x200.jpg
+YouTube Link: https://www.youtube.com/watch?v=J7plhLBPsSA
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/J7plhLBPsSA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 5
+Title:  Elm
+Artist: Clever Girl
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie
+Link: https://www.indieshuffle.com/clever-girl-elm/
+Album Art Link: https://i.ytimg.com/vi/vt3bGCeLRVw/hqdefault.jpg
+YouTube Link: https://www.youtube.com/watch?v=lztAP0jNLds
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/lztAP0jNLds" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+

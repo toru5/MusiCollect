@@ -69,6 +69,8 @@ public class Main extends Application {
     TextField lastFmSongsToFetch = new TextField();
     TextField lastFmUsername = new TextField();
     TextField lastFmPassword = new TextField();
+    
+    TextArea ta;
 
 
     // website checks
@@ -81,6 +83,7 @@ public class Main extends Application {
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
     CheckBox bpRandomCheck = new CheckBox("BEATPORT Random Song Order?");
+    CheckBox shuffleSongsCheck = new CheckBox("Shuffle songs in playlist?");
 
     /**
      * 
@@ -112,7 +115,7 @@ public class Main extends Application {
         createGenreArray();
 
         // output business
-        TextArea ta = new TextArea();
+        ta = new TextArea();
         ta.setEditable(false);
         ta.setPrefHeight(2000);
         ta.setWrapText(true);
@@ -149,6 +152,8 @@ public class Main extends Application {
         redditSongsToFetch.setPromptText("MAX 100");
         redditMinUpvotes.setText("1");
         uniqueSubreddit.setText("listentothis");
+        
+        shuffleSongsCheck.setPrefSize(400, 100);
 
         // buttons
         final Button submit = new Button("Submit");
@@ -205,8 +210,8 @@ public class Main extends Application {
         center.add(billboardGenres, 4, 0);
         center.add(billRandomCheck, 4, 1);
 
-        bottom.getChildren().addAll(submit, exit);
-
+        bottom.getChildren().addAll(submit, exit, shuffleSongsCheck);
+        
         root.setCenter(center);
         root.setBottom(bottom);
 
@@ -277,13 +282,20 @@ public class Main extends Application {
                         }
 
                         if (allVideoIds.size() != 0) {
+
+                            if (shuffleSongsCheck.isSelected()) {
+                                allVideoIds = shuffleArray(allVideoIds);
+                            }
+
                             // shed off extra comma from end
                             playListName = playListName.substring(0, playListName.length() - 2);
+                            
                             playlistId = YouTubeScraper.createPlaylist(allVideoIds,
                                             "MusiCollect Results - " + strDate + ": "
                                                             + playListName);
                             System.out.println(
-                                            "Fetching complete. Your YouTube playlist can be found here: https://www.youtube.com/playlist?list="
+                                            "Fetching complete. Your YouTube playlist can be found"
+                                                            + " here: https://www.youtube.com/playlist?list="
                                                             + playlistId);
                         }
                     }
@@ -322,6 +334,19 @@ public class Main extends Application {
 
         return root;
 
+    }
+
+    private ArrayList<String> shuffleArray(ArrayList<String> original) {
+        System.out.println("Old size: " + original.size());
+        ArrayList<String> newArray = new ArrayList<String>();
+        while (original.size() != 0) {
+            int size = original.size();
+            Integer pick = (int) (Math.random() * size);
+            newArray.add(original.get(pick));
+            original.remove((int) pick);
+        }
+        System.out.println("New size: " + newArray.size());
+        return newArray;
     }
 
     /**
@@ -446,6 +471,7 @@ public class Main extends Application {
                 }
             }
 
+            // someone please fucking kill me already =]]]
             if (iCheck.isSelected()) {
                 if (!StringUtils.isNumeric(indieSongsToFetch.getText())
                                 || Integer.parseInt(indieSongsToFetch.getText()) <= 0
@@ -515,5 +541,9 @@ public class Main extends Application {
         allVideoIds = new ArrayList<String>();
         playListName = "";
 
+    }
+    
+    public static synchronized void output(String msg) {
+        
     }
 }
