@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -87,26 +86,12 @@ public class IndieShuffleScraper {
                                     ".//a[@class='pink ajaxlink']");
                     String strLink = baseUrl + link.getAttribute("href");
 
-                    YouTubeScraper y = new YouTubeScraper();
-
                     List<String> videoIds;
 
-
-                    // searches for the song on youtube, returns the first video, if nothing is
-                    // found, the program narrows down the search by shedding the "artist"
-                    // parameter
-                    try {
-                        videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
-                    } catch (NoSuchElementException e) {
-                        Main.output("No videos found for: " + strArtist + " " + strTitle
-                                        + "\nSearching for: " + title.asText());
-                        try {
-                            videoIds = y.search("", strTitle, 1); // simplify parameters
-                        } catch (NoSuchElementException ee) {
-                            Main.output("Error finding song: " + title.asText()
-                                            + "\nSkipping to next track...");
-                            break;
-                        }
+                    videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
+                    
+                    if (videoIds == null) {
+                        continue;
                     }
 
                     // generate links to videos and playlists

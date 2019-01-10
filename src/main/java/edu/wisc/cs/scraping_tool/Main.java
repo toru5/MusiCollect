@@ -67,9 +67,10 @@ public class Main extends Application {
     TextField lastFmSongsToFetch = new TextField();
     TextField lastFmUsername = new TextField();
     TextField lastFmPassword = new TextField();
+    TextField similarSongsToFetch = new TextField();
+    TextField similarArtistTxt = new TextField();
 
     static TextArea ta;
-
 
     // website checks
     CheckBox bCheck = new CheckBox("Beatport");
@@ -77,6 +78,7 @@ public class Main extends Application {
     CheckBox billCheck = new CheckBox("Billboard");
     CheckBox redditCheck = new CheckBox("Reddit");
     CheckBox lastFmCheck = new CheckBox("Last FM");
+    CheckBox similarCheck = new CheckBox("Songs similar to");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -118,25 +120,10 @@ public class Main extends Application {
         ta.setPrefHeight(698);
         ta.setWrapText(true);
 
-        //
-        // ta.textProperty().addListener(new ChangeListener<Object>() {
-        // @Override
-        // public void changed(ObservableValue<?> observable, Object oldValue,
-        // Object newValue) {
-        // ta.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
-        // //use Double.MIN_VALUE to scroll to the top
-        // }
-        // });
-
-        // TextAreaOutputStream taos = new TextAreaOutputStream(ta, 100);
-        // PrintStream ps = new PrintStream(taos);
-        // System.setOut(ps);
-        // System.setErr(ps);
-
         // vbox containers
-        VBox sites = new VBox(15);
+        VBox sites = new VBox(16);
         VBox fetch = new VBox(9);
-        VBox upvotes = new VBox(112);
+        VBox upvotes = new VBox(9.6);
         VBox bpGenres = new VBox();
         VBox billboardGenres = new VBox();
 
@@ -145,8 +132,8 @@ public class Main extends Application {
 
         // column headers
         Label col1 = new Label("Websites to scrape:");
-        Label col2 = new Label("Songs to be fetched (from each genre):");
-        Label col3 = new Label("Minimum Upvotes");
+        Label col2 = new Label("");
+        Label col3 = new Label("Additional info");
         Label col4 = new Label("BEATPORT genres to select from:");
         Label col5 = new Label("BILLBOARD genres to select from:");
 
@@ -155,12 +142,17 @@ public class Main extends Application {
         Label lfmPassword = new Label("Last.fm Password:");
 
         // prompt text
-        bpSongsToFetch.setPromptText("MAX 100");
-        billSongsToFetch.setPromptText("MAX 100");
-        indieSongsToFetch.setPromptText("MAX 15");
-        redditSongsToFetch.setPromptText("MAX 100");
+        bpSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
+        billSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
+        indieSongsToFetch.setPromptText("Songs to be fetched (MAX 15)");
+        redditSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         redditMinUpvotes.setText("1");
         uniqueSubreddit.setText("listentothis");
+        lastFmUsername.setPromptText("*required for use with last.fm");
+        lastFmPassword.setPromptText("*required for use with last.fm");
+        similarSongsToFetch.setPromptText("Songs to be fetched (MAX 350)");
+        similarArtistTxt.setPromptText("<artist name>");
+
 
         shuffleSongsCheck.setPrefSize(400, 100);
 
@@ -174,12 +166,14 @@ public class Main extends Application {
         submit.setPrefSize(400, 100);
 
         sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
-                        lastFmCheck, lfmUsername, lfmPassword);
+                        lastFmCheck, lfmUsername, lfmPassword, similarCheck);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmUsername,
-                        lastFmPassword);
-        upvotes.getChildren().addAll(col3, redditMinUpvotes);
+                        lastFmPassword, similarSongsToFetch);
+        upvotes.getChildren().addAll(col3, new Label(), new Label(), new Label(), new Label(),
+                        new Label(), redditMinUpvotes, new Label(), new Label(), new Label(),
+                        new Label(), similarArtistTxt);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
 
@@ -233,6 +227,7 @@ public class Main extends Application {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Define a new Runnable
+                Main.output("Initializing request...");
                 Runnable fetchMusic = new Runnable() {
                     public void run() {
                         reset();
@@ -287,6 +282,12 @@ public class Main extends Application {
                         if (lastFmCheck.isSelected()) {
                             allVideoIds.addAll(l
                                             .fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
+                            playListName += l.getFetchedInfo() + ", ";
+                        }
+
+                        if (similarCheck.isSelected()) {
+                            allVideoIds.addAll(l.fetchSimilar(similarArtistTxt.getText(),
+                                            Integer.parseInt(similarSongsToFetch.getText())));
                             playListName += l.getFetchedInfo() + ", ";
                         }
 
@@ -442,7 +443,8 @@ public class Main extends Application {
         bpUserGenres = new ArrayList<String>();
 
         if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
-                        && !redditCheck.isSelected() && !lastFmCheck.isSelected()) {
+                        && !redditCheck.isSelected() && !lastFmCheck.isSelected()
+                        && !similarCheck.isSelected()) {
             Main.output("Error: Please select a website to scrape.");
             return false;
         } else {
@@ -514,6 +516,16 @@ public class Main extends Application {
 
             }
 
+            if (similarCheck.isSelected()) {
+                if (!StringUtils.isNumeric(similarSongsToFetch.getText())
+                                || Integer.parseInt(similarSongsToFetch.getText()) <= 0
+                                || similarArtistTxt.getText().equals("")) {
+                    inputError();
+                    return false;
+                }
+
+            }
+
         }
         return true;
     }
@@ -549,7 +561,11 @@ public class Main extends Application {
     }
 
     public static synchronized void output(String msg) {
-        ta.setText(ta.getText() + "\n" + msg);
+        if (ta.getText().equals("")) {
+            ta.setText(msg);
+        } else {
+            ta.setText(ta.getText() + "\n" + msg);
+        }
         ta.appendText("");
     }
 }

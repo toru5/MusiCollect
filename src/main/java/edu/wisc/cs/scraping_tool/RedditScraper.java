@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.entity.User;
 import com.github.jreddit.retrieval.Submissions;
@@ -102,27 +101,13 @@ public class RedditScraper {
             if (genre.equals("")) {
                 genre = "No Genre";
             }
-            
-            YouTubeScraper y = new YouTubeScraper();
 
             List<String> videoIds;
 
-
-            // searches for the song on youtube, returns the first video, if nothing is
-            // found, the program narrows down the search by shedding the "artist"
-            // parameter
-            try {
-                videoIds = y.search(artist, title, 1); // fetch 1 video
-            } catch (NoSuchElementException e) {
-                // System.out.println("No videos found for: " + artist + " " + title
-                //                + "\nSearching for: " + title);
-                try {
-                    videoIds = y.search("", title, 1); // simplify parameters
-                } catch (NoSuchElementException ee) {
-                    // System.out.println(
-                    //                "Error finding song: " + title + "\nSkipping to next track...");
-                    break;
-                }
+            videoIds = YouTubeScraper.ySearch(artist, title);
+            
+            if (videoIds == null) {
+                continue;
             }
 
             // generate links to videos and playlists

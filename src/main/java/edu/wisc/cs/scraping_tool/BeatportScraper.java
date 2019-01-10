@@ -182,7 +182,6 @@ public class BeatportScraper {
                             song.setAlbum(strAlbum);
                         }
 
-                        YouTubeScraper y = new YouTubeScraper();
                         String yTitle;
 
                         if (!strTitle.contains("Original Mix")) {
@@ -194,22 +193,15 @@ public class BeatportScraper {
 
                         List<String> videoIds;
 
-                        // searches for the song on youtube, returns the first video, if nothing is
-                        // found, the program narrows down the search by shedding the "artist"
-                        // parameter
-                        try {
-                            videoIds = y.search(strArtist, yTitle, 1); // fetch 1 video
-                        } catch (NoSuchElementException e) {
-                            Main.output("No videos found for: " + strArtist + " " + yTitle
-                                            + "\nSearching for: " + title.asText());
-                            try {
-                                videoIds = y.search("", title.asText(), 1); // simplify parameters
-                            } catch (NoSuchElementException ee) {
-                                Main.output("Error finding song: " + title.asText()
-                                                + "\nSkipping to next track...");
-                                break;
+                        videoIds = YouTubeScraper.ySearch(strArtist, yTitle);
+                        if (videoIds == null) {
+                            videoIds = YouTubeScraper.ySearch(strArtist, title.asText());
+
+                            if (videoIds == null) {
+                                continue;
                             }
                         }
+
 
                         // generate links to videos and playlists
                         String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));

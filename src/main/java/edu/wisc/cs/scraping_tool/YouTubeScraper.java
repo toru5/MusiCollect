@@ -51,20 +51,20 @@ public class YouTubeScraper {
         } catch (GoogleJsonResponseException e) {
             // System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
             // + e.getDetails().getMessage());
-//            e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("GoogleJsonResponseException: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
-//            e.printStackTrace();
+            // e.printStackTrace();
         } catch (Exception e) {
-//            e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("Exception: " + e.getMessage());
         }
-        
+
         return playlistId;
     }
 
-    public List<String> search(String artistName, String songTitle, long numberOfVideosReturned)
+    public static List<String> search(String artistName, String songTitle, long numberOfVideosReturned)
                     throws NoSuchElementException {
         List<String> ids = null;
 
@@ -107,7 +107,7 @@ public class YouTubeScraper {
         } catch (IOException e) {
             System.out.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         } catch (Exception e) {
-//            e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("Exception: " + e.getMessage());
         }
 
@@ -298,18 +298,38 @@ public class YouTubeScraper {
         // item's unique playlistItem ID.
 
         try {
-            Main.output(
-                        "Adding PlaylistItem: " + returnedPlaylistItem.getSnippet().getTitle());
+            Main.output("Adding PlaylistItem: " + returnedPlaylistItem.getSnippet().getTitle());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         // extra details (potentially) not needed for the user
         // System.out.println(" - Video id: "
         // + returnedPlaylistItem.getSnippet().getResourceId().getVideoId());
         // System.out.println(" - Posted: " + returnedPlaylistItem.getSnippet().getPublishedAt());
         // System.out.println(" - Channel: " + returnedPlaylistItem.getSnippet().getChannelId());
         return returnedPlaylistItem.getId();
+    }
 
+    public static List<String> ySearch(String artist, String title) {
+        List<String> videoIds = null;
+        // searches for the song on youtube, returns the first video, if nothing
+        // is
+        // found, the program narrows down the search by shedding the "artist"
+        // parameter
+        try {
+            videoIds = search(artist, title, 1); // fetch 1 video
+        } catch (NoSuchElementException e) {
+            Main.output("No videos found for: " + artist + " " + title + "\nSearching for: "
+                            + title);
+            try {
+                videoIds = search("", title, 1); // simplify parameters
+            } catch (NoSuchElementException ee) {
+                Main.output("Error finding song: " + title + "\nSkipping to next track...");
+                return null;
+            }
+        }
+
+        return videoIds;
     }
 }

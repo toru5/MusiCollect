@@ -56,7 +56,6 @@ public class Billboard100Scraper {
         File output = new File(strDate + "-billboard-100-songs.txt"); // keep local txt file as well
         PrintWriter writer = null;
 
-        YouTubeScraper y = new YouTubeScraper();
         List<String> videoIds = null;
 
         try {
@@ -148,23 +147,7 @@ public class Billboard100Scraper {
 
                             String strArtist = htmlItem.getAttribute("data-artist");
 
-                            // searches for the song on youtube, returns the first video, if nothing
-                            // is
-                            // found, the program narrows down the search by shedding the "artist"
-                            // parameter
-                            try {
-                                videoIds = y.search(strArtist, strTitle, 1); // fetch 1 video
-                            } catch (NoSuchElementException e) {
-                                Main.output("No videos found for: " + strArtist + " "
-                                                + strTitle + "\nSearching for: " + strTitle);
-                                try {
-                                    videoIds = y.search("", strTitle, 1); // simplify parameters
-                                } catch (NoSuchElementException ee) {
-                                    Main.output("Error finding song: " + strTitle
-                                                    + "\nSkipping to next track...");
-                                    break;
-                                }
-                            }
+                            videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
 
                             // generate links to videos and playlists
                             String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
@@ -179,23 +162,8 @@ public class Billboard100Scraper {
                             song.setYoutubeLink(strYouTubeLink);
                             song.setYoutubeEmbedLink(strYouTubeEmbedLink);
                         } else {
-                            // searches for the song on youtube, returns the first video, if nothing
-                            // is
-                            // found, the program narrows down the search by shedding the "artist"
-                            // parameter
-                            try {
-                                videoIds = y.search(strOneArtist, strOneTitle, 1); // fetch 1 video
-                            } catch (NoSuchElementException e) {
-                                Main.output("No videos found for: " + strOneArtist + " "
-                                                + strOneTitle + "\nSearching for: " + strOneTitle);
-                                try {
-                                    videoIds = y.search("", strOneTitle, 1); // simplify parameters
-                                } catch (NoSuchElementException ee) {
-                                    Main.output("Error finding song: " + strOneTitle
-                                                    + "\nSkipping to next track...");
-                                    break;
-                                }
-                            }
+
+                            videoIds = YouTubeScraper.ySearch(strOneArtist, strOneTitle);
 
                             allVideoIds.add(videoIds.get(0));
                             // create song object

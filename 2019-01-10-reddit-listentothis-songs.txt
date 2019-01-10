@@ -1,0 +1,195 @@
+Song: 1
+Title: Caverns
+Artist: Times Is Hard
+Album: null
+Record Label: null
+Release Date: null
+Genre: Alt Rock
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=-hpK9oFoRKM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/-hpK9oFoRKM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 2
+Title: King Leech
+Artist: Chupa Cabra
+Album: null
+Record Label: null
+Release Date: null
+Genre: lofi garage rock
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=5y1cDWw7NcM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/5y1cDWw7NcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 3
+Title: DSCO
+Artist: Sweet Trip
+Album: null
+Record Label: null
+Release Date: null
+Genre: Electronica
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=p8MLqBcwJJY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/p8MLqBcwJJY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 4
+Title: Witch Hunt
+Artist: MDFMK
+Album: null
+Record Label: null
+Release Date: null
+Genre: Industrial
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=nXKAjmHxbpk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/nXKAjmHxbpk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 5
+Title: I'll Be Alright
+Artist: Jorma Kaukonen
+Album: null
+Record Label: null
+Release Date: null
+Genre: No Genre
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=8gy2HPHyOoo
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/8gy2HPHyOoo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 6
+Title: Lifeblood
+Artist: Ghostland
+Album: null
+Record Label: null
+Release Date: null
+Genre: No Genre
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=z9Kdl22rl8U
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/z9Kdl22rl8U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 7
+Title: Would You Mind
+Artist: Mutual Attraction
+Album: null
+Record Label: null
+Release Date: null
+Genre: House/Disco
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=2nJ9Osm0jgI
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/2nJ9Osm0jgI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 8
+Title: Immovable Object
+Artist: Circles Around The Sun
+Album: null
+Record Label: null
+Release Date: null
+Genre: Psychedelic Rock
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=n4bRrbX8kGM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/n4bRrbX8kGM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 9
+Title: Un peu d'amour
+Artist: Silence
+Album: null
+Record Label: null
+Release Date: null
+Genre: Funk / Soul / Boogie
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=vXyFjUrtcKk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/vXyFjUrtcKk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 10
+Title: Incipient / Real Time Hero
+Artist: Dismyth
+Album: null
+Record Label: null
+Release Date: null
+Genre: Doom / Stoner / Heavy Metal
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=yCMzGbsFrkw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/yCMzGbsFrkw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 11
+Title: S T R E T C H
+Artist: Orion Sun
+Album: null
+Record Label: null
+Release Date: null
+Genre: Vapor Pop/R&amp;B
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=m5zkMlJvXXQ
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/m5zkMlJvXXQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 12
+Title: "July"
+Artist: Emlyn Oliver
+Album: null
+Record Label: null
+Release Date: null
+Genre: No Genre
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=0U0XWbyACKM
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/0U0XWbyACKM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 13
+Title: Glo Ride
+Artist: Hot Flash Heat Wave
+Album: null
+Record Label: null
+Release Date: null
+Genre: Indie Pop / Synth
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=WS3C_60fYYk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/WS3C_60fYYk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 14
+Title: Totum
+Artist: Abstract Truth
+Album: null
+Record Label: null
+Release Date: null
+Genre: South African Underground/Prog Rock/Jazz Rock
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=OqjKy42m4no
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/OqjKy42m4no" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 15
+Title: Gold Hole
+Artist: Shame
+Album: null
+Record Label: null
+Release Date: null
+Genre: No Genre
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=bYOqO-zJzho
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/bYOqO-zJzho" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
