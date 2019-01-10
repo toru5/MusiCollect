@@ -12,8 +12,10 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.DataStore;
 import com.google.api.client.util.store.FileDataStoreFactory;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
@@ -48,21 +50,40 @@ public class Auth {
      */
     public static Credential authorize(List<String> scopes, String credentialDatastore)
                     throws IOException {
+        // insecure way to store credentials, but it does hide them from simple users
+        // if quota becomes an issue, this can get changed to referencing client_secrets.json
+        String secrets = "{\"web\":{\"client_id\":\"918023368365-pvr624n2jqh6uvsjskvs3tplib8l4p7i."
+                        + "apps.googleusercontent.com\",\"project_id\":\"toru5-music-scraper\",\"au"
+                        + "th_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"h"
+                        + "ttps://www.googleapis.com/oauth2/v3/token\",\"auth_provider_x509_cert_ur"
+                        + "l\":\"https://www.googleapis.com/oauth2/v1/certs\",\"client_secret\":\"U"
+                        + "lT3BZQgSqDFkbMtm7eLFACS\"}}";
+
+        InputStream secretStream = new ByteArrayInputStream(secrets.getBytes());
 
         // Load client secrets.
-        Reader clientSecretReader = new InputStreamReader(
-                        Auth.class.getResourceAsStream("/client_secrets.json"));
+        Reader clientSecretReader = new InputStreamReader(secretStream);
         GoogleClientSecrets clientSecrets =
                         GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
+        // this is the portion that would be added to use client_secrets.json:
+
+        // Reader clientSecretReader = new InputStreamReader(
+        // Auth.class.getResourceAsStream("/client_secrets.json"));
+        // GoogleClientSecrets clientSecrets =
+        // GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
+
+        // this would also be added with use of client_secrets.json:
+
         // Checks that the defaults have been replaced (Default = "Enter X here").
-        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-                        || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
-            System.out.println(
-                            "Enter Client ID and Secret from https://console.developers.google.com/project/_/apiui/credential "
-                                            + "into src/main/resources/client_secrets.json");
-            System.exit(1);
-        }
+        // if (clientSecrets.getDetails().getClientId().startsWith("Enter")
+        // || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
+        // System.out.println(
+        // "Enter Client ID and Secret from
+        // https://console.developers.google.com/project/_/apiui/credential "
+        // + "into src/main/resources/client_secrets.json");
+        // System.exit(1);
+        // }
 
         // This creates the credentials datastore at ~/.oauth-credentials/${credentialDatastore}
         FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(

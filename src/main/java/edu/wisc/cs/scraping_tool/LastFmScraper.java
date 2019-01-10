@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlButton;
@@ -27,7 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class lastFmScraper {
+public class LastFmScraper {
 
     ArrayList<String> genreLinks = new ArrayList<String>();
     ArrayList<String> genres = new ArrayList<String>();
@@ -52,6 +51,11 @@ public class lastFmScraper {
         this.userName = uName;
         this.password = password;
     }
+
+//    public static void main(String[] args) {
+//        LastFmScraper l = new LastFmScraper();
+//        l.fetchSimilar("gregory alan isakov", 50);
+//    }
 
     public ArrayList<String> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
@@ -82,25 +86,23 @@ public class lastFmScraper {
         ArrayList<String> uniqueChoices = new ArrayList<String>();
 
         for (int i = 0; i < songsToFetch; i++) {
-            Integer artistTest = (int) (Math.random() * TOP_ARTISTS);
-            Integer songTest = (int) (Math.random() * TOP_SONGS);
-            String choice = (String) (Integer.toString(artistTest) + Integer.toString(songTest));
-
-            if (songTest == 0) {
-                songTest++;
-            }
+            int artistTest = (int) (Math.random() * TOP_ARTISTS);
+            int songTest = (int) (Math.random() * TOP_SONGS + 1);
+            String choice = (String) (Integer.toString(artistTest) + "-"
+                            + Integer.toString(songTest));
 
             while (uniqueChoices.contains(choice)) {
                 // flip a coin
                 int coin = (int) Math.random() * 2;
                 if (coin == 0) {
-                    songTest = (int) (Math.random() * TOP_SONGS);
+                    songTest = (int) (Math.random() * TOP_SONGS + 1);
                 } else {
                     artistTest = (int) (Math.random() * TOP_ARTISTS);
                 }
-                choice = (String) (Integer.toString(artistTest) + Integer.toString(songTest));
+                choice = (String) (Integer.toString(artistTest) + "-" + Integer.toString(songTest));
             }
 
+            uniqueChoices.add(choice);
             randomArtists.add(artistTest);
             randomSongs.add(songTest);
         }
@@ -165,8 +167,10 @@ public class lastFmScraper {
                 song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
                 // print detailed information to console
-                Main.output("Song " + i + ": " + song.getArtist() + " - " + song.getTitle());
-                writer.println("Song: " + i + "\n" + song.toString() + "\n");
+                Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - " + song.getTitle());
+                // System.out.println("Song " + i + ": " + song.getArtist() + " - " +
+                // song.getTitle());
+                writer.println("Song: " + (i + 1) + "\n" + song.toString() + "\n");
 
             }
 

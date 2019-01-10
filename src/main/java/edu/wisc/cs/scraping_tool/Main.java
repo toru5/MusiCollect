@@ -46,7 +46,7 @@ public class Main extends Application {
     IndieShuffleScraper i;
     Billboard100Scraper bill;
     RedditScraper r;
-    lastFmScraper l;
+    LastFmScraper l;
 
     String playlistId = "";
 
@@ -69,8 +69,6 @@ public class Main extends Application {
     TextField lastFmPassword = new TextField();
     TextField similarSongsToFetch = new TextField();
     TextField similarArtistTxt = new TextField();
-    
-    TextField hiddenTxt = new TextField();
 
     static TextArea ta;
 
@@ -86,6 +84,12 @@ public class Main extends Application {
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
     CheckBox bpRandomCheck = new CheckBox("BEATPORT Random Song Order?");
     CheckBox shuffleSongsCheck = new CheckBox("Shuffle songs in playlist?");
+
+    class HiddenTextField extends TextField {
+        public HiddenTextField() {
+            this.setVisible(false);
+        }
+    }
 
     /**
      * 
@@ -122,8 +126,6 @@ public class Main extends Application {
         ta.setPrefHeight(698);
         ta.setPrefWidth(400);
         ta.setWrapText(true);
-        
-        hiddenTxt.setVisible(false);
 
         // vbox containers
         VBox sites = new VBox(16);
@@ -136,6 +138,8 @@ public class Main extends Application {
         bpGenres.setPrefWidth(50);
         VBox billboardGenres = new VBox();
         billboardGenres.setPrefWidth(50);
+
+        // GridPane options = new GridPane();
 
         GridPane center = new GridPane();
         HBox bottom = new HBox();
@@ -156,7 +160,7 @@ public class Main extends Application {
         billSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         indieSongsToFetch.setPromptText("Songs to be fetched (MAX 15)");
         redditSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
-        redditMinUpvotes.setText("1");
+        redditMinUpvotes.setPromptText("minimum upvotes (defaults to 1)");
         uniqueSubreddit.setText("listentothis");
         lastFmSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         lastFmUsername.setPromptText("*required for use with last.fm");
@@ -182,9 +186,10 @@ public class Main extends Application {
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmUsername,
                         lastFmPassword, similarSongsToFetch);
-        upvotes.getChildren().addAll(col3, hiddenTxt, new Label(), new Label(), new Label(),
-                        new Label(), redditMinUpvotes, new Label(), new Label(), new Label(),
-                        new Label(), similarArtistTxt);
+        upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
+                        new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
+                        new HiddenTextField(), new HiddenTextField(), new HiddenTextField(),
+                        similarArtistTxt);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
 
@@ -283,10 +288,19 @@ public class Main extends Application {
                         }
 
                         if (redditCheck.isSelected()) {
-                            allVideoIds.addAll(r.fetch(
-                                            uniqueSubreddit.getText().replaceAll("/", "").trim(),
-                                            Integer.parseInt(redditSongsToFetch.getText()),
-                                            Integer.parseInt(redditMinUpvotes.getText())));
+                            // check if textbox is empty -- if so -- default to 1 min upvote
+                            if (redditMinUpvotes.getText().equals("")) {
+                                allVideoIds.addAll(r.fetch(
+                                                uniqueSubreddit.getText().replaceAll("/", "")
+                                                                .trim(),
+                                                Integer.parseInt(redditSongsToFetch.getText()), 1));
+                            } else {
+                                allVideoIds.addAll(r.fetch(
+                                                uniqueSubreddit.getText().replaceAll("/", "").trim(),
+                                                Integer.parseInt(redditSongsToFetch.getText()),
+                                                Integer.parseInt(redditMinUpvotes.getText())));
+                            }
+
                             playListName += r.getFetchedInfo() + ", ";
                         }
 
@@ -502,14 +516,24 @@ public class Main extends Application {
             }
 
             if (redditCheck.isSelected()) {
-                if (!StringUtils.isNumeric(redditSongsToFetch.getText())
-                                || !StringUtils.isNumeric(redditMinUpvotes.getText())
-                                || Integer.parseInt(redditSongsToFetch.getText()) <= 0
-                                || Integer.parseInt(redditSongsToFetch.getText()) > 100
-                                || Integer.parseInt(redditMinUpvotes.getText()) <= 0
-                                || Integer.parseInt(redditMinUpvotes.getText()) > 100000) {
-                    inputError();
-                    return false;
+                if (redditMinUpvotes.getText().equals("")) {
+                    if (!StringUtils.isNumeric(redditSongsToFetch.getText())
+                                    || Integer.parseInt(redditSongsToFetch.getText()) <= 0
+                                    || Integer.parseInt(redditSongsToFetch.getText()) > 100) {
+                        inputError();
+                        return false;
+                    }
+                } else {
+                    if (!StringUtils.isNumeric(redditSongsToFetch.getText())
+                                    || (!StringUtils.isNumeric(redditMinUpvotes.getText())
+                                                    && !redditMinUpvotes.getText().equals(""))
+                                    || Integer.parseInt(redditSongsToFetch.getText()) <= 0
+                                    || Integer.parseInt(redditSongsToFetch.getText()) > 100
+                                    || Integer.parseInt(redditMinUpvotes.getText()) <= 0
+                                    || Integer.parseInt(redditMinUpvotes.getText()) > 100000) {
+                        inputError();
+                        return false;
+                    }
                 }
 
             }
@@ -558,7 +582,7 @@ public class Main extends Application {
         i = new IndieShuffleScraper();
         bill = new Billboard100Scraper();
         r = new RedditScraper();
-        l = new lastFmScraper();
+        l = new LastFmScraper();
 
         // set hashmaps
         b.setGenreMap(bpGenreMap);

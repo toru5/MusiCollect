@@ -31,22 +31,22 @@ public class RedditScraper {
         restClient.setUserAgent("musiCollect 1.0/toru5/");
 
         // Connect the user
-        user = new User(restClient, "toru5", "peopleonthego2");
+        user = new User(restClient, "korvaxe", "musiCollect1");
     }
 
-    public List<Submission> getTopSubmissions(String subreddit, int songsToFetch) {
+    public List<Submission> getTopSubmissions(String subreddit) {
         connect();
         Submissions subs = new Submissions(restClient, user);
 
-        List<Submission> subsOfSub = subs.ofSubreddit(subreddit, SubmissionSort.TOP, -1,
-                        songsToFetch, null, null, true);
+        List<Submission> subsOfSub = subs.ofSubreddit(subreddit, SubmissionSort.HOT, -1,
+                        100, null, null, true);
         
 
         return subsOfSub;
     }
 
     public ArrayList<String> fetch(String subreddit, int songsToFetch, int minUpvotes) {
-        List<Submission> songs = getTopSubmissions(subreddit, songsToFetch);
+        List<Submission> songs = getTopSubmissions(subreddit);
         Main.output("Fetching from: reddit/r/" + subreddit);
 
         File output = new File(strDate + "-reddit-" + subreddit + "-songs.txt"); // keep local txt
@@ -129,7 +129,10 @@ public class RedditScraper {
                             + " - " + song.getTitle());
             writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
             count++;
-
+            if (count == songsToFetch) {
+                break;
+            }
+            
         }
 
 //        fetchedInfo = "Reddit" + subreddit + " (Top " + songsToFetch + " songs)";
