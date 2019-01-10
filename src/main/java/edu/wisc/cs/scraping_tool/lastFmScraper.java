@@ -48,11 +48,6 @@ public class lastFmScraper {
     WebClient client = new WebClient();
     HtmlPage mainPage;
 
-    public static void main(String[] args) {
-        lastFmScraper l = new lastFmScraper();
-        l.fetchSimilar("turnover", 50);
-    }
-
     public void setUserLogin(String uName, String password) {
         this.userName = uName;
         this.password = password;
@@ -61,7 +56,6 @@ public class lastFmScraper {
     public ArrayList<String> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
         Main.output("Fetching songs similar to " + artistName);
-        System.out.println("Fetching songs similar to " + artistName);
         File output = new File(strDate + "-similar.txt"); // keep local txt file as well
         PrintWriter writer = null;
 
@@ -73,7 +67,6 @@ public class lastFmScraper {
 
         List<String> videoIds = null;
         ArrayList<String> allVideoIds = new ArrayList<String>();
-        // ArrayList<ArrayList<String>> artistSongs = new ArrayList<ArrayList<String>>();
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpGet httpGet = null;
@@ -108,7 +101,6 @@ public class lastFmScraper {
                 choice = (String) (Integer.toString(artistTest) + Integer.toString(songTest));
             }
 
-            System.out.println(("song test " + Integer.toString(songTest)));
             randomArtists.add(artistTest);
             randomSongs.add(songTest);
         }
@@ -128,18 +120,14 @@ public class lastFmScraper {
             if (jsonObj == null) {
                 Main.output("ERROR: Could not find any artists similar to " + artistName
                                 + "\nCheck spelling and try again.");
-                return null;
+                return allVideoIds;
             }
             JSONArray artistArray = (JSONArray) jsonObj.get("artist");
 
-            // loop through artists and fetch their top songs
-            // for (Object o : artistArray) {
+            // loop through random artists and fetch their top songs
             for (int i = 0; i < songsToFetch; i++) {
                 JSONObject js = (JSONObject) artistArray.get(randomArtists.get(i));
                 String strArtist = js.get("name").toString();
-                // ArrayList<String> artistsTopTracks = new ArrayList<String>();
-
-                // artistsTopTracks.add(strArtist);
 
                 uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com/")
                                 .setPath("2.0/").setParameter("method", "artist.gettoptracks")
@@ -157,8 +145,6 @@ public class lastFmScraper {
 
                 JSONObject j2 = (JSONObject) songArray.get(randomSongs.get(i));
                 String strTitle = j2.get("name").toString();
-
-                System.out.println("Random choice " + i + ": " + strArtist + " - " + strTitle);
 
                 videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
 
@@ -180,12 +166,8 @@ public class lastFmScraper {
 
                 // print detailed information to console
                 Main.output("Song " + i + ": " + song.getArtist() + " - " + song.getTitle());
-                System.out.println("Song " + i + ": " + song.getArtist() + " - " + song.getTitle());
                 writer.println("Song: " + i + "\n" + song.toString() + "\n");
 
-                // artistsTopTracks.add(strTitle);
-
-                // artistSongs.add(artistsTopTracks);
             }
 
         } catch (Exception e) {
@@ -193,7 +175,7 @@ public class lastFmScraper {
             e.printStackTrace();
         }
 
-        fetchedInfo = " Similar Artists";
+        fetchedInfo = "Similar Artists to: " + artistName;
         writer.close();
 
 

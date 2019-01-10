@@ -69,6 +69,8 @@ public class Main extends Application {
     TextField lastFmPassword = new TextField();
     TextField similarSongsToFetch = new TextField();
     TextField similarArtistTxt = new TextField();
+    
+    TextField hiddenTxt = new TextField();
 
     static TextArea ta;
 
@@ -78,7 +80,7 @@ public class Main extends Application {
     CheckBox billCheck = new CheckBox("Billboard");
     CheckBox redditCheck = new CheckBox("Reddit");
     CheckBox lastFmCheck = new CheckBox("Last FM");
-    CheckBox similarCheck = new CheckBox("Songs similar to");
+    CheckBox similarCheck = new CheckBox("Related music");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -118,14 +120,22 @@ public class Main extends Application {
         ta = new TextArea();
         ta.setEditable(false);
         ta.setPrefHeight(698);
+        ta.setPrefWidth(400);
         ta.setWrapText(true);
+        
+        hiddenTxt.setVisible(false);
 
         // vbox containers
         VBox sites = new VBox(16);
+        sites.setPrefWidth(135);
         VBox fetch = new VBox(9);
-        VBox upvotes = new VBox(9.6);
+        fetch.setPrefWidth(250);
+        VBox upvotes = new VBox(9);
+        upvotes.setPrefWidth(200);
         VBox bpGenres = new VBox();
+        bpGenres.setPrefWidth(50);
         VBox billboardGenres = new VBox();
+        billboardGenres.setPrefWidth(50);
 
         GridPane center = new GridPane();
         HBox bottom = new HBox();
@@ -148,10 +158,11 @@ public class Main extends Application {
         redditSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         redditMinUpvotes.setText("1");
         uniqueSubreddit.setText("listentothis");
+        lastFmSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         lastFmUsername.setPromptText("*required for use with last.fm");
         lastFmPassword.setPromptText("*required for use with last.fm");
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 350)");
-        similarArtistTxt.setPromptText("<artist name>");
+        similarArtistTxt.setPromptText("*artist name");
 
 
         shuffleSongsCheck.setPrefSize(400, 100);
@@ -171,7 +182,7 @@ public class Main extends Application {
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmUsername,
                         lastFmPassword, similarSongsToFetch);
-        upvotes.getChildren().addAll(col3, new Label(), new Label(), new Label(), new Label(),
+        upvotes.getChildren().addAll(col3, hiddenTxt, new Label(), new Label(), new Label(),
                         new Label(), redditMinUpvotes, new Label(), new Label(), new Label(),
                         new Label(), similarArtistTxt);
         bpGenres.getChildren().add(col4);
