@@ -296,7 +296,8 @@ public class Main extends Application {
                                                 Integer.parseInt(redditSongsToFetch.getText()), 1));
                             } else {
                                 allVideoIds.addAll(r.fetch(
-                                                uniqueSubreddit.getText().replaceAll("/", "").trim(),
+                                                uniqueSubreddit.getText().replaceAll("/", "")
+                                                                .trim(),
                                                 Integer.parseInt(redditSongsToFetch.getText()),
                                                 Integer.parseInt(redditMinUpvotes.getText())));
                             }
@@ -325,6 +326,8 @@ public class Main extends Application {
                             // shed off extra comma from end
                             playListName = playListName.substring(0, playListName.length() - 2);
 
+                            Main.output("Getting ready to create your YouTube playlist\n"
+                                            + "Authentication process will begin soon...");
                             playlistId = YouTubeScraper.createPlaylist(allVideoIds,
                                             "MusiCollect Results - " + strDate + ": "
                                                             + playListName);

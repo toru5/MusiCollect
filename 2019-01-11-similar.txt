@@ -1,0 +1,455 @@
+Song: 1
+Title: Waiting Game
+Artist: Banks
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=JCT_lgJ5eq8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/JCT_lgJ5eq8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 2
+Title: Real For You
+Artist: James Hersey
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=8HKDW8n7E1Q
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/8HKDW8n7E1Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 3
+Title: The One
+Artist: JMSN
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=G-ovWe6QOQ8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/G-ovWe6QOQ8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 4
+Title: All the Ways - Branchez Remix
+Artist: Wet
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=sCK7KJ3dAbQ
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/sCK7KJ3dAbQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 5
+Title: Outlines
+Artist: AlunaGeorge
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=QM58e8SF0tE
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/QM58e8SF0tE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 6
+Title: Best Be Believing
+Artist: AlunaGeorge
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=mZPJfU4ZiQY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/mZPJfU4ZiQY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 7
+Title: Oslo
+Artist: Anna of the North
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=zsGw39dq7t4
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/zsGw39dq7t4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 8
+Title: Instant Need
+Artist: FKJ
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=CMZ9mYGh9Lw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/CMZ9mYGh9Lw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 9
+Title: Caves - Samuraii Remix
+Artist: HAUX
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=5JgACEM4nps
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/5JgACEM4nps" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 10
+Title: Someone
+Artist: Anna of the North
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=xuccTS0xLtc
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/xuccTS0xLtc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 11
+Title: Pretty Thoughts (FKJ Remix)
+Artist: Alina Baraz & Galimatias
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=qkOoofBQLJ0
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/qkOoofBQLJ0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 12
+Title: Diver
+Artist: AlunaGeorge
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=f8Dr-tQ7Sqw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/f8Dr-tQ7Sqw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 13
+Title: Always - Wave Racer Remix
+Artist: Panama
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=Z7Oqya-swh4
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7Oqya-swh4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 14
+Title: Moon Theory
+Artist: Miami Horror
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=o2sVLb1K6Wg
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/o2sVLb1K6Wg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 15
+Title: Ransom Notes
+Artist: SOHN
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=ba_XU-WVm1k
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/ba_XU-WVm1k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 16
+Title: Brooklyn
+Artist: Fickle Friends
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=VwG7f_oTLJY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/VwG7f_oTLJY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 17
+Title: Jameson
+Artist: JMSN
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=Y-670uK0cM8
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/Y-670uK0cM8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 18
+Title: Stay Forever
+Artist: Panama
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=I-hDU63G1lc
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/I-hDU63G1lc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 19
+Title: Something I'm Not
+Artist: Penguin Prison
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=OnMqVN8tV8o
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/OnMqVN8tV8o" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 20
+Title: Augustine
+Artist: Blood Orange
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=NXtzcViZPGA
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/NXtzcViZPGA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 21
+Title: Elliot
+Artist: Roosevelt
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=yl5WfT7IDDU
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/yl5WfT7IDDU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 22
+Title: I'm in Control
+Artist: AlunaGeorge
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=NSdcG1e9APE
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/NSdcG1e9APE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 23
+Title: Malibu 1992
+Artist: Coin
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=842_hv_HNrs
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/842_hv_HNrs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 24
+Title: Back Again
+Artist: Flor
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=-1H6usve0nY
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/-1H6usve0nY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 25
+Title: Lie
+Artist: Shallou
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=cZnAGsatsDw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/cZnAGsatsDw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 26
+Title: Champagne Coast
+Artist: Blood Orange
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=nO6y1-erVEw
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/nO6y1-erVEw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 27
+Title: overbehind
+Artist: Flor
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=kTwq6SKE-_U
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/kTwq6SKE-_U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 28
+Title: Make You Mine
+Artist: Miami Horror
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=G2FczkBgCZk
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/G2FczkBgCZk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 29
+Title: Open The Door
+Artist: FKJ
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=HPzgHPMoAVs
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/HPzgHPMoAVs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 30
+Title: The Fall
+Artist: Rhye
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=JJS5ywEIsA4
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/JJS5ywEIsA4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 31
+Title: Wait for Love
+Artist: St. Lucia
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=gXMkGOEgb8Q
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/gXMkGOEgb8Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 32
+Title: Never Gets Old
+Artist: Penguin Prison
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=oZr-MJYMjcc
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/oZr-MJYMjcc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 33
+Title: Change
+Artist: Banks
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=F0b8KA1drwI
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/F0b8KA1drwI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 34
+Title: White Light
+Artist: Shura
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=_N8mONNW_Ik
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/_N8mONNW_Ik" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
+Song: 35
+Title: Lessons
+Artist: SOHN
+Album: null
+Record Label: null
+Release Date: null
+Genre: null
+Link: null
+Album Art Link: null
+YouTube Link: https://www.youtube.com/watch?v=e17iXDf0NGE
+YouTube Embed Link: <iframe width="560" height="315" src="https://www.youtube.com/embed/e17iXDf0NGE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+General Embed Linknull
+
