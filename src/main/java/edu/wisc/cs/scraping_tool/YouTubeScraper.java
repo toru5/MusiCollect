@@ -52,13 +52,13 @@ public class YouTubeScraper {
             // System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
             // + e.getDetails().getMessage());
             // e.printStackTrace();
-            System.out.println("GoogleJsonResponseException: " + e.getMessage());
+            Main.output("GoogleJsonResponseException: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage());
-            // e.printStackTrace();
+            Main.output("IOException: " + e.getMessage());
+            Main.output(e.getStackTrace().toString());
         } catch (Exception e) {
             // e.printStackTrace();
-            System.out.println("Exception: " + e.getMessage());
+            Main.output("Exception: " + e.getMessage());
         }
 
         return playlistId;

@@ -165,7 +165,7 @@ public class Main extends Application {
         lastFmSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         lastFmUsername.setPromptText("*required for use with last.fm");
         lastFmPassword.setPromptText("*required for use with last.fm");
-        similarSongsToFetch.setPromptText("Songs to be fetched (MAX 350)");
+        similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
         similarArtistTxt.setPromptText("*artist name");
 
 

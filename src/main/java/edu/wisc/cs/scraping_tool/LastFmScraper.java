@@ -33,8 +33,8 @@ public class LastFmScraper {
     HashMap<String, Genre> genreMap;
 
     final static String API_KEY = "3f0f17bc3fcf1b5fcda4cc9c776391d5";
-    final int TOP_SONGS = 10;
-    final int TOP_ARTISTS = 35;
+    static int topSongs = 10;
+    static int topArtists = 35;
 
     // used for playlist name
     String fetchedInfo = "";
@@ -52,10 +52,10 @@ public class LastFmScraper {
         this.password = password;
     }
 
-//    public static void main(String[] args) {
-//        LastFmScraper l = new LastFmScraper();
-//        l.fetchSimilar("gregory alan isakov", 50);
-//    }
+    // public static void main(String[] args) {
+    // LastFmScraper l = new LastFmScraper();
+    // l.fetchSimilar("gregory alan isakov", 50);
+    // }
 
     public ArrayList<String> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
@@ -86,8 +86,8 @@ public class LastFmScraper {
         ArrayList<String> uniqueChoices = new ArrayList<String>();
 
         for (int i = 0; i < songsToFetch; i++) {
-            int artistTest = (int) (Math.random() * TOP_ARTISTS);
-            int songTest = (int) (Math.random() * TOP_SONGS + 1);
+            int artistTest = (int) (Math.random() * topArtists);
+            int songTest = (int) (Math.random() * topSongs + 1);
             String choice = (String) (Integer.toString(artistTest) + "-"
                             + Integer.toString(songTest));
 
@@ -95,9 +95,9 @@ public class LastFmScraper {
                 // flip a coin
                 int coin = (int) Math.random() * 2;
                 if (coin == 0) {
-                    songTest = (int) (Math.random() * TOP_SONGS + 1);
+                    songTest = (int) (Math.random() * topSongs + 1);
                 } else {
-                    artistTest = (int) (Math.random() * TOP_ARTISTS);
+                    artistTest = (int) (Math.random() * topArtists);
                 }
                 choice = (String) (Integer.toString(artistTest) + "-" + Integer.toString(songTest));
             }
@@ -126,52 +126,80 @@ public class LastFmScraper {
             }
             JSONArray artistArray = (JSONArray) jsonObj.get("artist");
 
-            // loop through random artists and fetch their top songs
-            for (int i = 0; i < songsToFetch; i++) {
-                JSONObject js = (JSONObject) artistArray.get(randomArtists.get(i));
-                String strArtist = js.get("name").toString();
-
-                uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com/")
-                                .setPath("2.0/").setParameter("method", "artist.gettoptracks")
-                                .setParameter("artist", strArtist).setParameter("api_key", API_KEY)
-                                .setParameter("format", "json").build();
-
-                httpGet = new HttpGet(uri);
-                response = client.execute(httpGet);
-                jsonResponse = EntityUtils.toString(response.getEntity());
-                jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
-
-                // convert large piece of json to an array of artists
-                jsonObj = (JSONObject) jsonObj.get("toptracks");
-                JSONArray songArray = (JSONArray) jsonObj.get("track");
-
-                JSONObject j2 = (JSONObject) songArray.get(randomSongs.get(i));
-                String strTitle = j2.get("name").toString();
-
-                videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
-
-                if (videoIds == null) {
-                    continue;
+            // check if last.fm returned nothing
+            if (artistArray.size() == 0) {
+                if (artistName.contains(" ")) {
+                    artistName = artistName.replaceAll(" ", "_");
+                    Main.output("Re-running with new parameters: " + artistName + ", "
+                                    + songsToFetch);
+                    return fetchSimilar(artistName, songsToFetch);
                 }
 
-                // generate links to videos and playlists
-                String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                allVideoIds.add(videoIds.get(0));
-                // create song object
-                Song song = new Song();
-                song.setTitle(strTitle);
-                song.setArtist(strArtist);
-                // get genre by clicking on song link and grabbings tags (will slow it down,tho)
-                song.setYoutubeLink(strYouTubeLink);
-                song.setYoutubeEmbedLink(strYouTubeEmbedLink);
+                Main.output("ERROR: last.fm returned nothing with search: " + artistName
+                                + "\nThis is probably a server-side error. Try searching again with"
+                                + " a different artist that is similar to " + artistName
+                                + " for comparable results.");
+                return allVideoIds;
+            }
 
-                // print detailed information to console
-                Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - " + song.getTitle());
-                // System.out.println("Song " + i + ": " + song.getArtist() + " - " +
-                // song.getTitle());
-                writer.println("Song: " + (i + 1) + "\n" + song.toString() + "\n");
+            // loop through random artists and fetch their top songs
+            for (int i = 0; i < songsToFetch; i++) {
+                try {
+                    JSONObject js = (JSONObject) artistArray.get(randomArtists.get(i));
+                    String strArtist = js.get("name").toString();
 
+                    uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com/")
+                                    .setPath("2.0/").setParameter("method", "artist.gettoptracks")
+                                    .setParameter("artist", strArtist)
+                                    .setParameter("api_key", API_KEY).setParameter("format", "json")
+                                    .build();
+
+                    httpGet = new HttpGet(uri);
+                    response = client.execute(httpGet);
+                    jsonResponse = EntityUtils.toString(response.getEntity());
+                    jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+
+                    // convert large piece of json to an array of artists
+                    jsonObj = (JSONObject) jsonObj.get("toptracks");
+                    JSONArray songArray = (JSONArray) jsonObj.get("track");
+
+                    JSONObject j2 = (JSONObject) songArray.get(randomSongs.get(i));
+                    String strTitle = j2.get("name").toString();
+
+                    videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
+
+                    if (videoIds == null) {
+                        continue;
+                    }
+
+                    // generate links to videos and playlists
+                    String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
+                    String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
+                    allVideoIds.add(videoIds.get(0));
+                    // create song object
+                    Song song = new Song();
+                    song.setTitle(strTitle);
+                    song.setArtist(strArtist);
+                    // get genre by clicking on song link and grabbings tags (will slow it down,tho)
+                    song.setYoutubeLink(strYouTubeLink);
+                    song.setYoutubeEmbedLink(strYouTubeEmbedLink);
+
+                    // print detailed information to console
+                    Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - "
+                                    + song.getTitle());
+                    // System.out.println("Song " + i + ": " + song.getArtist() + " - " +
+                    // song.getTitle());
+                    writer.println("Song: " + (i + 1) + "\n" + song.toString() + "\n");
+                } catch (IndexOutOfBoundsException e) {
+                    Main.output("Narrowing search parameters to meet measly number of similar "
+                                    + "artists and songs...");
+                    topArtists = artistArray.size();
+                    topSongs -= 2; // just to make sure :))
+                    allVideoIds.addAll(fetchSimilar(artistName, (songsToFetch - i)));
+                    writer.close();
+                    fetchedInfo = "Similar Artists to: " + artistName;
+                    return allVideoIds;
+                }
             }
 
         } catch (Exception e) {
