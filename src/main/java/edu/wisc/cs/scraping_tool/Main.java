@@ -1,8 +1,12 @@
 package edu.wisc.cs.scraping_tool;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -20,9 +25,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -39,7 +47,7 @@ public class Main extends Application {
     ArrayList<String> bpUserGenres;
     ArrayList<String> billUserGenres;
 
-    ArrayList<String> allVideoIds;
+    ArrayList<Song> allSongs;
 
     // initialize scrapers
     BeatportScraper b;
@@ -79,6 +87,9 @@ public class Main extends Application {
     CheckBox redditCheck = new CheckBox("Reddit");
     CheckBox lastFmCheck = new CheckBox("Last FM");
     CheckBox similarCheck = new CheckBox("Related music");
+    ToggleGroup outputSites = new ToggleGroup();
+    ToggleButton youtubeBtn = new ToggleButton("Post playlist to YouTube");
+    ToggleButton spotifyBtn = new ToggleButton("Post playlist to Spotify  ");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -168,8 +179,13 @@ public class Main extends Application {
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
         similarArtistTxt.setPromptText("*artist name");
 
+        shuffleSongsCheck.setPrefSize(200, 100);
+        youtubeBtn.setPrefWidth(200);
+        spotifyBtn.setPrefWidth(200);
+        spotifyBtn.setSelected(true);
 
-        shuffleSongsCheck.setPrefSize(400, 100);
+        youtubeBtn.setToggleGroup(outputSites);
+        spotifyBtn.setToggleGroup(outputSites);
 
         // buttons
         final Button submit = new Button("Submit");
@@ -229,7 +245,7 @@ public class Main extends Application {
         center.add(billboardGenres, 4, 0);
         center.add(billRandomCheck, 4, 1);
 
-        bottom.getChildren().addAll(submit, exit, shuffleSongsCheck);
+        bottom.getChildren().addAll(submit, exit, shuffleSongsCheck, youtubeBtn, spotifyBtn);
 
         root.setCenter(center);
         root.setBottom(bottom);
@@ -255,14 +271,13 @@ public class Main extends Application {
 
                         if (bCheck.isSelected()) {
                             try {
-                                allVideoIds.addAll(b.fetch(
-                                                Integer.parseInt(bpSongsToFetch.getText()),
+                                allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()),
                                                 bpUserGenres, bpRandomCheck.isSelected(), false));
                                 playListName += b.getFetchedInfo() + ", ";
                             } catch (FailingHttpStatusCodeException e) {
                                 Main.output("HTTP ERROR: Trying again...");
                                 try {
-                                    allVideoIds.addAll(b.fetch(
+                                    allSongs.addAll(b.fetch(
                                                     Integer.parseInt(bpSongsToFetch.getText()),
                                                     bpUserGenres, bpRandomCheck.isSelected(),
                                                     false));
@@ -275,14 +290,12 @@ public class Main extends Application {
                         }
 
                         if (iCheck.isSelected()) {
-                            allVideoIds.addAll(
-                                            i.fetch(Integer.parseInt(indieSongsToFetch.getText())));
+                            allSongs.addAll(i.fetch(Integer.parseInt(indieSongsToFetch.getText())));
                             playListName += i.getFetchedInfo() + ", ";
                         }
 
                         if (billCheck.isSelected()) {
-                            allVideoIds.addAll(bill.fetch(
-                                            Integer.parseInt(billSongsToFetch.getText()),
+                            allSongs.addAll(bill.fetch(Integer.parseInt(billSongsToFetch.getText()),
                                             billUserGenres, billRandomCheck.isSelected()));
                             playListName += bill.getFetchedInfo() + ", ";
                         }
@@ -290,12 +303,12 @@ public class Main extends Application {
                         if (redditCheck.isSelected()) {
                             // check if textbox is empty -- if so -- default to 1 min upvote
                             if (redditMinUpvotes.getText().equals("")) {
-                                allVideoIds.addAll(r.fetch(
+                                allSongs.addAll(r.fetch(
                                                 uniqueSubreddit.getText().replaceAll("/", "")
                                                                 .trim(),
                                                 Integer.parseInt(redditSongsToFetch.getText()), 1));
                             } else {
-                                allVideoIds.addAll(r.fetch(
+                                allSongs.addAll(r.fetch(
                                                 uniqueSubreddit.getText().replaceAll("/", "")
                                                                 .trim(),
                                                 Integer.parseInt(redditSongsToFetch.getText()),
@@ -306,34 +319,65 @@ public class Main extends Application {
                         }
 
                         if (lastFmCheck.isSelected()) {
-                            allVideoIds.addAll(l
+                            allSongs.addAll(l
                                             .fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
                             playListName += l.getFetchedInfo() + ", ";
                         }
 
                         if (similarCheck.isSelected()) {
-                            allVideoIds.addAll(l.fetchSimilar(similarArtistTxt.getText(),
+                            allSongs.addAll(l.fetchSimilar(similarArtistTxt.getText(),
                                             Integer.parseInt(similarSongsToFetch.getText())));
                             playListName += l.getFetchedInfo() + ", ";
                         }
 
-                        if (allVideoIds.size() != 0) {
+                        if (allSongs.size() != 0) {
 
                             if (shuffleSongsCheck.isSelected()) {
-                                allVideoIds = shuffleArray(allVideoIds);
+                                allSongs = shuffleArray(allSongs);
                             }
 
                             // shed off extra comma from end
                             playListName = playListName.substring(0, playListName.length() - 2);
 
-                            Main.output("Getting ready to create your YouTube playlist\n"
-                                            + "Authentication process will begin soon...");
-                            playlistId = YouTubeScraper.createPlaylist(allVideoIds,
-                                            "MusiCollect Results - " + strDate + ": "
-                                                            + playListName);
-                            Main.output("Fetching complete. Your YouTube playlist can be found"
-                                            + " here: https://www.youtube.com/playlist?list="
-                                            + playlistId);
+                            Main.output("Getting ready to create your playlist\n"
+                                            + "Authentication process will begin soon...\nThis can sometimes take a minute...");
+                            playListName = "MusiCollect Results - " + strDate + ": " + playListName;
+
+                            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop()
+                                            : null;
+
+                            try {
+                                if (spotifyBtn.isSelected()) {
+
+                                    playlistId = SpotifyScraper.createPlaylist(allSongs,
+                                                    playListName);
+                                    Main.output("Fetching complete. Your Spotify playlist can be found"
+                                                    + " here: https://open.spotify.com/playlist/"
+                                                    + playlistId);
+                                    desktop.browse(new URIBuilder()
+                                                    .setPath("https://open.spotify.com/playlist/"
+                                                                    + playlistId)
+                                                    .build());
+
+
+                                } else {
+                                    playlistId = YouTubeScraper.createPlaylist(allSongs,
+                                                    playListName);
+
+                                    Main.output("Fetching complete. Your YouTube playlist can be found"
+                                                    + " here: https://www.youtube.com/playlist?list="
+                                                    + playlistId);
+                                    desktop.browse(new URI("https://www.youtube.com/playlist?list="
+                                                    + playlistId));
+
+                                }
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (URISyntaxException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
                     }
                 };
@@ -373,8 +417,8 @@ public class Main extends Application {
 
     }
 
-    private ArrayList<String> shuffleArray(ArrayList<String> original) {
-        ArrayList<String> newArray = new ArrayList<String>();
+    private ArrayList<Song> shuffleArray(ArrayList<Song> original) {
+        ArrayList<Song> newArray = new ArrayList<Song>();
         while (original.size() != 0) {
             int size = original.size();
             Integer pick = (int) (Math.random() * size);
@@ -457,12 +501,12 @@ public class Main extends Application {
 
     }
 
-    public ArrayList<String> getAllVideoIds() {
-        return allVideoIds;
+    public ArrayList<Song> getAllVideoIds() {
+        return allSongs;
     }
 
-    public void setAllVideoIds(ArrayList<String> allVideoIds) {
-        this.allVideoIds = allVideoIds;
+    public void setAllSongs(ArrayList<Song> allSongs) {
+        this.allSongs = allSongs;
     }
 
     public boolean verifyInput() {
@@ -507,7 +551,6 @@ public class Main extends Application {
                 }
             }
 
-            // someone please fucking kill me already =]]]
             if (iCheck.isSelected()) {
                 if (!StringUtils.isNumeric(indieSongsToFetch.getText())
                                 || Integer.parseInt(indieSongsToFetch.getText()) <= 0
@@ -593,7 +636,7 @@ public class Main extends Application {
 
         bpUserGenres = new ArrayList<String>();
         billUserGenres = new ArrayList<String>();
-        allVideoIds = new ArrayList<String>();
+        allSongs = new ArrayList<Song>();
         playListName = "";
 
     }
@@ -605,5 +648,19 @@ public class Main extends Application {
             ta.setText(ta.getText() + "\n" + msg);
         }
         ta.appendText("");
+    }
+
+
+    public static boolean openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

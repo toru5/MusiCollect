@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.entity.User;
 import com.github.jreddit.retrieval.Submissions;
@@ -45,7 +46,7 @@ public class RedditScraper {
         return subsOfSub;
     }
 
-    public ArrayList<String> fetch(String subreddit, int songsToFetch, int minUpvotes) {
+    public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
         List<Submission> songs = getTopSubmissions(subreddit);
         Main.output("Fetching from: reddit/r/" + subreddit);
 
@@ -59,7 +60,7 @@ public class RedditScraper {
             e1.printStackTrace();
         }
 
-        ArrayList<String> allVideoIds = new ArrayList<String>();
+        ArrayList<Song> allSongs = new ArrayList<Song>();
         int count = 0;
         for (Submission s : songs) {
             String title = "";
@@ -102,33 +103,26 @@ public class RedditScraper {
                 genre = "No Genre";
             }
 
-            List<String> videoIds;
-
-            videoIds = YouTubeScraper.ySearch(artist, title);
-            
-            if (videoIds == null) {
-                continue;
-            }
-
-            // generate links to videos and playlists
-            String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-            String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
-            allVideoIds.add(videoIds.get(0));
-
             // create song object
             Song song = new Song();
 
             song.setTitle(title);
             song.setArtist(artist);
             song.setGenre(genre);
-            song.setYoutubeLink(strYouTubeLink);
-            song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
+            allSongs.add(song);
+            
             // print detailed information to console
             Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist()
                             + " - " + song.getTitle());
             writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
             count++;
+            try {
+                TimeUnit.MILLISECONDS.sleep(50);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if (count == songsToFetch) {
                 break;
             }
@@ -138,7 +132,7 @@ public class RedditScraper {
 //        fetchedInfo = "Reddit" + subreddit + " (Top " + songsToFetch + " songs)";
         fetchedInfo = "reddit/" + subreddit;
         writer.close();
-        return allVideoIds;
+        return allSongs;
     }
 
     public String getFetchedInfo() {

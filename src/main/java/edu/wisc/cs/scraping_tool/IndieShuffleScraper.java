@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -15,7 +16,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class IndieShuffleScraper {
 
-    ArrayList<String> allVideoIds = new ArrayList<String>();
+    ArrayList<Song> allSongs = new ArrayList<Song>();
     
     // used for playlist name
     String fetchedInfo = "";
@@ -33,7 +34,7 @@ public class IndieShuffleScraper {
      * @return Returns a playlist name including information about the genres collected and date
      * @throws FailingHttpStatusCodeException
      */
-    public ArrayList<String> fetch(int songsToFetch)
+    public ArrayList<Song> fetch(int songsToFetch)
                     throws FailingHttpStatusCodeException {
 
         Main.output("Fetching from Indie Shuffle");
@@ -44,10 +45,8 @@ public class IndieShuffleScraper {
         String baseUrl = "https://www.indieshuffle.com";
         WebClient client = new WebClient();
 
-
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
-
 
         try {
             writer = new PrintWriter(output);
@@ -86,19 +85,6 @@ public class IndieShuffleScraper {
                                     ".//a[@class='pink ajaxlink']");
                     String strLink = baseUrl + link.getAttribute("href");
 
-                    List<String> videoIds;
-
-                    videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
-                    
-                    if (videoIds == null) {
-                        continue;
-                    }
-
-                    // generate links to videos and playlists
-                    String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                    String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                    allVideoIds.add(videoIds.get(0));
-
                     // create song object
                     Song song = new Song();
 
@@ -107,15 +93,15 @@ public class IndieShuffleScraper {
                     song.setGenre("Indie");
                     song.setAlbumArtLink(albumArtLink);
                     song.setLink(strLink);
-                    song.setYoutubeLink(strYouTubeLink);
-                    song.setYoutubeEmbedLink(strYouTubeEmbedLink);
+                    
+                    allSongs.add(song);
 
                     // print detailed information to console
                     Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
                                     + song.getArtist() + " - " + song.getTitle());
                     writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
-
-                    // Thread.sleep(1000); // be nice to website?
+                    
+                    TimeUnit.MILLISECONDS.sleep(50);
 
                     if (count == songsToFetch - 1) {
                         break;
@@ -133,7 +119,7 @@ public class IndieShuffleScraper {
 
 //        fetchedInfo = "Indie Shuffle (Top " + songsToFetch + " Songs)";
         fetchedInfo = "Indie Shuffle";
-        return allVideoIds;
+        return allSongs;
 
     }
     

@@ -14,6 +14,15 @@ public class Song {
     private String link;
     private String embedLink;
     private final String SEPARATOR = ";";
+    
+    public Song() {
+        // do nothing
+    }
+    
+    public Song(String artist, String title) {
+        this.artist = artist;
+        this.title = title;
+    }
 
     public String toString() {
         return "Title: " + title + "\nArtist: " + artist + "\nAlbum: " + album + "\nRecord Label: "

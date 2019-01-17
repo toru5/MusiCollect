@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -17,7 +18,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class Billboard100Scraper {
 
-    ArrayList<String> allVideoIds = new ArrayList<String>();
+    ArrayList<Song> allSongs = new ArrayList<Song>();
     ArrayList<String> genreLinks = new ArrayList<String>();
     ArrayList<String> genres = new ArrayList<String>();
     HashMap<String, Genre> genreMap;
@@ -38,7 +39,7 @@ public class Billboard100Scraper {
      * @return Returns a playlist name including information about the genres collected and date
      * @throws FailingHttpStatusCodeException
      */
-    public ArrayList<String> fetch(int songsToFetch, ArrayList<String> userGenres,
+    public ArrayList<Song> fetch(int songsToFetch, ArrayList<String> userGenres,
                     boolean randomSongs) throws FailingHttpStatusCodeException {
 
 
@@ -49,14 +50,11 @@ public class Billboard100Scraper {
         String baseUrl = "https://www.billboard.com/charts/";
         WebClient client = new WebClient();
 
-
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
 
         File output = new File(strDate + "-billboard-100-songs.txt"); // keep local txt file as well
         PrintWriter writer = null;
-
-        List<String> videoIds = null;
 
         try {
             writer = new PrintWriter(output);
@@ -65,7 +63,6 @@ public class Billboard100Scraper {
         }
 
         int genreCount = 0;
-
 
         // r-b-hip
         for (String s : genreLinks) {
@@ -111,6 +108,7 @@ public class Billboard100Scraper {
             }
 
             Song song = null;
+            
             try {
 
                 String searchUrl = baseUrl + s;
@@ -139,6 +137,9 @@ public class Billboard100Scraper {
                         } else {
                             songPos = i;
                         }
+                        
+                        song = new Song();
+                        
                         if (i != 1 || randomSongs) {
                             // extract items
                             HtmlElement htmlItem = (HtmlElement) details.getFirstByXPath(
@@ -147,43 +148,23 @@ public class Billboard100Scraper {
 
                             String strArtist = htmlItem.getAttribute("data-artist");
 
-                            videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
-
-                            // generate links to videos and playlists
-                            String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                            String strYouTubeEmbedLink =
-                                            YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                            allVideoIds.add(videoIds.get(0));
-                            // create song object
-                            song = new Song();
                             song.setTitle(strTitle);
                             song.setArtist(strArtist);
                             song.setGenre(genres.get(genreCount));
-                            song.setYoutubeLink(strYouTubeLink);
-                            song.setYoutubeEmbedLink(strYouTubeEmbedLink);
                         } else {
-
-                            videoIds = YouTubeScraper.ySearch(strOneArtist, strOneTitle);
-
-                            allVideoIds.add(videoIds.get(0));
-                            // create song object
-                            song = new Song();
                             song.setTitle(strOneTitle);
                             song.setArtist(strOneArtist);
                             song.setGenre(genres.get(genreCount));
-                            // generate links to videos and playlists
-                            String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                            String strYouTubeEmbedLink =
-                                            YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                            song.setYoutubeLink(strYouTubeLink);
-                            song.setYoutubeEmbedLink(strYouTubeEmbedLink);
                         }
+                        
+                        allSongs.add(song);
+                        
                         // print detailed information to console
                         Main.output(song.getGenre() + " - Position " + songPos + ": "
                                         + song.getArtist() + " - " + song.getTitle());
                         writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
 
-                        // Thread.sleep(1000); // be nice to website?
+                        TimeUnit.MILLISECONDS.sleep(50); // be nice
 
 
 
@@ -203,7 +184,7 @@ public class Billboard100Scraper {
         // fetchedInfo = "Billboard Top 100 - Genres: " + prettyGenreList + " (Top " + songsToFetch
         // + " Songs)";
         fetchedInfo = "Billboard";
-        return allVideoIds;
+        return allSongs;
 
     }
 

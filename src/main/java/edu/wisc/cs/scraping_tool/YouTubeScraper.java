@@ -29,9 +29,19 @@ public class YouTubeScraper {
      * @param playlistName the name of the playlist to be created
      * @return returns the playlistid for the playlist
      */
-    public static String createPlaylist(List<String> videoIds, String playlistName) {
+    public static String createPlaylist(List<Song> tracks, String playlistName) {
         // This OAuth 2.0 access scope allows for full read/write access to the
         // authenticated user's account.
+        ArrayList<String> videoIds = new ArrayList<String>();
+        for (Song s : tracks) {
+            List<String> id = ySearch(s.getArtist(), s.getTitle());
+            if (id != null) {
+                s.setYoutubeLink(generateLink(id.get(0)));
+                s.setYoutubeEmbedLink(generateEmbedLink(id.get(0)));
+                videoIds.add(id.get(0)); // only want 1 track
+            }
+        }
+
         List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube");
         String playlistId = "";
 
@@ -64,8 +74,8 @@ public class YouTubeScraper {
         return playlistId;
     }
 
-    public static List<String> search(String artistName, String songTitle, long numberOfVideosReturned)
-                    throws NoSuchElementException {
+    public static List<String> search(String artistName, String songTitle,
+                    long numberOfVideosReturned) throws NoSuchElementException {
         List<String> ids = null;
 
         try {

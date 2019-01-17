@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 public class BeatportScraper {
 
     // initialize lists
-    ArrayList<String> allVideoIds = new ArrayList<String>();
+    ArrayList<Song> allSongs = new ArrayList<Song>();
     ArrayList<String> genreLinks = new ArrayList<String>();
     ArrayList<String> genres = new ArrayList<String>();
     HashMap<String, Genre> genreMap;
@@ -43,7 +44,7 @@ public class BeatportScraper {
      * @return Returns a playlist name including information about the genres collected and date
      * @throws FailingHttpStatusCodeException
      */
-    public ArrayList<String> fetch(int songsToFetch, ArrayList<String> userGenres,
+    public ArrayList<Song> fetch(int songsToFetch, ArrayList<String> userGenres,
                     boolean randomSongs, boolean getExtraInfo) {
 
         collectGenres(userGenres);
@@ -191,35 +192,21 @@ public class BeatportScraper {
 
                         }
 
-                        List<String> videoIds;
 
-                        videoIds = YouTubeScraper.ySearch(strArtist, yTitle);
-                        if (videoIds == null) {
-                            videoIds = YouTubeScraper.ySearch(strArtist, title.asText());
-
-                            if (videoIds == null) {
-                                continue;
-                            }
-                        }
-
-
-                        // generate links to videos and playlists
-                        String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                        String strYouTubeEmbedLink =
-                                        YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                        allVideoIds.add(videoIds.get(0));
-
-                        song.setTitle(strTitle);
+                        song.setTitle(yTitle);
                         song.setArtist(strArtist);
                         song.setRemixer(strRemixer);
                         song.setGenre(genres.get(genreCount));
-
-                        song.setYoutubeLink(strYouTubeLink);
-                        song.setYoutubeEmbedLink(strYouTubeEmbedLink);
-
+                        allSongs.add(song);
                         // print detailed information to console
                         Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
                                         + song.getArtist() + " - " + song.getTitle());
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(50);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                         writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
 
                         // Thread.sleep(1000); // be nice to website?
@@ -246,7 +233,7 @@ public class BeatportScraper {
         client.close();
         writer.close();
 
-        return allVideoIds;
+        return allSongs;
 
     }
 

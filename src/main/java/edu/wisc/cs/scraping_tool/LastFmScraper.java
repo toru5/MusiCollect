@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlButton;
@@ -57,7 +58,7 @@ public class LastFmScraper {
     // l.fetchSimilar("gregory alan isakov", 50);
     // }
 
-    public ArrayList<String> fetchSimilar(String artistName, int songsToFetch)
+    public ArrayList<Song> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
         Main.output("Fetching songs similar to " + artistName);
         File output = new File(strDate + "-similar.txt"); // keep local txt file as well
@@ -70,7 +71,7 @@ public class LastFmScraper {
         }
 
         List<String> videoIds = null;
-        ArrayList<String> allVideoIds = new ArrayList<String>();
+        ArrayList<Song> allSongs = new ArrayList<Song>();
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpGet httpGet = null;
@@ -80,11 +81,15 @@ public class LastFmScraper {
         JSONObject jsonObj = null;
         JSONParser jsonParse = new JSONParser();
 
+        
+        // THIS SHOULD ALL GO IN A SEPARATE METHOD
         // create random parameters to go fetch songs
         ArrayList<Integer> randomArtists = new ArrayList<Integer>();
         ArrayList<Integer> randomSongs = new ArrayList<Integer>();
         ArrayList<String> uniqueChoices = new ArrayList<String>();
 
+        // create list of unique combinations, chosen from random numbers which correspond to
+        // <artist> - <track#>
         for (int i = 0; i < songsToFetch; i++) {
             int artistTest = (int) (Math.random() * topArtists);
             int songTest = (int) (Math.random() * topSongs + 1);
@@ -122,7 +127,7 @@ public class LastFmScraper {
             if (jsonObj == null) {
                 Main.output("ERROR: Could not find any artists similar to " + artistName
                                 + "\nCheck spelling and try again.");
-                return allVideoIds;
+                return allSongs;
             }
             JSONArray artistArray = (JSONArray) jsonObj.get("artist");
 
@@ -139,7 +144,7 @@ public class LastFmScraper {
                                 + "\nThis is probably a server-side error. Try searching again with"
                                 + " a different artist that is similar to " + artistName
                                 + " for comparable results.");
-                return allVideoIds;
+                return allSongs;
             }
 
             // loop through random artists and fetch their top songs
@@ -166,24 +171,13 @@ public class LastFmScraper {
                     JSONObject j2 = (JSONObject) songArray.get(randomSongs.get(i));
                     String strTitle = j2.get("name").toString();
 
-                    videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
-
-                    if (videoIds == null) {
-                        continue;
-                    }
-
-                    // generate links to videos and playlists
-                    String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-                    String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
-                    allVideoIds.add(videoIds.get(0));
                     // create song object
                     Song song = new Song();
                     song.setTitle(strTitle);
                     song.setArtist(strArtist);
                     // get genre by clicking on song link and grabbings tags (will slow it down,tho)
-                    song.setYoutubeLink(strYouTubeLink);
-                    song.setYoutubeEmbedLink(strYouTubeEmbedLink);
 
+                    allSongs.add(song);
                     // print detailed information to console
                     Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - "
                                     + song.getTitle());
@@ -195,10 +189,10 @@ public class LastFmScraper {
                                     + "artists and songs...");
                     topArtists = artistArray.size();
                     topSongs -= 2; // just to make sure :))
-                    allVideoIds.addAll(fetchSimilar(artistName, (songsToFetch - i)));
+                    allSongs.addAll(fetchSimilar(artistName, (songsToFetch - i)));
                     writer.close();
                     fetchedInfo = "Similar Artists to: " + artistName;
-                    return allVideoIds;
+                    return allSongs;
                 }
             }
 
@@ -211,7 +205,7 @@ public class LastFmScraper {
         writer.close();
 
 
-        return allVideoIds;
+        return allSongs;
 
     }
 
@@ -229,11 +223,11 @@ public class LastFmScraper {
      * @throws FailingHttpStatusCodeException
      */
     @SuppressWarnings("unchecked")
-    public ArrayList<String> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
+    public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
         Main.output("Fetching from Last.fm suggested tracks: ");
 
-        ArrayList<String> allVideoIds = new ArrayList<String>();
+        ArrayList<Song> allSongs = new ArrayList<Song>();
         File output = new File(strDate + "-last-fm.txt"); // keep local txt file as well
         PrintWriter writer = null;
         List<String> videoIds = null;
@@ -285,29 +279,24 @@ public class LastFmScraper {
                             .getFirstByXPath(".//p[@class='recs-feed-description']/a");
             String strArtist = artist.asText();
 
-            videoIds = YouTubeScraper.ySearch(strArtist, strTitle);
-
-            if (videoIds == null) {
-                continue;
-            }
-
-            // generate links to videos and playlists
-            String strYouTubeLink = YouTubeScraper.generateLink(videoIds.get(0));
-            String strYouTubeEmbedLink = YouTubeScraper.generateEmbedLink(videoIds.get(0));
-            allVideoIds.add(videoIds.get(0));
             // create song object
             song = new Song();
             song.setTitle(strTitle);
             song.setArtist(strArtist);
             // get genre by clicking on song link and grabbings tags (will slow it down,tho)
-            song.setYoutubeLink(strYouTubeLink);
-            song.setYoutubeEmbedLink(strYouTubeEmbedLink);
+
+            allSongs.add(song);
 
             // print detailed information to console
             Main.output("Song " + songPos + ": " + song.getArtist() + " - " + song.getTitle());
             writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
+            try {
+                TimeUnit.MILLISECONDS.sleep(50);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
-            // Thread.sleep(1000); // be nice to website?
             if (songPos == songsToFetch) {
                 break;
             } else {
@@ -319,7 +308,7 @@ public class LastFmScraper {
         writer.close();
 
         fetchedInfo = "Last.fm";
-        return allVideoIds;
+        return allSongs;
 
     }
 
