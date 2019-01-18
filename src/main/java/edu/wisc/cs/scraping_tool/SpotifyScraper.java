@@ -104,6 +104,15 @@ public class SpotifyScraper {
     }
 
 
+    /**
+     * Method for retrieving music from spotify. Will return an exact match, if found. Keeps track
+     * of spotify API rate-limiting and pauses if needed, as this method seems to be solely
+     * responsible for overriding the limit
+     * 
+     * @param artist artist identifier
+     * @param track the track title
+     * @return a valid spotify URI ID of the song, if found, null otherwise
+     */
     private static String search(String artist, String track) {
         String uriId = null;
         String rateLimit;
@@ -129,6 +138,9 @@ public class SpotifyScraper {
             }
 
             jsonObj = (JSONObject) jsonObj.get("tracks");
+            if (jsonObj == null) {
+                return null;
+            }
             JSONArray songArray = (JSONArray) jsonObj.get("items");
             for (Object j : songArray) {
                 JSONObject j2 = (JSONObject) j;
@@ -142,6 +154,14 @@ public class SpotifyScraper {
         return uriId;
     }
 
+    /**
+     * Method for creating a playlist on Spotify. References the Search() method to retrieve valid
+     * URI IDs of songs
+     * 
+     * @param songs the list of songs to add to the playlist
+     * @param playlistName the name to give to the new playlist
+     * @return a valid spotify playlist ID
+     */
     public static String createPlaylist(ArrayList<Song> songs, String playlistName) {
         authenticate();
 
@@ -168,14 +188,14 @@ public class SpotifyScraper {
             int chunk = 100; // post in chunks
             int songsNotFound = 0;
             int iterations = 0;
-            
+
             // do the POST in chunks
             if (songs.size() % 100 == 0) {
                 iterations = (songs.size() / chunk) - 1;
             } else {
                 iterations = songs.size() / chunk;
             }
-            
+
             for (int i = 0; i <= iterations; i++) {
                 ids = new ArrayList<String>();
                 for (int j = 0; j < chunk; j++) {

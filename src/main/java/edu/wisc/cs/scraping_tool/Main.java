@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -88,13 +87,13 @@ public class Main extends Application {
     CheckBox redditCheck = new CheckBox("Reddit");
     CheckBox lastFmCheck = new CheckBox("Last.FM Suggested Tracks");
     CheckBox lastFmFriendsCheck = new CheckBox("Last.FM Friend's Top Tracks");
-    CheckBox similarCheck = new CheckBox("Similar music");
-    
+    CheckBox similarCheck = new CheckBox("Similar Music");
+
     // output toggle buttons
     ToggleGroup outputSites = new ToggleGroup();
     ToggleButton youtubeBtn = new ToggleButton("Post playlist to YouTube");
     ToggleButton spotifyBtn = new ToggleButton("Post playlist to Spotify  ");
-    
+
     // last.fm friend time period buttons
     ToggleGroup lastFmTimePeriods = new ToggleGroup();
     ToggleButton weekBtn = new ToggleButton("Week");
@@ -104,7 +103,7 @@ public class Main extends Application {
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
     CheckBox bpRandomCheck = new CheckBox("BEATPORT Random Song Order?");
-    CheckBox shuffleSongsCheck = new CheckBox("Shuffle songs in playlist?");
+    CheckBox shuffleSongsCheck = new CheckBox("Shuffle Songs in Playlist?");
 
     class HiddenTextField extends TextField {
         public HiddenTextField() {
@@ -113,7 +112,7 @@ public class Main extends Application {
     }
 
     /**
-     * 
+     * Standard javafx procedure
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("MusiCollect");
@@ -123,7 +122,7 @@ public class Main extends Application {
     }
 
     /*
-     * 
+     * Launches the GUI
      * 
      */
     public static void main(String[] args) {
@@ -132,6 +131,7 @@ public class Main extends Application {
 
 
     /**
+     * Big method to setup the GUI and event handlers for buttons
      * 
      * @return
      */
@@ -186,7 +186,7 @@ public class Main extends Application {
         lastFmUsername.setPromptText("*required for use with last.fm");
         lastFmPassword.setPromptText("*required for use with last.fm suggested tracks");
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
-        similarArtistTxt.setPromptText("*artist name");
+        similarArtistTxt.setPromptText("*artist1; artist2; etc");
 
         shuffleSongsCheck.setPrefSize(200, 100);
         youtubeBtn.setPrefWidth(200);
@@ -195,14 +195,13 @@ public class Main extends Application {
 
         youtubeBtn.setToggleGroup(outputSites);
         spotifyBtn.setToggleGroup(outputSites);
-        
+
         weekBtn.setToggleGroup(lastFmTimePeriods);
         monthBtn.setToggleGroup(lastFmTimePeriods);
-        yearBtn.setToggleGroup(lastFmTimePeriods); 
+        yearBtn.setToggleGroup(lastFmTimePeriods);
         weekBtn.setSelected(true);
         HBox times = new HBox();
         times.getChildren().addAll(weekBtn, monthBtn, yearBtn);
-        
 
         // buttons
         final Button submit = new Button("Submit");
@@ -217,9 +216,10 @@ public class Main extends Application {
                         lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
-                        redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmFriendsSongsToFetch, lastFmUsername,
-                        lastFmPassword, similarSongsToFetch);
-        
+                        redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch,
+                        lastFmFriendsSongsToFetch, lastFmUsername, lastFmPassword,
+                        similarSongsToFetch);
+
         upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
                         new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
                         new HiddenTextField(), times, new HiddenTextField(), new HiddenTextField(),
@@ -274,11 +274,24 @@ public class Main extends Application {
         console.setContent(ta);
         root.setRight(console);
 
+        // future stop button
+        // stop.setOnAction(new EventHandler<ActionEvent>() {
+        // public void handle(ActionEvent event) {
+        //
+        // Runnable stopExecution = new Runnable() {
+        // @Override
+        // public void run() {
+        //
+        //
+        // }
+        // };
+        // }
+        // });
+
         submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Define a new Runnable
                 clearTextArea();
-                Main.output("Initializing request...");
                 Runnable fetchMusic = new Runnable() {
                     public void run() {
                         reset();
@@ -288,6 +301,8 @@ public class Main extends Application {
                             inputError();
                             return;
                         }
+
+                        Main.output("Initializing request...");
 
                         try {
                             if (bCheck.isSelected()) {
@@ -311,13 +326,13 @@ public class Main extends Application {
                             }
 
                             if (similarCheck.isSelected()) {
-                                relatedFetch();
+                                similarFetch();
                             }
-                            
+
                             if (lastFmFriendsCheck.isSelected()) {
                                 lastFmFriendsFetch();
                             }
-                            
+
                         } catch (Exception e) {
                             Main.output(e.getStackTrace().toString());
                             System.out.println(e.getStackTrace().toString());
@@ -434,9 +449,8 @@ public class Main extends Application {
      * Helper method that fetches from billboard and adds the songs it retrieved to allSongs
      */
     private void billboardFetch() {
-        allSongs.addAll(bill.fetch(
-                        Integer.parseInt(billSongsToFetch.getText()),
-                        billUserGenres, billRandomCheck.isSelected()));
+        allSongs.addAll(bill.fetch(Integer.parseInt(billSongsToFetch.getText()), billUserGenres,
+                        billRandomCheck.isSelected()));
         playListName += bill.getFetchedInfo() + ", ";
     }
 
@@ -444,8 +458,7 @@ public class Main extends Application {
      * Helper method that fetches from indieshuffle and adds the songs it retrieved to allSongs
      */
     private void indieShuffleFetch() {
-        allSongs.addAll(i.fetch(
-                        Integer.parseInt(indieSongsToFetch.getText())));
+        allSongs.addAll(i.fetch(Integer.parseInt(indieSongsToFetch.getText())));
         playListName += i.getFetchedInfo() + ", ";
     }
 
@@ -453,17 +466,12 @@ public class Main extends Application {
      * Helper method that fetches from reddit and adds the songs it retrieved to allSongs
      */
     private void redditFetch() {
-     // check if textbox is empty -- if so -- default to 1 min upvote
+        // check if textbox is empty -- if so -- default to 1 min upvote
         if (redditMinUpvotes.getText().equals("")) {
-            allSongs.addAll(r.fetch(
-                            uniqueSubreddit.getText().replaceAll("/", "")
-                                            .trim(),
-                            Integer.parseInt(redditSongsToFetch.getText()),
-                            1));
+            allSongs.addAll(r.fetch(uniqueSubreddit.getText().replaceAll("/", "").trim(),
+                            Integer.parseInt(redditSongsToFetch.getText()), 1));
         } else {
-            allSongs.addAll(r.fetch(
-                            uniqueSubreddit.getText().replaceAll("/", "")
-                                            .trim(),
+            allSongs.addAll(r.fetch(uniqueSubreddit.getText().replaceAll("/", "").trim(),
                             Integer.parseInt(redditSongsToFetch.getText()),
                             Integer.parseInt(redditMinUpvotes.getText())));
         }
@@ -475,8 +483,7 @@ public class Main extends Application {
      * Helper method that fetches from last.fm and adds the songs it retrieved to allSongs
      */
     private void lastFmFetch() {
-        allSongs.addAll(l.fetch(
-                        Integer.parseInt(lastFmSongsToFetch.getText())));
+        allSongs.addAll(l.fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
         playListName += l.getFetchedInfo() + ", ";
     }
 
@@ -484,12 +491,20 @@ public class Main extends Application {
      * Helper method that fetches from last.fm's API and database of artist similarities and adds
      * the songs it retrieved to allSongs
      */
-    private void relatedFetch() {
-        allSongs.addAll(l.fetchSimilar(similarArtistTxt.getText(),
-                        Integer.parseInt(similarSongsToFetch.getText())));
-        playListName += l.getFetchedInfo() + ", ";
+    private void similarFetch() {
+        String[] tokens = similarArtistTxt.getText().split(";");
+        String artistList = "";
+        for (String artist : tokens) {
+            if (!(artist = artist.trim()).equals("")) {
+                allSongs.addAll(l.fetchSimilar(artist,
+                                Integer.parseInt(similarSongsToFetch.getText())));
+                artistList += artist + ", ";
+            }
+        }
+        artistList = artistList.substring(0, artistList.length() - 2);
+        playListName += "music similar to - " + artistList + ", ";
     }
-    
+
     /**
      * Helper method that fetches from last.fm's API and database of user's and top tracks and adds
      * songs from the user's friends list
@@ -503,12 +518,12 @@ public class Main extends Application {
         } else {
             timePeriod = "12month";
         }
-        
+
         allSongs.addAll(l.fetchFriendsMusic(lastFmUsername.getText(), timePeriod,
                         Integer.parseInt(lastFmFriendsSongsToFetch.getText())));
         playListName += l.getFetchedInfo() + ", ";
     }
-    
+
 
 
     /**
@@ -742,7 +757,7 @@ public class Main extends Application {
         }
         return true;
     }
-    
+
     /**
      * helper method that ensures all paramters required for scraping last.fm's database for friends
      * music is met
@@ -783,8 +798,10 @@ public class Main extends Application {
      * Simple method to output generic text relating to invalid input
      */
     private void inputError() {
-        Main.output("Input error.  Make sure a website is selected and a number of songs to be "
-                        + "fetched is correctly typed into the input box.");
+        Main.output("Input error -- Fields missing or entered incorrectly.\nMake sure a website is "
+                        + "selected and a number of songs to be "
+                        + "fetched is correctly typed into the input box, as well as any other"
+                        + " information required for that website\n");
     }
 
     /**
@@ -825,7 +842,7 @@ public class Main extends Application {
         }
         ta.appendText("");
     }
-    
+
     /**
      * simple method to clear the text area
      */

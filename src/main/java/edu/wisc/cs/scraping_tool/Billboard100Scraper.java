@@ -108,7 +108,7 @@ public class Billboard100Scraper {
             }
 
             Song song = null;
-            
+
             try {
 
                 String searchUrl = baseUrl + s;
@@ -137,9 +137,9 @@ public class Billboard100Scraper {
                         } else {
                             songPos = i;
                         }
-                        
+
                         song = new Song();
-                        
+
                         if (i != 1 || randomSongs) {
                             // extract items
                             HtmlElement htmlItem = (HtmlElement) details.getFirstByXPath(
@@ -156,9 +156,9 @@ public class Billboard100Scraper {
                             song.setArtist(strOneArtist);
                             song.setGenre(genres.get(genreCount));
                         }
-                        
+
                         allSongs.add(song);
-                        
+
                         // print detailed information to console
                         Main.output(song.getGenre() + " - Position " + songPos + ": "
                                         + song.getArtist() + " - " + song.getTitle());
@@ -197,6 +197,12 @@ public class Billboard100Scraper {
         this.fetchedInfo = fetchedInfo;
     }
 
+    /**
+     * Method that iterates through a list of genres given by the user and adds their hashmap value
+     * (billboard link) to an array of genre links
+     * 
+     * @param userGenres the list of String values corresponding to valid keys in the HashMap
+     */
     private void collectGenres(ArrayList<String> userGenres) {
         for (String s : userGenres) {
             if (genreMap.get(s) != null) {
@@ -209,8 +215,8 @@ public class Billboard100Scraper {
     /**
      * Creates a backslash separated list of the genres to be fetched from
      * 
-     * @param genres
-     * @return
+     * @param genres genres to be added toa large string
+     * @return String identifier of genres that will be fetched
      */
     private String createGenreList(ArrayList<String> genres) {
         String fullTag = "";
@@ -225,10 +231,18 @@ public class Billboard100Scraper {
         return fullTag;
     }
 
+    /**
+     * simple getter method
+     * @return genreMap
+     */
     public HashMap<String, Genre> getGenreMap() {
         return genreMap;
     }
 
+    /**
+     * simple setter method
+     * @param genreMap
+     */
     public void setGenreMap(HashMap<String, Genre> genreMap) {
         this.genreMap = genreMap;
     }

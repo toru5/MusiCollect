@@ -7,6 +7,7 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,10 +30,6 @@ import org.json.simple.parser.JSONParser;
 
 public class LastFmScraper {
 
-    ArrayList<String> genreLinks = new ArrayList<String>();
-    ArrayList<String> genres = new ArrayList<String>();
-    HashMap<String, Genre> genreMap;
-
     CloseableHttpClient httpClient = HttpClients.createDefault();
     HttpGet httpGet = null;
     CloseableHttpResponse response = null;
@@ -42,7 +39,7 @@ public class LastFmScraper {
     JSONParser jsonParse = new JSONParser();
 
     final static String API_KEY = "3f0f17bc3fcf1b5fcda4cc9c776391d5";
-    static int topSongs = 10;
+    static int topSongs = 7;
     static int topArtists = 35;
 
     // used for playlist name
@@ -66,6 +63,18 @@ public class LastFmScraper {
         l.fetchFriendsMusic("boweree", "7day", 50);
     }
 
+    /**
+     * Fetching method that retrieves a list of friends from a specified user and fetches an equal
+     * amount of songs from each user until the quota is met. The method is dynamic and can handle
+     * friend's not having music, as it will keep track of this and run extra iterations to fill
+     * gaps
+     * 
+     * @param username the user of which to retrieve a friends list from
+     * @param timePeriod time interval to fetch songs from, valid identifiers are: "7day", "1month",
+     *        "3month", "12month"
+     * @param songsToFetch the song quota to be met
+     * @return returns a list of Song objects
+     */
     public ArrayList<Song> fetchFriendsMusic(String username, String timePeriod, int songsToFetch) {
         Main.output("Fetching music from friends of " + username);
         ArrayList<Song> allSongs = new ArrayList<Song>();
@@ -157,7 +166,8 @@ public class LastFmScraper {
                         Main.output("Friend: " + currentFriend + " // Song " + allSongs.size()
                                         + ": " + song.getArtist() + " - " + song.getTitle());
 
-                        writer.println("Song: " + allSongs.size() + "\n" + song.toString() + "\n");
+                        writer.println("Song: " + allSongs.size() + " from " + currentFriend + "\n"
+                                        + song.toString() + "\n");
 
                         if (allSongs.size() >= songsToFetch) {
                             // in the case where songsToFetch is an odd number we don't want to
@@ -198,6 +208,7 @@ public class LastFmScraper {
      */
     public ArrayList<Song> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
+        artistName = artistName.trim();
         Main.output("Fetching songs similar to " + artistName);
         File output = new File(strDate + "-similar.txt"); // keep local txt file as well
         PrintWriter writer = null;
@@ -210,36 +221,7 @@ public class LastFmScraper {
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
-        // THIS SHOULD ALL GO IN A SEPARATE METHOD
-        // create random parameters to go fetch songs
-        ArrayList<Integer> randomArtists = new ArrayList<Integer>();
-        ArrayList<Integer> randomSongs = new ArrayList<Integer>();
-        ArrayList<String> uniqueChoices = new ArrayList<String>();
-
-        // create list of unique combinations, chosen from random numbers which correspond to
-        // <artist> - <track#>
-        for (int i = 0; i < songsToFetch; i++) {
-            int artistTest = (int) (Math.random() * topArtists);
-            int songTest = (int) (Math.random() * topSongs + 1);
-            String choice = (String) (Integer.toString(artistTest) + "-"
-                            + Integer.toString(songTest));
-
-            // make sure choices are unique -- flip a coin and re-roll if not
-            while (uniqueChoices.contains(choice)) {
-                // flip a coin
-                int coin = (int) Math.random() * 2;
-                if (coin == 0) {
-                    songTest = (int) (Math.random() * topSongs + 1);
-                } else {
-                    artistTest = (int) (Math.random() * topArtists);
-                }
-                choice = (String) (Integer.toString(artistTest) + "-" + Integer.toString(songTest));
-            }
-
-            uniqueChoices.add(choice);
-            randomArtists.add(artistTest);
-            randomSongs.add(songTest);
-        }
+        ArrayList<String> uniqueChoices = generateUniqueChoices(songsToFetch);
 
         try {
             uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com/")
@@ -278,8 +260,13 @@ public class LastFmScraper {
 
             // loop through random artists and fetch their top songs
             for (int i = 0; i < songsToFetch; i++) {
+
+                String[] tokens = uniqueChoices.get(i).split("-");
+                int randomArtist = (int) Integer.parseInt(tokens[0].trim());
+                int randomSong = (int) Integer.parseInt(tokens[1].trim());
+
                 try {
-                    JSONObject js = (JSONObject) artistArray.get(randomArtists.get(i));
+                    JSONObject js = (JSONObject) artistArray.get(randomArtist);
                     String strArtist = js.get("name").toString();
 
                     uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com/")
@@ -297,7 +284,7 @@ public class LastFmScraper {
                     jsonObj = (JSONObject) jsonObj.get("toptracks");
                     JSONArray songArray = (JSONArray) jsonObj.get("track");
 
-                    JSONObject j2 = (JSONObject) songArray.get(randomSongs.get(i));
+                    JSONObject j2 = (JSONObject) songArray.get(randomSong);
                     String strTitle = j2.get("name").toString();
 
                     // create song object
@@ -310,14 +297,13 @@ public class LastFmScraper {
                     // print detailed information to console
                     Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - "
                                     + song.getTitle());
-                    // System.out.println("Song " + i + ": " + song.getArtist() + " - " +
-                    // song.getTitle());
+
                     writer.println("Song: " + (i + 1) + "\n" + song.toString() + "\n");
                 } catch (IndexOutOfBoundsException e) {
                     Main.output("Narrowing search parameters to meet measly number of similar "
                                     + "artists and songs...");
                     topArtists = artistArray.size();
-                    topSongs -= 2; // just to make sure :))
+                    topSongs -= 1; // just to make sure :))
                     allSongs.addAll(fetchSimilar(artistName, (songsToFetch - i)));
                     writer.close();
                     fetchedInfo = "Similar Artists to: " + artistName;
@@ -440,6 +426,42 @@ public class LastFmScraper {
     }
 
     /**
+     * Helper method to create unique combinations of artists and songs. Top artists and top songs
+     * can be set by the global variables inside the LastFmScraper class
+     * 
+     * @param songsToFetch the number of songs to be fetched from the fetch() method
+     * @return a unique list of combinations in the formation <artist>-<song#>
+     */
+    private ArrayList<String> generateUniqueChoices(int songsToFetch) {
+        ArrayList<String> uniqueChoices = new ArrayList<String>();
+
+        // create list of unique combinations, chosen from random numbers which correspond to
+        // <artist>-<track#>
+        for (int i = 0; i < songsToFetch; i++) {
+            int artistTest = (int) (Math.random() * topArtists);
+            int songTest = (int) (Math.random() * topSongs);
+            String choice = (String) (Integer.toString(artistTest) + "-"
+                            + Integer.toString(songTest));
+
+            // make sure choices are unique -- flip a coin and re-roll if not
+            while (uniqueChoices.contains(choice)) {
+                // flip a coin
+                int coin = (int) Math.random() * 2;
+                if (coin == 0) {
+                    songTest = (int) (Math.random() * topSongs);
+                } else {
+                    artistTest = (int) (Math.random() * topArtists);
+                }
+                choice = (String) (Integer.toString(artistTest) + "-" + Integer.toString(songTest));
+            }
+
+            uniqueChoices.add(choice);
+        }
+
+        return uniqueChoices;
+    }
+
+    /**
      * Helper method to verify the username and password are valid. This method is protected, but
      * not private, so that it can be used outside of the fetch() method, so that a user does not
      * waste time submitting a request just to be shut down by invalid user credentials. This method
@@ -496,45 +518,8 @@ public class LastFmScraper {
         return fetchedInfo;
     }
 
-
     public void setFetchedInfo(String fetchedInfo) {
         this.fetchedInfo = fetchedInfo;
-    }
-
-    private void collectGenres(ArrayList<String> userGenres) {
-        for (String s : userGenres) {
-            if (genreMap.get(s) != null) {
-                genreLinks.add(genreMap.get(s).getPostLink());
-                genres.add(s);
-            }
-        }
-    }
-
-    /**
-     * Creates a backslash separated list of the genres to be fetched from
-     * 
-     * @param genres
-     * @return
-     */
-    private String createGenreList(ArrayList<String> genres) {
-        String fullTag = "";
-        for (int i = 0; i < genres.size(); i++) {
-            if (i == genres.size() - 1) {
-                fullTag += genres.get(i);
-            } else {
-                fullTag += genres.get(i) + " / ";
-            }
-        }
-
-        return fullTag;
-    }
-
-    public HashMap<String, Genre> getGenreMap() {
-        return genreMap;
-    }
-
-    public void setGenreMap(HashMap<String, Genre> genreMap) {
-        this.genreMap = genreMap;
     }
 }
 

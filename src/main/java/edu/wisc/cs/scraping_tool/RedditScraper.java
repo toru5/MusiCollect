@@ -26,6 +26,10 @@ public class RedditScraper {
     Date date = new Date();
     String strDate = sdf.format(date);
 
+    /**
+     * Simple method for connecting to a RestClient this is also the method where user credentials
+     * must be set
+     */
     private void connect() {
         // Initialize REST Client
         restClient = new HttpRestClient();
@@ -35,17 +39,32 @@ public class RedditScraper {
         user = new User(restClient, "korvaxe", "musiCollect1");
     }
 
+    /**
+     * Method that retrieves top, hot, or any other enumeration of submissions, up to 100 items
+     * (limited by the reddit API)
+     * 
+     * @param subreddit the subreddit to fetch from
+     * @return a List of submissions
+     */
     public List<Submission> getTopSubmissions(String subreddit) {
         connect();
         Submissions subs = new Submissions(restClient, user);
 
-        List<Submission> subsOfSub = subs.ofSubreddit(subreddit, SubmissionSort.HOT, -1,
-                        100, null, null, true);
-        
+        List<Submission> subsOfSub =
+                        subs.ofSubreddit(subreddit, SubmissionSort.HOT, -1, 100, null, null, true);
+
 
         return subsOfSub;
     }
 
+    /**
+     * Fetching method that retrieves a list of (up to) 100 songs from any valid subreddit
+     * 
+     * @param subreddit the subreddit string to use for scraping
+     * @param songsToFetch the song quota
+     * @param minUpvotes a minimum amount of upvotes to justify fetching the object
+     * @return a list of Song objects
+     */
     public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
         List<Submission> songs = getTopSubmissions(subreddit);
         Main.output("Fetching from: reddit/r/" + subreddit);
@@ -96,9 +115,9 @@ public class RedditScraper {
             }
 
             if (title.equals("") || artist.equals("")) {
-                continue;               
+                continue;
             }
-            
+
             if (genre.equals("")) {
                 genre = "No Genre";
             }
@@ -111,10 +130,10 @@ public class RedditScraper {
             song.setGenre(genre);
 
             allSongs.add(song);
-            
+
             // print detailed information to console
-            Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist()
-                            + " - " + song.getTitle());
+            Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist() + " - "
+                            + song.getTitle());
             writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
             count++;
             try {
@@ -126,20 +145,28 @@ public class RedditScraper {
             if (count == songsToFetch) {
                 break;
             }
-            
+
         }
 
-//        fetchedInfo = "Reddit" + subreddit + " (Top " + songsToFetch + " songs)";
+        // fetchedInfo = "Reddit" + subreddit + " (Top " + songsToFetch + " songs)";
         fetchedInfo = "reddit/" + subreddit;
         writer.close();
         return allSongs;
     }
 
+    /**
+     * simple getter method
+     * @return fetchedInfo
+     */
     public String getFetchedInfo() {
         return fetchedInfo;
     }
 
 
+    /**
+     * simple setter method
+     * @param fetchedInfo
+     */
     public void setFetchedInfo(String fetchedInfo) {
         this.fetchedInfo = fetchedInfo;
     }
