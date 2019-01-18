@@ -41,21 +41,6 @@ public class SpotifyScraper {
     static final String CLIENT_ID = "f0d4411e78e74a61ac8b205bd3d21b61";
     static final String CLIENT_SECRET = "264bb63e909b44afa6cec4fe52238174";
 
-//    public static void main(String[] args) {
-//        // TODO Auto-generated method stub
-//        SpotifyScraper s = new SpotifyScraper();
-//        ArrayList<Song> test = new ArrayList<Song>();
-//        test.add(new Song("pinback", "good to sea"));
-//        test.add(new Song("nirvana", "come as you are"));
-//        test.add(new Song("honne", "good together"));
-//        test.add(new Song("das efx", "wontu"));
-//        test.add(new Song("nas", "the world is yours"));
-//        test.add(new Song("pinback", "bouquet"));
-//
-//        // s.createPlaylist(null, "some playlist1");
-//
-//    }
-
     private static void authenticate() {
         client = HttpClients.createDefault();
 
@@ -72,14 +57,12 @@ public class SpotifyScraper {
             response = client.execute(httpGet);
 
             ServerSocket serverSocket = new ServerSocket(8080);
-//            System.out.println(redirectUri.toString());
             Main.openWebpage(uri);
             Socket socket = serverSocket.accept();
             InputStreamReader input = new InputStreamReader(socket.getInputStream());
             BufferedReader info = new BufferedReader(input);
             String s = null;
             while ((s = info.readLine()) != null) {
-                System.out.println(s);
                 if (s.contains("code")) {
                     int i = s.indexOf("code");
                     int e = s.indexOf("HTTP");
@@ -144,7 +127,7 @@ public class SpotifyScraper {
                 TimeUnit.SECONDS.sleep(timeout);
                 return search(artist, track); // recursively retry
             }
-//            System.out.println(jsonObj.toString());
+
             jsonObj = (JSONObject) jsonObj.get("tracks");
             JSONArray songArray = (JSONArray) jsonObj.get("items");
             for (Object j : songArray) {
@@ -156,8 +139,6 @@ public class SpotifyScraper {
             e.printStackTrace();
         }
 
-
-//        System.out.println(uriId);
         return uriId;
     }
 
@@ -186,8 +167,16 @@ public class SpotifyScraper {
 
             int chunk = 100; // post in chunks
             int songsNotFound = 0;
+            int iterations = 0;
+            
             // do the POST in chunks
-            for (int i = 0; i <= songs.size() / chunk; i++) {
+            if (songs.size() % 100 == 0) {
+                iterations = (songs.size() / chunk) - 1;
+            } else {
+                iterations = songs.size() / chunk;
+            }
+            
+            for (int i = 0; i <= iterations; i++) {
                 ids = new ArrayList<String>();
                 for (int j = 0; j < chunk; j++) {
                     String uriId = search(songs.get(j + (i * chunk)).getArtist(),
@@ -211,16 +200,13 @@ public class SpotifyScraper {
                     bigJsonString += "\"" + s + "\",";
                 }
                 bigJsonString = bigJsonString.substring(0, bigJsonString.length() - 1) + "]}";
-//                System.out.println(bigJsonString);
 
                 httpPost = new HttpPost(
                                 "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks");
                 httpPost.setEntity(new StringEntity(bigJsonString));
                 httpPost.addHeader("Authorization", "Bearer " + token);
-//                System.out.println("URI: " + httpPost.getURI().toString());
                 response = client.execute(httpPost);
                 jsonResponse = EntityUtils.toString(response.getEntity());
-//                System.out.println(jsonResponse);
             }
             Main.output(songs.size() - songsNotFound + " songs successfully added to playlist\n"
                             + songsNotFound + " songs not found on Spotify");

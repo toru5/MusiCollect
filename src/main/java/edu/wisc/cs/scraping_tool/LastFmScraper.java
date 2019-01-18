@@ -33,6 +33,14 @@ public class LastFmScraper {
     ArrayList<String> genres = new ArrayList<String>();
     HashMap<String, Genre> genreMap;
 
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    HttpGet httpGet = null;
+    CloseableHttpResponse response = null;
+    String jsonResponse = null;
+    URI uri = null;
+    JSONObject jsonObj = null;
+    JSONParser jsonParse = new JSONParser();
+
     final static String API_KEY = "3f0f17bc3fcf1b5fcda4cc9c776391d5";
     static int topSongs = 10;
     static int topArtists = 35;
@@ -53,11 +61,141 @@ public class LastFmScraper {
         this.password = password;
     }
 
-    // public static void main(String[] args) {
-    // LastFmScraper l = new LastFmScraper();
-    // l.fetchSimilar("gregory alan isakov", 50);
-    // }
+    public static void main(String[] args) {
+        LastFmScraper l = new LastFmScraper();
+        l.fetchFriendsMusic("boweree", "7day", 50);
+    }
 
+    public ArrayList<Song> fetchFriendsMusic(String username, String timePeriod, int songsToFetch) {
+        Main.output("Fetching music from friends of " + username);
+        ArrayList<Song> allSongs = new ArrayList<Song>();
+        File output = new File(strDate + "-lfm-friends.txt"); // keep local txt file as well
+        PrintWriter writer = null;
+
+        int songsFromEachUser;
+
+        try {
+            writer = new PrintWriter(output);
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+
+        try {
+            uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com")
+                            .setPath("2.0/").setParameter("method", "user.getfriends")
+                            .setParameter("user", username).setParameter("api_key", API_KEY)
+                            .setParameter("format", "json").build();
+            httpGet = new HttpGet(uri);
+            response = httpClient.execute(httpGet);
+            jsonResponse = EntityUtils.toString(response.getEntity());
+            jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+            System.out.println(jsonResponse);
+
+            try {
+                if (jsonObj.get("error").toString().equals("6")) {
+                    Main.output("ERROR: We couldn't find any users with name: " + username);
+                    return allSongs;
+                }
+            } catch (NullPointerException e) {
+                // this just means no errors were thrown... proceed as usual.
+            }
+
+            jsonObj = (JSONObject) jsonObj.get("friends");
+            if (jsonObj == null) {
+                Main.output("ERROR: This is awkward.. you don't have any friends");
+                return allSongs;
+            }
+
+            // convert large piece of json to an array of friends
+            JSONArray userArray = (JSONArray) jsonObj.get("user");
+
+            songsFromEachUser = (int) Math.ceil(((double) songsToFetch) / userArray.size());
+
+            int iteration = 0;
+            while (allSongs.size() < songsToFetch) {
+                for (Object o : userArray) {
+                    JSONObject user = (JSONObject) o;
+                    String currentFriend = user.get("name").toString();
+
+                    uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com")
+                                    .setPath("2.0/").setParameter("method", "user.gettoptracks")
+                                    .setParameter("user", currentFriend)
+                                    .setParameter("period", timePeriod)
+                                    .setParameter("api_key", API_KEY).setParameter("format", "json")
+                                    .build();
+                    httpGet = new HttpGet(uri);
+                    response = httpClient.execute(httpGet);
+                    jsonResponse = EntityUtils.toString(response.getEntity());
+                    jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+                    jsonObj = (JSONObject) jsonObj.get("toptracks");
+                    JSONArray songArray = (JSONArray) jsonObj.get("track");
+
+                    int count = 0;
+                    int skip = 0;
+                    for (Object currentObject : songArray) {
+                        if ((iteration * songsFromEachUser) > skip) {
+                            skip++;
+                            if (skip >= songArray.size()) {
+                                Main.output("ERROR: You do not have enough friends with music "
+                                                + "to meet the song request quota of: "
+                                                + songsToFetch
+                                                + "\nPlease try again with a lower number.");
+                                return allSongs;
+                            }
+                            continue;
+                        }
+
+                        Song song = new Song();
+                        JSONObject currentSong = (JSONObject) currentObject;
+
+                        song.setTitle(currentSong.get("name").toString()); // fetch song name
+                        currentSong = (JSONObject) currentSong.get("artist");
+                        song.setArtist(currentSong.get("name").toString()); // fetch artist name
+                        allSongs.add(song);
+
+                        // print detailed information to console
+                        Main.output("Friend: " + currentFriend + " // Song " + allSongs.size()
+                                        + ": " + song.getArtist() + " - " + song.getTitle());
+
+                        writer.println("Song: " + allSongs.size() + "\n" + song.toString() + "\n");
+
+                        if (allSongs.size() >= songsToFetch) {
+                            // in the case where songsToFetch is an odd number we don't want to
+                            // fetch an extra song
+                            fetchedInfo = "Last.fm friends music";
+                            writer.close();
+                            client.close();
+                            return allSongs;
+                        }
+
+                        count++;
+                        if (count == songsFromEachUser) {
+                            break;
+                        }
+
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    }
+                }
+                iteration++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        fetchedInfo = "Last.fm friends music";
+        client.close();
+        writer.close();
+        return allSongs;
+
+    }
+
+    /**
+     * Method to fetch a list of songs similar to a specific artist
+     * 
+     * @param artistName the artist of which to find similar music
+     * @param songsToFetch the number of songs you would like to retrieve
+     * @return an ArrayList of Song objects that are similar to the artist specified
+     * @throws FailingHttpStatusCodeException
+     */
     public ArrayList<Song> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
         Main.output("Fetching songs similar to " + artistName);
@@ -70,18 +208,8 @@ public class LastFmScraper {
             e1.printStackTrace();
         }
 
-        List<String> videoIds = null;
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpGet httpGet = null;
-        CloseableHttpResponse response = null;
-        String jsonResponse = null;
-        URI uri = null;
-        JSONObject jsonObj = null;
-        JSONParser jsonParse = new JSONParser();
-
-        
         // THIS SHOULD ALL GO IN A SEPARATE METHOD
         // create random parameters to go fetch songs
         ArrayList<Integer> randomArtists = new ArrayList<Integer>();
@@ -96,6 +224,7 @@ public class LastFmScraper {
             String choice = (String) (Integer.toString(artistTest) + "-"
                             + Integer.toString(songTest));
 
+            // make sure choices are unique -- flip a coin and re-roll if not
             while (uniqueChoices.contains(choice)) {
                 // flip a coin
                 int coin = (int) Math.random() * 2;
@@ -118,7 +247,7 @@ public class LastFmScraper {
                             .setParameter("artist", artistName).setParameter("api_key", API_KEY)
                             .setParameter("format", "json").build();
             httpGet = new HttpGet(uri);
-            response = client.execute(httpGet);
+            response = httpClient.execute(httpGet);
             jsonResponse = EntityUtils.toString(response.getEntity());
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
 
@@ -160,7 +289,7 @@ public class LastFmScraper {
                                     .build();
 
                     httpGet = new HttpGet(uri);
-                    response = client.execute(httpGet);
+                    response = httpClient.execute(httpGet);
                     jsonResponse = EntityUtils.toString(response.getEntity());
                     jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
 
@@ -204,7 +333,6 @@ public class LastFmScraper {
         fetchedInfo = "Similar Artists to: " + artistName;
         writer.close();
 
-
         return allSongs;
 
     }
@@ -230,7 +358,6 @@ public class LastFmScraper {
         ArrayList<Song> allSongs = new ArrayList<Song>();
         File output = new File(strDate + "-last-fm.txt"); // keep local txt file as well
         PrintWriter writer = null;
-        List<String> videoIds = null;
 
         try {
             writer = new PrintWriter(output);
@@ -312,8 +439,17 @@ public class LastFmScraper {
 
     }
 
+    /**
+     * Helper method to verify the username and password are valid. This method is protected, but
+     * not private, so that it can be used outside of the fetch() method, so that a user does not
+     * waste time submitting a request just to be shut down by invalid user credentials. This method
+     * does, however, NEED to be called before using the fetch() method, as it sets the user's
+     * credentials in the LastFm object
+     * 
+     * @return true if the credentials are valid, false otherwise
+     */
     @SuppressWarnings("unchecked")
-    public boolean verifyUserNamePassword() {
+    protected boolean verifyUserNamePassword() {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
 

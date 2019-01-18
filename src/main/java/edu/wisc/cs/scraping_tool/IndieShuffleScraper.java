@@ -55,7 +55,7 @@ public class IndieShuffleScraper {
         }
 
         try {
-            String searchUrl = baseUrl + "/popular/week/";
+            String searchUrl = baseUrl + "/popular/month/";
             HtmlPage mainPage = client.getPage(searchUrl);
             @SuppressWarnings("unchecked")
 

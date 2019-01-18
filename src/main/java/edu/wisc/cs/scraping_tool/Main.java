@@ -73,6 +73,7 @@ public class Main extends Application {
     TextField redditMinUpvotes = new TextField();
     TextField uniqueSubreddit = new TextField();
     TextField lastFmSongsToFetch = new TextField();
+    TextField lastFmFriendsSongsToFetch = new TextField();
     TextField lastFmUsername = new TextField();
     TextField lastFmPassword = new TextField();
     TextField similarSongsToFetch = new TextField();
@@ -85,11 +86,20 @@ public class Main extends Application {
     CheckBox iCheck = new CheckBox("Indie Shuffle");
     CheckBox billCheck = new CheckBox("Billboard");
     CheckBox redditCheck = new CheckBox("Reddit");
-    CheckBox lastFmCheck = new CheckBox("Last FM");
-    CheckBox similarCheck = new CheckBox("Related music");
+    CheckBox lastFmCheck = new CheckBox("Last.FM Suggested Tracks");
+    CheckBox lastFmFriendsCheck = new CheckBox("Last.FM Friend's Top Tracks");
+    CheckBox similarCheck = new CheckBox("Similar music");
+    
+    // output toggle buttons
     ToggleGroup outputSites = new ToggleGroup();
     ToggleButton youtubeBtn = new ToggleButton("Post playlist to YouTube");
     ToggleButton spotifyBtn = new ToggleButton("Post playlist to Spotify  ");
+    
+    // last.fm friend time period buttons
+    ToggleGroup lastFmTimePeriods = new ToggleGroup();
+    ToggleButton weekBtn = new ToggleButton("Week");
+    ToggleButton monthBtn = new ToggleButton("Month");
+    ToggleButton yearBtn = new ToggleButton("Year");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -140,7 +150,7 @@ public class Main extends Application {
 
         // vbox containers
         VBox sites = new VBox(16);
-        sites.setPrefWidth(135);
+        sites.setPrefWidth(200);
         VBox fetch = new VBox(9);
         fetch.setPrefWidth(250);
         VBox upvotes = new VBox(9);
@@ -149,8 +159,6 @@ public class Main extends Application {
         bpGenres.setPrefWidth(50);
         VBox billboardGenres = new VBox();
         billboardGenres.setPrefWidth(50);
-
-        // GridPane options = new GridPane();
 
         GridPane center = new GridPane();
         HBox bottom = new HBox();
@@ -174,8 +182,9 @@ public class Main extends Application {
         redditMinUpvotes.setPromptText("minimum upvotes (defaults to 1)");
         uniqueSubreddit.setText("listentothis");
         lastFmSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
+        lastFmFriendsSongsToFetch.setPromptText("Songs to be fetched");
         lastFmUsername.setPromptText("*required for use with last.fm");
-        lastFmPassword.setPromptText("*required for use with last.fm");
+        lastFmPassword.setPromptText("*required for use with last.fm suggested tracks");
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
         similarArtistTxt.setPromptText("*artist name");
 
@@ -186,6 +195,14 @@ public class Main extends Application {
 
         youtubeBtn.setToggleGroup(outputSites);
         spotifyBtn.setToggleGroup(outputSites);
+        
+        weekBtn.setToggleGroup(lastFmTimePeriods);
+        monthBtn.setToggleGroup(lastFmTimePeriods);
+        yearBtn.setToggleGroup(lastFmTimePeriods); 
+        weekBtn.setSelected(true);
+        HBox times = new HBox();
+        times.getChildren().addAll(weekBtn, monthBtn, yearBtn);
+        
 
         // buttons
         final Button submit = new Button("Submit");
@@ -197,14 +214,15 @@ public class Main extends Application {
         submit.setPrefSize(400, 100);
 
         sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
-                        lastFmCheck, lfmUsername, lfmPassword, similarCheck);
+                        lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
-                        redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmUsername,
+                        redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch, lastFmFriendsSongsToFetch, lastFmUsername,
                         lastFmPassword, similarSongsToFetch);
+        
         upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
                         new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
-                        new HiddenTextField(), new HiddenTextField(), new HiddenTextField(),
+                        new HiddenTextField(), times, new HiddenTextField(), new HiddenTextField(),
                         similarArtistTxt);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
@@ -259,6 +277,7 @@ public class Main extends Application {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Define a new Runnable
+                clearTextArea();
                 Main.output("Initializing request...");
                 Runnable fetchMusic = new Runnable() {
                     public void run() {
@@ -266,70 +285,43 @@ public class Main extends Application {
 
                         // check user input and do not continue if it is invalid
                         if (!verifyInput()) {
+                            inputError();
                             return;
                         }
 
-                        if (bCheck.isSelected()) {
-                            try {
-                                allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()),
-                                                bpUserGenres, bpRandomCheck.isSelected(), false));
-                                playListName += b.getFetchedInfo() + ", ";
-                            } catch (FailingHttpStatusCodeException e) {
-                                Main.output("HTTP ERROR: Trying again...");
-                                try {
-                                    allSongs.addAll(b.fetch(
-                                                    Integer.parseInt(bpSongsToFetch.getText()),
-                                                    bpUserGenres, bpRandomCheck.isSelected(),
-                                                    false));
-                                    playListName += b.getFetchedInfo() + ", ";
-                                } catch (FailingHttpStatusCodeException e1) {
-                                    Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
-                                }
-
-                            }
-                        }
-
-                        if (iCheck.isSelected()) {
-                            allSongs.addAll(i.fetch(Integer.parseInt(indieSongsToFetch.getText())));
-                            playListName += i.getFetchedInfo() + ", ";
-                        }
-
-                        if (billCheck.isSelected()) {
-                            allSongs.addAll(bill.fetch(Integer.parseInt(billSongsToFetch.getText()),
-                                            billUserGenres, billRandomCheck.isSelected()));
-                            playListName += bill.getFetchedInfo() + ", ";
-                        }
-
-                        if (redditCheck.isSelected()) {
-                            // check if textbox is empty -- if so -- default to 1 min upvote
-                            if (redditMinUpvotes.getText().equals("")) {
-                                allSongs.addAll(r.fetch(
-                                                uniqueSubreddit.getText().replaceAll("/", "")
-                                                                .trim(),
-                                                Integer.parseInt(redditSongsToFetch.getText()), 1));
-                            } else {
-                                allSongs.addAll(r.fetch(
-                                                uniqueSubreddit.getText().replaceAll("/", "")
-                                                                .trim(),
-                                                Integer.parseInt(redditSongsToFetch.getText()),
-                                                Integer.parseInt(redditMinUpvotes.getText())));
+                        try {
+                            if (bCheck.isSelected()) {
+                                beatportFetch();
                             }
 
-                            playListName += r.getFetchedInfo() + ", ";
-                        }
+                            if (iCheck.isSelected()) {
+                                indieShuffleFetch();
+                            }
 
-                        if (lastFmCheck.isSelected()) {
-                            allSongs.addAll(l
-                                            .fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
-                            playListName += l.getFetchedInfo() + ", ";
-                        }
+                            if (billCheck.isSelected()) {
+                                billboardFetch();
+                            }
 
-                        if (similarCheck.isSelected()) {
-                            allSongs.addAll(l.fetchSimilar(similarArtistTxt.getText(),
-                                            Integer.parseInt(similarSongsToFetch.getText())));
-                            playListName += l.getFetchedInfo() + ", ";
-                        }
+                            if (redditCheck.isSelected()) {
+                                redditFetch();
+                            }
 
+                            if (lastFmCheck.isSelected()) {
+                                lastFmFetch();
+                            }
+
+                            if (similarCheck.isSelected()) {
+                                relatedFetch();
+                            }
+                            
+                            if (lastFmFriendsCheck.isSelected()) {
+                                lastFmFriendsFetch();
+                            }
+                            
+                        } catch (Exception e) {
+                            Main.output(e.getStackTrace().toString());
+                            System.out.println(e.getStackTrace().toString());
+                        }
                         if (allSongs.size() != 0) {
 
                             if (shuffleSongsCheck.isSelected()) {
@@ -417,6 +409,114 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Helper method that fetches from beatport and adds the songs it retrieved to allSongs
+     */
+    private void beatportFetch() {
+        try {
+            allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()), bpUserGenres,
+                            bpRandomCheck.isSelected(), false));
+            playListName += b.getFetchedInfo() + ", ";
+        } catch (FailingHttpStatusCodeException e) {
+            Main.output("HTTP ERROR: Trying again...");
+            try {
+                allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()), bpUserGenres,
+                                bpRandomCheck.isSelected(), false));
+                playListName += b.getFetchedInfo() + ", ";
+            } catch (FailingHttpStatusCodeException e1) {
+                Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
+            }
+
+        }
+    }
+
+    /**
+     * Helper method that fetches from billboard and adds the songs it retrieved to allSongs
+     */
+    private void billboardFetch() {
+        allSongs.addAll(bill.fetch(
+                        Integer.parseInt(billSongsToFetch.getText()),
+                        billUserGenres, billRandomCheck.isSelected()));
+        playListName += bill.getFetchedInfo() + ", ";
+    }
+
+    /**
+     * Helper method that fetches from indieshuffle and adds the songs it retrieved to allSongs
+     */
+    private void indieShuffleFetch() {
+        allSongs.addAll(i.fetch(
+                        Integer.parseInt(indieSongsToFetch.getText())));
+        playListName += i.getFetchedInfo() + ", ";
+    }
+
+    /**
+     * Helper method that fetches from reddit and adds the songs it retrieved to allSongs
+     */
+    private void redditFetch() {
+     // check if textbox is empty -- if so -- default to 1 min upvote
+        if (redditMinUpvotes.getText().equals("")) {
+            allSongs.addAll(r.fetch(
+                            uniqueSubreddit.getText().replaceAll("/", "")
+                                            .trim(),
+                            Integer.parseInt(redditSongsToFetch.getText()),
+                            1));
+        } else {
+            allSongs.addAll(r.fetch(
+                            uniqueSubreddit.getText().replaceAll("/", "")
+                                            .trim(),
+                            Integer.parseInt(redditSongsToFetch.getText()),
+                            Integer.parseInt(redditMinUpvotes.getText())));
+        }
+
+        playListName += r.getFetchedInfo() + ", ";
+    }
+
+    /**
+     * Helper method that fetches from last.fm and adds the songs it retrieved to allSongs
+     */
+    private void lastFmFetch() {
+        allSongs.addAll(l.fetch(
+                        Integer.parseInt(lastFmSongsToFetch.getText())));
+        playListName += l.getFetchedInfo() + ", ";
+    }
+
+    /**
+     * Helper method that fetches from last.fm's API and database of artist similarities and adds
+     * the songs it retrieved to allSongs
+     */
+    private void relatedFetch() {
+        allSongs.addAll(l.fetchSimilar(similarArtistTxt.getText(),
+                        Integer.parseInt(similarSongsToFetch.getText())));
+        playListName += l.getFetchedInfo() + ", ";
+    }
+    
+    /**
+     * Helper method that fetches from last.fm's API and database of user's and top tracks and adds
+     * songs from the user's friends list
+     */
+    private void lastFmFriendsFetch() {
+        String timePeriod;
+        if (weekBtn.isSelected()) {
+            timePeriod = "7day";
+        } else if (monthBtn.isSelected()) {
+            timePeriod = "1month";
+        } else {
+            timePeriod = "12month";
+        }
+        
+        allSongs.addAll(l.fetchFriendsMusic(lastFmUsername.getText(), timePeriod,
+                        Integer.parseInt(lastFmFriendsSongsToFetch.getText())));
+        playListName += l.getFetchedInfo() + ", ";
+    }
+    
+
+
+    /**
+     * Method to shuffle the order of songs into a new ArrayList
+     * 
+     * @param original the array to be shuffled
+     * @return a new array with random order
+     */
     private ArrayList<Song> shuffleArray(ArrayList<Song> original) {
         ArrayList<Song> newArray = new ArrayList<Song>();
         while (original.size() != 0) {
@@ -429,7 +529,7 @@ public class Main extends Application {
     }
 
     /**
-     * 
+     * Populates a HashMap with genre titles and their corresponding link-IDs on beatport.
      */
     private static void populateGenres() {
 
@@ -487,7 +587,7 @@ public class Main extends Application {
     }
 
     /**
-     * 
+     * Helper method to create an array of checkboxes with names relating genres
      */
     private void createGenreArray() {
 
@@ -501,110 +601,79 @@ public class Main extends Application {
 
     }
 
-    public ArrayList<Song> getAllVideoIds() {
+    /**
+     * simple getter method for 'allSongs' ArrayList
+     * 
+     * @return the arraylist of songs
+     */
+    public ArrayList<Song> getAllSongs() {
         return allSongs;
     }
 
+    /**
+     * simple setter method for allSongs
+     * 
+     * @param allSongs
+     */
     public void setAllSongs(ArrayList<Song> allSongs) {
         this.allSongs = allSongs;
     }
 
-    public boolean verifyInput() {
-
-        billUserGenres = new ArrayList<String>();
-        bpUserGenres = new ArrayList<String>();
-
-        if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
-                        && !redditCheck.isSelected() && !lastFmCheck.isSelected()
-                        && !similarCheck.isSelected()) {
-            Main.output("Error: Please select a website to scrape.");
-            return false;
-        } else {
-            if (bCheck.isSelected()) {
-                if (!StringUtils.isNumeric(bpSongsToFetch.getText())
-                                || Integer.parseInt(bpSongsToFetch.getText()) <= 0
-                                || Integer.parseInt(bpSongsToFetch.getText()) > 100) {
-                    inputError();
-                    return false;
-                }
-
-                for (CheckBox c : bpGenreChecks) {
-                    if (c.isSelected()) {
-                        bpUserGenres.add(c.getText());
-                    }
-                }
-
+    /**
+     * helper method that ensures all paramters required for scraping Beatport are met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyBeatport() {
+        if (bCheck.isSelected()) {
+            if (!StringUtils.isNumeric(bpSongsToFetch.getText())
+                            || Integer.parseInt(bpSongsToFetch.getText()) <= 0
+                            || Integer.parseInt(bpSongsToFetch.getText()) > 100) {
+                return false;
             }
 
-            if (billCheck.isSelected()) {
-                if (!StringUtils.isNumeric(billSongsToFetch.getText())
-                                || Integer.parseInt(billSongsToFetch.getText()) <= 0
-                                || Integer.parseInt(billSongsToFetch.getText()) > 200) {
-                    inputError();
-                    return false;
-                }
-
-                for (CheckBox c : billboardGenreChecks) {
-                    if (c.isSelected()) {
-                        billUserGenres.add(c.getText());
-                    }
+            for (CheckBox c : bpGenreChecks) {
+                if (c.isSelected()) {
+                    bpUserGenres.add(c.getText());
                 }
             }
+        }
+        return true;
+    }
 
-            if (iCheck.isSelected()) {
-                if (!StringUtils.isNumeric(indieSongsToFetch.getText())
-                                || Integer.parseInt(indieSongsToFetch.getText()) <= 0
-                                || Integer.parseInt(indieSongsToFetch.getText()) > 15) {
-                    inputError();
-                    return false;
-                }
-
+    /**
+     * helper method that ensures all paramters required for scraping Billboard are met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyBillboard() {
+        if (billCheck.isSelected()) {
+            if (!StringUtils.isNumeric(billSongsToFetch.getText())
+                            || Integer.parseInt(billSongsToFetch.getText()) <= 0
+                            || Integer.parseInt(billSongsToFetch.getText()) > 200) {
+                return false;
             }
 
-            if (redditCheck.isSelected()) {
-                if (redditMinUpvotes.getText().equals("")) {
-                    if (!StringUtils.isNumeric(redditSongsToFetch.getText())
-                                    || Integer.parseInt(redditSongsToFetch.getText()) <= 0
-                                    || Integer.parseInt(redditSongsToFetch.getText()) > 100) {
-                        inputError();
-                        return false;
-                    }
-                } else {
-                    if (!StringUtils.isNumeric(redditSongsToFetch.getText())
-                                    || (!StringUtils.isNumeric(redditMinUpvotes.getText())
-                                                    && !redditMinUpvotes.getText().equals(""))
-                                    || Integer.parseInt(redditSongsToFetch.getText()) <= 0
-                                    || Integer.parseInt(redditSongsToFetch.getText()) > 100
-                                    || Integer.parseInt(redditMinUpvotes.getText()) <= 0
-                                    || Integer.parseInt(redditMinUpvotes.getText()) > 100000) {
-                        inputError();
-                        return false;
-                    }
+            for (CheckBox c : billboardGenreChecks) {
+                if (c.isSelected()) {
+                    billUserGenres.add(c.getText());
                 }
-
             }
+        }
+        return true;
+    }
 
-            if (lastFmCheck.isSelected()) {
-                l.setUserLogin(lastFmUsername.getText(), lastFmPassword.getText());
-                if (!StringUtils.isNumeric(lastFmSongsToFetch.getText())
-                                || Integer.parseInt(lastFmSongsToFetch.getText()) <= 0
-                                || lastFmUsername.getText().equals("")
-                                || lastFmPassword.getText().equals("")
-                                || !l.verifyUserNamePassword()) {
-                    inputError();
-                    return false;
-                }
-
-            }
-
-            if (similarCheck.isSelected()) {
-                if (!StringUtils.isNumeric(similarSongsToFetch.getText())
-                                || Integer.parseInt(similarSongsToFetch.getText()) <= 0
-                                || similarArtistTxt.getText().equals("")) {
-                    inputError();
-                    return false;
-                }
-
+    /**
+     * helper method that ensures all paramters required for scraping IndieShuffle are met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyIndieShuffle() {
+        if (iCheck.isSelected()) {
+            if (!StringUtils.isNumeric(indieSongsToFetch.getText())
+                            || Integer.parseInt(indieSongsToFetch.getText()) <= 0
+                            || Integer.parseInt(indieSongsToFetch.getText()) > 15) {
+                return false;
             }
 
         }
@@ -612,14 +681,114 @@ public class Main extends Application {
     }
 
     /**
+     * helper method that ensures all paramters required for scraping reddit are met
      * 
+     * @return true if it is okay to continue or false if there is an error
      */
-    private void inputError() {
-        Main.output("Input error.  Make sure a website is selected and a number of songs to be fetched is correctly typed into the input box.");
+    private boolean verifyReddit() {
+        if (redditCheck.isSelected()) {
+            if (redditMinUpvotes.getText().equals("")) {
+                if (!StringUtils.isNumeric(redditSongsToFetch.getText())
+                                || Integer.parseInt(redditSongsToFetch.getText()) <= 0
+                                || Integer.parseInt(redditSongsToFetch.getText()) > 100) {
+                    return false;
+                }
+            } else {
+                if (!StringUtils.isNumeric(redditSongsToFetch.getText())
+                                || (!StringUtils.isNumeric(redditMinUpvotes.getText())
+                                                && !redditMinUpvotes.getText().equals(""))
+                                || Integer.parseInt(redditSongsToFetch.getText()) <= 0
+                                || Integer.parseInt(redditSongsToFetch.getText()) > 100
+                                || Integer.parseInt(redditMinUpvotes.getText()) <= 0
+                                || Integer.parseInt(redditMinUpvotes.getText()) > 100000) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
+     * helper method that ensures all paramters required for scraping last.fm are met
      * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyLastFm() {
+        if (lastFmCheck.isSelected()) {
+            l.setUserLogin(lastFmUsername.getText(), lastFmPassword.getText());
+            if (!StringUtils.isNumeric(lastFmSongsToFetch.getText())
+                            || Integer.parseInt(lastFmSongsToFetch.getText()) <= 0
+                            || lastFmUsername.getText().equals("")
+                            || lastFmPassword.getText().equals("") || !l.verifyUserNamePassword()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * helper method that ensures all paramters required for scraping last.fm's database for related
+     * music is met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyRelatedMusic() {
+        if (similarCheck.isSelected()) {
+            if (!StringUtils.isNumeric(similarSongsToFetch.getText())
+                            || Integer.parseInt(similarSongsToFetch.getText()) <= 0
+                            || similarArtistTxt.getText().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * helper method that ensures all paramters required for scraping last.fm's database for friends
+     * music is met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyLastFmFriendsMusic() {
+        if (lastFmFriendsCheck.isSelected()) {
+            if (!StringUtils.isNumeric(lastFmFriendsSongsToFetch.getText())
+                            || Integer.parseInt(lastFmFriendsSongsToFetch.getText()) <= 0
+                            || lastFmUsername.getText().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Method that ensures no bad input, or missed checkboxes are being submitted to the program.
+     * can be broken up into smaller methods in the future
+     * 
+     * @return
+     */
+    public boolean verifyInput() {
+
+        if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
+                        && !redditCheck.isSelected() && !lastFmCheck.isSelected()
+                        && !similarCheck.isSelected() && !lastFmFriendsCheck.isSelected()) {
+            Main.output("Error: Please select something to scrape.");
+            return false;
+        } else {
+            return verifyBeatport() && verifyBillboard() && verifyIndieShuffle() && verifyReddit()
+                            && verifyLastFm() && verifyRelatedMusic() && verifyLastFmFriendsMusic();
+        }
+    }
+
+    /**
+     * Simple method to output generic text relating to invalid input
+     */
+    private void inputError() {
+        Main.output("Input error.  Make sure a website is selected and a number of songs to be "
+                        + "fetched is correctly typed into the input box.");
+    }
+
+    /**
+     * Helper method to reset all objects. Needs to be run after every 'submit' click
      */
     private void reset() {
 
@@ -641,6 +810,13 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Thread-safe method to output text to the TextArea object. If output comes out at unreasonably
+     * fast rates this can sometimes bug-out
+     * 
+     * @param msg the String to be displayed in the text area. The String will be appeneded to the
+     *        pre-existing text in the text area.
+     */
     public static synchronized void output(String msg) {
         if (ta.getText().equals("")) {
             ta.setText(msg);
@@ -649,8 +825,20 @@ public class Main extends Application {
         }
         ta.appendText("");
     }
+    
+    /**
+     * simple method to clear the text area
+     */
+    public static synchronized void clearTextArea() {
+        ta.clear();
+    }
 
-
+    /**
+     * Simple method to open a website in the user's default browser
+     * 
+     * @param uri the address of the website to be opened
+     * @return true for success and false for an error
+     */
     public static boolean openWebpage(URI uri) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
