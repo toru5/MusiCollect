@@ -173,8 +173,8 @@ public class SpotifyScraper {
         httpPost.addHeader("Content-type", "application/json");
 
         try {
-
-            httpPost.setEntity(new StringEntity("{\"name\":\"" + playlistName + "\"}"));
+            // create private playlist
+            httpPost.setEntity(new StringEntity("{\"name\":\"" + playlistName + "\",\"public\":\"false\"}"));
             response = client.execute(httpPost);
             jsonResponse = EntityUtils.toString(response.getEntity());
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);

@@ -144,7 +144,6 @@ public class Main extends Application {
         // output business
         ta = new TextArea();
         ta.setEditable(false);
-        ta.setPrefHeight(698);
         ta.setPrefWidth(400);
         ta.setWrapText(true);
 
@@ -271,6 +270,7 @@ public class Main extends Application {
         ScrollPane console = new ScrollPane();
         console.setMaxHeight(2000);
         console.setFitToWidth(true);
+        console.setFitToHeight(true);
         console.setContent(ta);
         root.setRight(console);
 
