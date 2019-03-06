@@ -97,6 +97,7 @@ public class LastFmScraper {
             httpGet = new HttpGet(uri);
             response = httpClient.execute(httpGet);
             jsonResponse = EntityUtils.toString(response.getEntity());
+            System.out.println(jsonResponse);
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
             System.out.println(jsonResponse);
 

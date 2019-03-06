@@ -34,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import com.guigarage.flatterfx.*;
 
 public class Main extends Application {
 
@@ -117,6 +118,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("MusiCollect");
         Scene scene = new Scene(setup(), 1400, 800);
+        scene.getStylesheets().add("modena.css");
+        // setUserAgentStylesheet(STYLESHEET_CASPIAN);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
