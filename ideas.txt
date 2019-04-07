@@ -1,7 +1,0 @@
-New ideas for MusiCollect:
-1. Scrape for a TON of music, each week, and build a large graph structure out of it
-	-this could be stored locally on the user's computer (or a server) and then updated every time the program is run
-		-the graph would store lots of information about the song/artist, and it could also fetch some information from
-		 last.fm about related artists, popularity, etc.
-		-the 
-	

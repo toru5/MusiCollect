@@ -277,20 +277,6 @@ public class Main extends Application {
         console.setContent(ta);
         root.setRight(console);
 
-        // future stop button
-        // stop.setOnAction(new EventHandler<ActionEvent>() {
-        // public void handle(ActionEvent event) {
-        //
-        // Runnable stopExecution = new Runnable() {
-        // @Override
-        // public void run() {
-        //
-        //
-        // }
-        // };
-        // }
-        // });
-
         submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Define a new Runnable
@@ -298,7 +284,7 @@ public class Main extends Application {
                 Runnable fetchMusic = new Runnable() {
                     public void run() {
                         reset();
-
+                        Main.output("Verifying input parameters..");
                         // check user input and do not continue if it is invalid
                         if (!verifyInput()) {
                             inputError();

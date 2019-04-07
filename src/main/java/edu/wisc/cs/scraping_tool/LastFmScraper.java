@@ -39,7 +39,7 @@ public class LastFmScraper {
     JSONParser jsonParse = new JSONParser();
 
     final static String API_KEY = "3f0f17bc3fcf1b5fcda4cc9c776391d5";
-    static int topSongs = 7;
+    static int topSongs = 5; // can dynamically change if artist does not have 5 songs released
     static int topArtists = 35;
 
     // used for playlist name
@@ -56,11 +56,6 @@ public class LastFmScraper {
     public void setUserLogin(String uName, String password) {
         this.userName = uName;
         this.password = password;
-    }
-
-    public static void main(String[] args) {
-        LastFmScraper l = new LastFmScraper();
-        l.fetchFriendsMusic("boweree", "7day", 50);
     }
 
     /**
@@ -324,8 +319,6 @@ public class LastFmScraper {
 
     }
 
-
-
     /**
      * THE METHOD verifyUsernamePassword() MUST BE CALLED BEFORE CALLING THIS METHOD Main method
      * that fetches an arbitrary number of songs (up to 100) from each given genre. Genres are
@@ -368,6 +361,7 @@ public class LastFmScraper {
         if (items.size() == 0) {
             Main.output("Error fetching from last.fm -- username or password may be typed incorrectly.");
         }
+        
         int songPos = 1;
         for (HtmlElement htmlItem : items) {
 
