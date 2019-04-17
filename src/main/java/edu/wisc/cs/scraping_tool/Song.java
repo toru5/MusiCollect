@@ -1,5 +1,10 @@
 package edu.wisc.cs.scraping_tool;
 
+/**
+ * Class used to store song data in one encompassing object.
+ * @author Zach Kremer
+ *
+ */
 public class Song {
     private String title;
     private String artist;

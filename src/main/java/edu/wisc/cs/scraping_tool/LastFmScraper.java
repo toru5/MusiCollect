@@ -1,15 +1,10 @@
 package edu.wisc.cs.scraping_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -28,6 +23,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+/**
+ * Class used to fetch music from last.fm by 3 different methods. User's can fetch their friends
+ * music (by API calls), user's can fetch their suggested songs (by scraping HTML content), and
+ * user's can search for related music to any number of artists (by API call)
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class LastFmScraper {
 
     CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -71,18 +74,10 @@ public class LastFmScraper {
      * @return returns a list of Song objects
      */
     public ArrayList<Song> fetchFriendsMusic(String username, String timePeriod, int songsToFetch) {
+
         Main.output("Fetching music from friends of " + username);
         ArrayList<Song> allSongs = new ArrayList<Song>();
-        File output = new File(strDate + "-lfm-friends.txt"); // keep local txt file as well
-        PrintWriter writer = null;
-
         int songsFromEachUser;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         try {
             uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com")
@@ -92,9 +87,7 @@ public class LastFmScraper {
             httpGet = new HttpGet(uri);
             response = httpClient.execute(httpGet);
             jsonResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(jsonResponse);
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
-            System.out.println(jsonResponse);
 
             try {
                 if (jsonObj.get("error").toString().equals("6")) {
@@ -162,14 +155,10 @@ public class LastFmScraper {
                         Main.output("Friend: " + currentFriend + " // Song " + allSongs.size()
                                         + ": " + song.getArtist() + " - " + song.getTitle());
 
-                        writer.println("Song: " + allSongs.size() + " from " + currentFriend + "\n"
-                                        + song.toString() + "\n");
-
                         if (allSongs.size() >= songsToFetch) {
                             // in the case where songsToFetch is an odd number we don't want to
                             // fetch an extra song
                             fetchedInfo = "Last.fm friends music";
-                            writer.close();
                             client.close();
                             return allSongs;
                         }
@@ -187,11 +176,10 @@ public class LastFmScraper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         fetchedInfo = "Last.fm friends music";
         client.close();
-        writer.close();
         return allSongs;
-
     }
 
     /**
@@ -204,16 +192,9 @@ public class LastFmScraper {
      */
     public ArrayList<Song> fetchSimilar(String artistName, int songsToFetch)
                     throws FailingHttpStatusCodeException {
+
         artistName = artistName.trim();
         Main.output("Fetching songs similar to " + artistName);
-        File output = new File(strDate + "-similar.txt"); // keep local txt file as well
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
@@ -294,14 +275,12 @@ public class LastFmScraper {
                     Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - "
                                     + song.getTitle());
 
-                    writer.println("Song: " + (i + 1) + "\n" + song.toString() + "\n");
                 } catch (IndexOutOfBoundsException e) {
                     Main.output("Narrowing search parameters to meet measly number of similar "
                                     + "artists and songs...");
                     topArtists = artistArray.size();
                     topSongs -= 1; // just to make sure :))
                     allSongs.addAll(fetchSimilar(artistName, (songsToFetch - i)));
-                    writer.close();
                     fetchedInfo = "Similar Artists to: " + artistName;
                     return allSongs;
                 }
@@ -313,10 +292,7 @@ public class LastFmScraper {
         }
 
         fetchedInfo = "Similar Artists to: " + artistName;
-        writer.close();
-
         return allSongs;
-
     }
 
     /**
@@ -334,16 +310,7 @@ public class LastFmScraper {
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
         Main.output("Fetching from Last.fm suggested tracks: ");
-
         ArrayList<Song> allSongs = new ArrayList<Song>();
-        File output = new File(strDate + "-last-fm.txt"); // keep local txt file as well
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
         Song song = null;
 
         List<HtmlElement> items = null;
@@ -361,7 +328,7 @@ public class LastFmScraper {
         if (items.size() == 0) {
             Main.output("Error fetching from last.fm -- username or password may be typed incorrectly.");
         }
-        
+
         int songPos = 1;
         for (HtmlElement htmlItem : items) {
 
@@ -397,7 +364,6 @@ public class LastFmScraper {
 
             // print detailed information to console
             Main.output("Song " + songPos + ": " + song.getArtist() + " - " + song.getTitle());
-            writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
             try {
                 TimeUnit.MILLISECONDS.sleep(50);
             } catch (InterruptedException e) {
@@ -413,11 +379,8 @@ public class LastFmScraper {
         }
 
         client.close();
-        writer.close();
-
         fetchedInfo = "Last.fm";
         return allSongs;
-
     }
 
     /**
@@ -428,6 +391,7 @@ public class LastFmScraper {
      * @return a unique list of combinations in the formation <artist>-<song#>
      */
     private ArrayList<String> generateUniqueChoices(int songsToFetch) {
+
         ArrayList<String> uniqueChoices = new ArrayList<String>();
 
         // create list of unique combinations, chosen from random numbers which correspond to
@@ -467,6 +431,7 @@ public class LastFmScraper {
      */
     @SuppressWarnings("unchecked")
     protected boolean verifyUserNamePassword() {
+
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
 

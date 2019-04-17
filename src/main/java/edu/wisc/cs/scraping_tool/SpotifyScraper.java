@@ -23,7 +23,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-
+/**
+ * Class used to find Song objects in the Spotify database, record their URI, then add them to a
+ * user's playlist. The class also handles all authentication that Spotify requires.
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class SpotifyScraper {
     private static CloseableHttpClient client;
     private static HttpGet httpGet;
@@ -36,11 +42,71 @@ public class SpotifyScraper {
     private static JSONParser jsonParse = new JSONParser();
     private static String code;
     private static String token;
-    private static String refreshToken;
+    private static String refreshToken; // not used yet
     private static String userId;
     static final String CLIENT_ID = "f0d4411e78e74a61ac8b205bd3d21b61";
     static final String CLIENT_SECRET = "264bb63e909b44afa6cec4fe52238174";
 
+    /**
+     * Method for retrieving music from spotify. Will return an exact match, if found. Keeps track
+     * of spotify API rate-limiting and pauses if needed, as this method seems to be solely
+     * responsible for overriding the limit
+     * 
+     * @param artist artist identifier
+     * @param track the track title
+     * @return a valid spotify URI ID of the song, if found, null otherwise
+     */
+    private static String search(String artist, String track) {
+        String uriId = null;
+        String rateLimit;
+        try {
+            uri = new URIBuilder().setScheme("https").setHost("api.spotify.com")
+                            .setPath("v1/search")
+                            .setParameter("q", "artist:" + artist + " track:" + track)
+                            .setParameter("type", "track").setParameter("limit", "1").build();
+
+            httpGet = new HttpGet(uri);
+            httpGet.addHeader("Authorization", "Bearer " + token);
+            response = client.execute(httpGet);
+
+            jsonResponse = EntityUtils.toString(response.getEntity());
+            jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+            if (response.getStatusLine().getStatusCode() == 429) {
+                rateLimit = response.getFirstHeader("Retry-After").toString();
+                String[] tokens = rateLimit.split(":");
+                int timeout = (int) Integer.parseInt(tokens[1].trim());
+                Main.output("API RATE LIMIT EXCEEDED // Pausing for " + timeout + " second(s).");
+                TimeUnit.SECONDS.sleep(timeout);
+                return search(artist, track); // recursively retry
+            }
+
+            jsonObj = (JSONObject) jsonObj.get("tracks");
+            if (jsonObj == null) {
+                return null;
+            }
+            JSONArray songArray = (JSONArray) jsonObj.get("items");
+            for (Object j : songArray) {
+                JSONObject j2 = (JSONObject) j;
+                uriId = "spotify:track:" + j2.get("id").toString();
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return uriId;
+    }
+
+    /**
+     * Method that opens a user's default browser with a prompt to authorize MusiCollect to make
+     * changes to their Spotify account. Data is transmitted over a socket connection. Upon
+     * authorization, the connection will terminate and the token will be used for further API
+     * calls.
+     * 
+     * Future fix: need to print out an informational message in the browser that tells the user
+     * that the authentication was sucessful and that they can return to the program -- right now it
+     * just says that the connection failed.
+     */
     private static void authenticate() {
         client = HttpClients.createDefault();
 
@@ -103,57 +169,6 @@ public class SpotifyScraper {
         }
     }
 
-
-    /**
-     * Method for retrieving music from spotify. Will return an exact match, if found. Keeps track
-     * of spotify API rate-limiting and pauses if needed, as this method seems to be solely
-     * responsible for overriding the limit
-     * 
-     * @param artist artist identifier
-     * @param track the track title
-     * @return a valid spotify URI ID of the song, if found, null otherwise
-     */
-    private static String search(String artist, String track) {
-        String uriId = null;
-        String rateLimit;
-        try {
-            uri = new URIBuilder().setScheme("https").setHost("api.spotify.com")
-                            .setPath("v1/search")
-                            .setParameter("q", "artist:" + artist + " track:" + track)
-                            .setParameter("type", "track").setParameter("limit", "1").build();
-
-            httpGet = new HttpGet(uri);
-            httpGet.addHeader("Authorization", "Bearer " + token);
-            response = client.execute(httpGet);
-
-            jsonResponse = EntityUtils.toString(response.getEntity());
-            jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
-            if (response.getStatusLine().getStatusCode() == 429) {
-                rateLimit = response.getFirstHeader("Retry-After").toString();
-                String[] tokens = rateLimit.split(":");
-                int timeout = (int) Integer.parseInt(tokens[1].trim());
-                Main.output("API RATE LIMIT EXCEEDED // Pausing for " + timeout + " second(s).");
-                TimeUnit.SECONDS.sleep(timeout);
-                return search(artist, track); // recursively retry
-            }
-
-            jsonObj = (JSONObject) jsonObj.get("tracks");
-            if (jsonObj == null) {
-                return null;
-            }
-            JSONArray songArray = (JSONArray) jsonObj.get("items");
-            for (Object j : songArray) {
-                JSONObject j2 = (JSONObject) j;
-                uriId = "spotify:track:" + j2.get("id").toString();
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return uriId;
-    }
-
     /**
      * Method for creating a playlist on Spotify. References the Search() method to retrieve valid
      * URI IDs of songs
@@ -174,7 +189,8 @@ public class SpotifyScraper {
 
         try {
             // create private playlist
-            httpPost.setEntity(new StringEntity("{\"name\":\"" + playlistName + "\",\"public\":\"false\"}"));
+            httpPost.setEntity(new StringEntity(
+                            "{\"name\":\"" + playlistName + "\",\"public\":\"false\"}"));
             response = client.execute(httpPost);
             jsonResponse = EntityUtils.toString(response.getEntity());
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);

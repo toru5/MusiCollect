@@ -18,8 +18,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Class that attempts to find Song objects on YouTube, records their video ids, and posts them to
+ * the user's playlist. This class also handles all authentication that Google/YouTube require.
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class YouTubeScraper {
-
 
     private static YouTube youtube;
 

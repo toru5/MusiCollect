@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -36,6 +37,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import com.guigarage.flatterfx.*;
 
+/**
+ * Main class that launches the GUI and handles requests made by the user.
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class Main extends Application {
 
     static HashMap<String, Genre> bpGenreMap = new HashMap<String, Genre>();
@@ -60,8 +67,8 @@ public class Main extends Application {
 
     // used for playlist name
     private static final DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    Date date = new Date();
-    String strDate = sdf.format(date);
+    static Date date = new Date();
+    static String strDate = sdf.format(date);
 
     String playListName = "";
 
@@ -75,7 +82,7 @@ public class Main extends Application {
     TextField lastFmSongsToFetch = new TextField();
     TextField lastFmFriendsSongsToFetch = new TextField();
     TextField lastFmUsername = new TextField();
-    TextField lastFmPassword = new TextField();
+    PasswordField lastFmPassword = new PasswordField();
     TextField similarSongsToFetch = new TextField();
     TextField similarArtistTxt = new TextField();
 
@@ -105,6 +112,7 @@ public class Main extends Application {
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
     CheckBox bpRandomCheck = new CheckBox("BEATPORT Random Song Order?");
     CheckBox shuffleSongsCheck = new CheckBox("Shuffle Songs in Playlist?");
+    CheckBox textFileOutputCheck = new CheckBox("Output detailed text file?");
 
     class HiddenTextField extends TextField {
         public HiddenTextField() {
@@ -161,13 +169,14 @@ public class Main extends Application {
         bpGenres.setPrefWidth(50);
         VBox billboardGenres = new VBox();
         billboardGenres.setPrefWidth(50);
+        VBox outputOptions = new VBox(16);
 
         GridPane center = new GridPane();
         HBox bottom = new HBox();
 
         // column headers
         Label col1 = new Label("Websites to scrape:");
-        Label col2 = new Label("");
+        Label col2 = new Label("Songs to fetch:");
         Label col3 = new Label("Additional info");
         Label col4 = new Label("BEATPORT genres to select from:");
         Label col5 = new Label("BILLBOARD genres to select from:");
@@ -190,7 +199,6 @@ public class Main extends Application {
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
         similarArtistTxt.setPromptText("*artist1; artist2; etc");
 
-        shuffleSongsCheck.setPrefSize(200, 100);
         youtubeBtn.setPrefWidth(200);
         spotifyBtn.setPrefWidth(200);
         spotifyBtn.setSelected(true);
@@ -231,7 +239,6 @@ public class Main extends Application {
 
         bpGenreChecks.sort(new Comparator<CheckBox>() {
 
-            @Override
             public int compare(CheckBox o1, CheckBox o2) {
                 return o1.getText().compareTo(o2.getText());
             }
@@ -240,7 +247,6 @@ public class Main extends Application {
 
         billboardGenreChecks.sort(new Comparator<CheckBox>() {
 
-            @Override
             public int compare(CheckBox o1, CheckBox o2) {
                 return o1.getText().compareTo(o2.getText());
             }
@@ -265,7 +271,9 @@ public class Main extends Application {
         center.add(billboardGenres, 4, 0);
         center.add(billRandomCheck, 4, 1);
 
-        bottom.getChildren().addAll(submit, exit, shuffleSongsCheck, youtubeBtn, spotifyBtn);
+        outputOptions.setPrefWidth(200);
+        outputOptions.getChildren().addAll(shuffleSongsCheck, textFileOutputCheck);
+        bottom.getChildren().addAll(submit, exit, outputOptions, youtubeBtn, spotifyBtn);
 
         root.setCenter(center);
         root.setBottom(bottom);
@@ -327,6 +335,9 @@ public class Main extends Application {
                             System.out.println(e.getStackTrace().toString());
                         }
                         if (allSongs.size() != 0) {
+                            if (textFileOutputCheck.isSelected()) {
+                                printConsole();
+                            }
 
                             if (shuffleSongsCheck.isSelected()) {
                                 allSongs = shuffleArray(allSongs);
@@ -856,5 +867,23 @@ public class Main extends Application {
             }
         }
         return false;
+    }
+
+    /**
+     * Static method that prints the contents of the console (text area) to a txt file in the
+     * current directory.
+     */
+    public static void printConsole() {
+        File file = new File("MusiCollect_Results-" + strDate + ".txt");
+        PrintWriter writer = null;
+
+        try {
+            writer = new PrintWriter(file);
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+
+        writer.println(ta.getText());
+        writer.close();
     }
 }

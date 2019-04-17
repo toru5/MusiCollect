@@ -16,6 +16,12 @@ import com.github.jreddit.retrieval.params.SubmissionSort;
 import com.github.jreddit.utils.restclient.HttpRestClient;
 import com.github.jreddit.utils.restclient.RestClient;
 
+/**
+ * Class that fetches music (by API calls from a reddit library) from any subreddit on reddit.com
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class RedditScraper {
     private RestClient restClient;
     private User user;
@@ -68,16 +74,6 @@ public class RedditScraper {
     public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
         List<Submission> songs = getTopSubmissions(subreddit);
         Main.output("Fetching from: reddit/r/" + subreddit);
-
-        File output = new File(strDate + "-reddit-" + subreddit + "-songs.txt"); // keep local txt
-                                                                                 // file as well
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
         int count = 0;
@@ -134,7 +130,6 @@ public class RedditScraper {
             // print detailed information to console
             Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist() + " - "
                             + song.getTitle());
-            writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
             count++;
             try {
                 TimeUnit.MILLISECONDS.sleep(50);
@@ -148,14 +143,13 @@ public class RedditScraper {
 
         }
 
-        // fetchedInfo = "Reddit" + subreddit + " (Top " + songsToFetch + " songs)";
         fetchedInfo = "reddit/" + subreddit;
-        writer.close();
         return allSongs;
     }
 
     /**
      * simple getter method
+     * 
      * @return fetchedInfo
      */
     public String getFetchedInfo() {
@@ -165,6 +159,7 @@ public class RedditScraper {
 
     /**
      * simple setter method
+     * 
      * @param fetchedInfo
      */
     public void setFetchedInfo(String fetchedInfo) {

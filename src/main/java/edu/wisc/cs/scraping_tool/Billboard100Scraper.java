@@ -16,6 +16,12 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+/**
+ * Class used to fetch music (by scraping HTML content) from billboard.com
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class Billboard100Scraper {
 
     ArrayList<Song> allSongs = new ArrayList<Song>();
@@ -52,15 +58,6 @@ public class Billboard100Scraper {
 
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
-
-        File output = new File(strDate + "-billboard-100-songs.txt"); // keep local txt file as well
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         int genreCount = 0;
 
@@ -162,7 +159,6 @@ public class Billboard100Scraper {
                         // print detailed information to console
                         Main.output(song.getGenre() + " - Position " + songPos + ": "
                                         + song.getArtist() + " - " + song.getTitle());
-                        writer.println("Song: " + songPos + "\n" + song.toString() + "\n");
 
                         TimeUnit.MILLISECONDS.sleep(50); // be nice
 
@@ -172,20 +168,15 @@ public class Billboard100Scraper {
                 }
 
                 client.close();
-                writer.close();
-            } catch (
 
-            Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             genreCount++;
         }
 
-        // fetchedInfo = "Billboard Top 100 - Genres: " + prettyGenreList + " (Top " + songsToFetch
-        // + " Songs)";
         fetchedInfo = "Billboard";
         return allSongs;
-
     }
 
     public String getFetchedInfo() {
@@ -233,6 +224,7 @@ public class Billboard100Scraper {
 
     /**
      * simple getter method
+     * 
      * @return genreMap
      */
     public HashMap<String, Genre> getGenreMap() {
@@ -241,6 +233,7 @@ public class Billboard100Scraper {
 
     /**
      * simple setter method
+     * 
      * @param genreMap
      */
     public void setGenreMap(HashMap<String, Genre> genreMap) {

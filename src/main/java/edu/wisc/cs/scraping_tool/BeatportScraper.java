@@ -1,13 +1,9 @@
 package edu.wisc.cs.scraping_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -19,6 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Class used to fetch music (by scraping HTML content) from beatport.com
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class BeatportScraper {
 
     // initialize lists
@@ -59,15 +61,6 @@ public class BeatportScraper {
 
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
-
-        File output = new File(strDate + "-beatport-songs.txt"); // keep local txt file as well
-        PrintWriter writer = null;
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         for (String genreLink : genreLinks) {
             String searchUrl = baseUrl + genreLink;
@@ -207,7 +200,6 @@ public class BeatportScraper {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                        writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
 
                         // Thread.sleep(1000); // be nice to website?
                     }
@@ -224,17 +216,9 @@ public class BeatportScraper {
 
         }
 
-        // // create playlist -- this should eventually be in the main method??
-        // playlistId = YouTubeScraper.createPlaylist(allVideoIds,
-        // strDate + "-Beatport-Results (Genres: " + prettyGenreList);
-        // fetchedInfo = "Beatport (Genres: " + prettyGenreList + ")";
         fetchedInfo = "Beatport";
-
         client.close();
-        writer.close();
-
         return allSongs;
-
     }
 
 

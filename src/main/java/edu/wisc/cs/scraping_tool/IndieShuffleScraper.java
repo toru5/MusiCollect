@@ -14,10 +14,16 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+/**
+ * Class used to fetch music (by scraping HTML content) from indieshuffle.com.
+ * 
+ * @author Zach Kremer
+ *
+ */
 public class IndieShuffleScraper {
 
     ArrayList<Song> allSongs = new ArrayList<Song>();
-    
+
     // used for playlist name
     String fetchedInfo = "";
     private static final DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -34,25 +40,15 @@ public class IndieShuffleScraper {
      * @return Returns a playlist name including information about the genres collected and date
      * @throws FailingHttpStatusCodeException
      */
-    public ArrayList<Song> fetch(int songsToFetch)
-                    throws FailingHttpStatusCodeException {
+    public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
         Main.output("Fetching from Indie Shuffle");
-
-        File output = new File(strDate + "-indie-shuffle-songs.txt"); // keep local txt file as well
-        PrintWriter writer = null;
 
         String baseUrl = "https://www.indieshuffle.com";
         WebClient client = new WebClient();
 
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
-
-        try {
-            writer = new PrintWriter(output);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
 
         try {
             String searchUrl = baseUrl + "/popular/month/";
@@ -72,17 +68,15 @@ public class IndieShuffleScraper {
                     String strTitle = title.asText();
                     String[] titleTokens = strTitle.split("-");
                     strTitle = titleTokens[1];
-                    
-                    HtmlElement artist = ((HtmlElement) htmlItem
-                                    .getFirstByXPath(".//h5/strong"));
+
+                    HtmlElement artist = ((HtmlElement) htmlItem.getFirstByXPath(".//h5/strong"));
                     String strArtist = artist.asText();
 
-                    HtmlElement albumArtContainer = ((HtmlElement) htmlItem.getFirstByXPath(
-                                    ".//div[contains(@class, 'commontrack')]"));
+                    HtmlElement albumArtContainer = ((HtmlElement) htmlItem
+                                    .getFirstByXPath(".//div[contains(@class, 'commontrack')]"));
                     String albumArtLink = albumArtContainer.getAttribute("data-artwork").toString();
-                    
-                    HtmlElement link = htmlItem.getFirstByXPath(
-                                    ".//a[@class='pink ajaxlink']");
+
+                    HtmlElement link = htmlItem.getFirstByXPath(".//a[@class='pink ajaxlink']");
                     String strLink = baseUrl + link.getAttribute("href");
 
                     // create song object
@@ -93,14 +87,13 @@ public class IndieShuffleScraper {
                     song.setGenre("Indie");
                     song.setAlbumArtLink(albumArtLink);
                     song.setLink(strLink);
-                    
+
                     allSongs.add(song);
 
                     // print detailed information to console
                     Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
                                     + song.getArtist() + " - " + song.getTitle());
-                    writer.println("Song: " + (count + 1) + "\n" + song.toString() + "\n");
-                    
+
                     TimeUnit.MILLISECONDS.sleep(50);
 
                     if (count == songsToFetch - 1) {
@@ -112,17 +105,15 @@ public class IndieShuffleScraper {
             }
 
             client.close();
-            writer.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-//        fetchedInfo = "Indie Shuffle (Top " + songsToFetch + " Songs)";
         fetchedInfo = "Indie Shuffle";
         return allSongs;
-
     }
-    
+
     public String getFetchedInfo() {
         return fetchedInfo;
     }
