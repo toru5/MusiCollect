@@ -686,8 +686,7 @@ public class Main extends Application {
     private boolean verifyIndieShuffle() {
         if (iCheck.isSelected()) {
             if (!StringUtils.isNumeric(indieSongsToFetch.getText())
-                            || Integer.parseInt(indieSongsToFetch.getText()) <= 0
-                            || Integer.parseInt(indieSongsToFetch.getText()) > 15) {
+                            || Integer.parseInt(indieSongsToFetch.getText()) <= 0) {
                 return false;
             }
 

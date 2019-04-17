@@ -42,6 +42,12 @@ public class IndieShuffleScraper {
      */
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
+        if (songsToFetch > 15) {
+            Main.output("Maximum amount of songs IndieShuffle can send is 15\nSetting "
+                            + "that number to 15 now.");
+            songsToFetch = 15;
+        }
+
         Main.output("Fetching from Indie Shuffle");
 
         String baseUrl = "https://www.indieshuffle.com";
