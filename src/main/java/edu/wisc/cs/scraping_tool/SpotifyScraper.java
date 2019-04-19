@@ -2,6 +2,7 @@ package edu.wisc.cs.scraping_tool;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
@@ -136,9 +137,18 @@ public class SpotifyScraper {
                     break;
                 }
             }
+            
+            // code was successfully read -- print output in tab letting user know 
+            PrintWriter webOut = new PrintWriter(socket.getOutputStream());
+            webOut.println("HTTP/1.1 200 OK");
+            webOut.println("Content-Type: text/html");
+            webOut.println("\r\n");
+            webOut.println("<p>Verification code successfully received. You may now close this tab.</p>");
+            
+            webOut.close();         
             socket.close();
             serverSocket.close();
-            Main.output("Verification code successfully received.");
+            Main.output("Verification code successfully received. Adding songs to playlist...");
 
             // set body of POST method and encode in x-www-url format
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
