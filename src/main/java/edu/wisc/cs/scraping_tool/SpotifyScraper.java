@@ -137,18 +137,18 @@ public class SpotifyScraper {
                     break;
                 }
             }
-            
-            // code was successfully read -- print output in tab letting user know 
+
+            // code was successfully read -- print output in tab letting user know
             PrintWriter webOut = new PrintWriter(socket.getOutputStream());
             webOut.println("HTTP/1.1 200 OK");
             webOut.println("Content-Type: text/html");
             webOut.println("\r\n");
             webOut.println("<p>Verification code successfully received. You may now close this tab.</p>");
-            
-            webOut.close();         
+
+            webOut.close();
             socket.close();
             serverSocket.close();
-            Main.output("Verification code successfully received. Adding songs to playlist...");
+            // Main.output("Verification code successfully received. Adding songs to playlist...");
 
             // set body of POST method and encode in x-www-url format
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -206,16 +206,15 @@ public class SpotifyScraper {
             jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
             playlistId = jsonObj.get("id").toString();
 
-
             httpGet = new HttpGet(uri);
             httpGet.addHeader("Authorization", "Bearer " + token);
             response = client.execute(httpGet);
 
             int chunk = 100; // post in chunks
             int songsNotFound = 0;
-            int iterations = 0;
 
-            // do the POST in chunks
+            int iterations;
+
             if (songs.size() % 100 == 0) {
                 iterations = (songs.size() / chunk) - 1;
             } else {
@@ -261,6 +260,99 @@ public class SpotifyScraper {
             e.printStackTrace();
         }
         return playlistId;
+    }
+
+    /**
+     * Method that converts a spotify playlist into a list of Song Objects that can be further
+     * converted if so desired.
+     * 
+     * @param playlistID Spotify playlist ID (can be obtained by getting the URI and locating the
+     *        section that says playlist:
+     * @return a list of song objects
+     */
+    public static ArrayList<Song> playlistToSongObjects(String playlistID) {
+        ArrayList<Song> results = new ArrayList<Song>();
+        authenticate();
+        int limit = 100; // max limit set by spotify
+        int offset = 0;
+        int totalSongs;
+        try {
+            uri = new URIBuilder().setScheme("https").setHost("api.spotify.com")
+                            .setPath("v1/playlists/" + playlistID + "/tracks")
+                            .setParameter("fields", "total,items(track(name, artists(name)))")
+                            .setParameter("limit", Integer.toString(limit))
+                            .setParameter("offset", Integer.toString(offset)).build();
+
+            httpGet = new HttpGet(uri);
+            httpGet.addHeader("Authorization", "Bearer " + token);
+            response = client.execute(httpGet);
+
+            jsonResponse = EntityUtils.toString(response.getEntity());
+            jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+            totalSongs = Integer.parseInt(jsonObj.get("total").toString());
+
+            if (jsonObj == null) {
+                return null;
+            }
+
+            JSONArray songArray = (JSONArray) jsonObj.get("items");
+
+            Main.output("Collecting music from your playlist... this may take a moment.");
+
+            for (Object j : songArray) {
+                JSONObject j2 = (JSONObject) j;
+                JSONObject j3 = (JSONObject) j2.get("track");
+                JSONArray j4 = (JSONArray) j3.get("artists");
+                JSONObject artistJson = (JSONObject) j4.get(0);
+
+                results.add(new Song(artistJson.get("name").toString(), j3.get("name").toString()));
+            }
+
+            int iterations;
+
+            if (totalSongs < 100) {
+                iterations = 0; // no need to add more songs
+            } else {
+                iterations = ((totalSongs - 100) / limit) + 1; // loop through and add remaining
+                                                               // songs
+            }
+
+            for (int i = 0; i < iterations; i++) {
+                offset += 100;
+                uri = new URIBuilder().setScheme("https").setHost("api.spotify.com")
+                                .setPath("v1/playlists/" + playlistID + "/tracks")
+                                .setParameter("fields", "total,items(track(name, artists(name)))")
+                                .setParameter("limit", Integer.toString(limit))
+                                .setParameter("offset", Integer.toString(offset)).build();
+
+                httpGet = new HttpGet(uri);
+                httpGet.addHeader("Authorization", "Bearer " + token);
+                response = client.execute(httpGet);
+
+                jsonResponse = EntityUtils.toString(response.getEntity());
+                jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+
+                if (jsonObj == null) {
+                    return null;
+                }
+
+                JSONArray songArrayInner = (JSONArray) jsonObj.get("items");
+                for (Object j : songArrayInner) {
+                    JSONObject j2 = (JSONObject) j;
+                    JSONObject j3 = (JSONObject) j2.get("track");
+                    JSONArray j4 = (JSONArray) j3.get("artists");
+                    JSONObject artistJson = (JSONObject) j4.get(0);
+
+                    results.add(new Song(artistJson.get("name").toString(),
+                                    j3.get("name").toString()));
+                }
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return results;
     }
 
 }

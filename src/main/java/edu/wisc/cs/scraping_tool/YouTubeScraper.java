@@ -47,7 +47,9 @@ public class YouTubeScraper {
                 videoIds.add(id.get(0)); // only want 1 track
             }
         }
-
+        
+        Main.output("Songs successfully prepared for YouTube. Getting ready to create the new playlist...");
+        
         List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube");
         String playlistId = "";
 
@@ -76,7 +78,8 @@ public class YouTubeScraper {
             // e.printStackTrace();
             Main.output("Exception: " + e.getMessage());
         }
-
+        Main.output("Playlist complete.\nListen to your new playlist here: https://www.youtube.com/playlist?list="
+                        + playlistId);
         return playlistId;
     }
 

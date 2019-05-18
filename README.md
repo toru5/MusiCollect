@@ -2,7 +2,7 @@
 - Java is required to run this program. This can be obtained at: https://www.java.com/download/
 
 ## Installation:
-- Download musiCollect.jar using the following link: https://github.com/toru5/MusiCollect/raw/master/musiCollect.jar
+- Download musiCollect.jar using this [link](https://github.com/toru5/MusiCollect/blob/master/MusiCollect.jar?raw=true)
 - If you haven't installed Java, download the latest JRE using this <a href="https://www.java.com/download/">link</a>
 - Run musiCollect.jar and have fun scraping!
 

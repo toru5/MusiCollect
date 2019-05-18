@@ -84,7 +84,8 @@ public class Main extends Application {
     TextField lastFmUsername = new TextField();
     PasswordField lastFmPassword = new PasswordField();
     TextField similarSongsToFetch = new TextField();
-    TextField similarArtistTxt = new TextField();
+    TextField similarArtists = new TextField();
+    TextField spotifyPlaylistID = new TextField();
 
     static TextArea ta;
 
@@ -197,7 +198,8 @@ public class Main extends Application {
         lastFmUsername.setPromptText("*required for use with last.fm");
         lastFmPassword.setPromptText("*required for use with last.fm suggested tracks");
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
-        similarArtistTxt.setPromptText("*artist1; artist2; etc");
+        similarArtists.setPromptText("*artist1; artist2; etc");
+        spotifyPlaylistID.setPromptText("Spotify playlist ID or URI to convert");
 
         youtubeBtn.setPrefWidth(200);
         spotifyBtn.setPrefWidth(200);
@@ -217,23 +219,25 @@ public class Main extends Application {
         final Button submit = new Button("Submit");
         Button exit = new Button("Exit");
         Button stop = new Button("Stop");
+        Button spotifyToYouTube = new Button("Convert Spotify Playlist to YouTube");
 
         exit.setPrefSize(400, 100);
         // stop.setPrefSize(400, 100);
         submit.setPrefSize(400, 100);
 
         sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
-                        lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck);
+                        lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck,
+                        spotifyToYouTube);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch,
                         lastFmFriendsSongsToFetch, lastFmUsername, lastFmPassword,
-                        similarSongsToFetch);
+                        similarSongsToFetch, spotifyPlaylistID);
 
         upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
                         new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
                         new HiddenTextField(), times, new HiddenTextField(), new HiddenTextField(),
-                        similarArtistTxt);
+                        similarArtists);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
 
@@ -284,6 +288,36 @@ public class Main extends Application {
         console.setFitToHeight(true);
         console.setContent(ta);
         root.setRight(console);
+
+        spotifyToYouTube.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                // Define a new Runnable
+                clearTextArea();
+                Runnable convertPlaylist = new Runnable() {
+                    public void run() {
+                        reset();
+                        Main.output("Verifying input parameters..");
+                        if (spotifyPlaylistID.getText().equals("")) {
+                            Main.output("ERROR: Spotify playlist ID cannot be empty");
+                            return;
+                        }
+                        ArrayList<Song> songs = SpotifyScraper.playlistToSongObjects(
+                                        parseSpotifyPlaylistURI(spotifyPlaylistID.getText()));
+
+                        // create youtube playlist from song list
+                        YouTubeScraper.createPlaylist(songs, "MusiCollect Converted Playlist");
+                    }
+                };
+                try {
+
+                    Thread submitThread = new Thread(convertPlaylist);
+                    submitThread.start();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -492,7 +526,7 @@ public class Main extends Application {
      * the songs it retrieved to allSongs
      */
     private void similarFetch() {
-        String[] tokens = similarArtistTxt.getText().split(";");
+        String[] tokens = similarArtists.getText().split(";");
         String artistList = "";
         for (String artist : tokens) {
             if (!(artist = artist.trim()).equals("")) {
@@ -750,7 +784,7 @@ public class Main extends Application {
         if (similarCheck.isSelected()) {
             if (!StringUtils.isNumeric(similarSongsToFetch.getText())
                             || Integer.parseInt(similarSongsToFetch.getText()) <= 0
-                            || similarArtistTxt.getText().equals("")) {
+                            || similarArtists.getText().equals("")) {
                 return false;
             }
         }
@@ -873,6 +907,7 @@ public class Main extends Application {
      * current directory.
      */
     public static void printConsole() {
+
         File file = new File("MusiCollect_Results-" + strDate + ".txt");
         PrintWriter writer = null;
 
@@ -884,5 +919,25 @@ public class Main extends Application {
 
         writer.println(ta.getText());
         writer.close();
+    }
+
+
+    /**
+     * Method used to extract a URI from potentially bad user input
+     * 
+     * @param userText user input
+     * @return the spotify playlist uri (if it exists within the input), else just returns the user
+     *         input
+     */
+    public static String parseSpotifyPlaylistURI(String userText) {
+        int index;
+        String uri = null;
+        String searchCriteria = "playlist:";
+        if ((index = userText.lastIndexOf(searchCriteria)) != -1) {
+            uri = userText.substring(index + searchCriteria.length(), userText.length());
+        } else {
+            uri = userText;
+        }
+        return uri;
     }
 }
