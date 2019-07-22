@@ -392,13 +392,21 @@ public class Main extends Application {
 
                                     playlistId = SpotifyScraper.createPlaylist(allSongs,
                                                     playListName);
-                                    Main.output("Fetching complete. Your Spotify playlist can be found"
-                                                    + " here: https://open.spotify.com/playlist/"
-                                                    + playlistId);
-                                    desktop.browse(new URIBuilder()
-                                                    .setPath("https://open.spotify.com/playlist/"
-                                                                    + playlistId)
-                                                    .build());
+
+                                    if (playlistId == null) {
+                                        Main.output("An error occured with Spotify authentication."
+                                                        + "  Please ensure port 8080 on your "
+                                                        + "computer is not being used and"
+                                                        + " try again.");
+                                    } else {
+                                        Main.output("Fetching complete. Your Spotify playlist can be found"
+                                                        + " here: https://open.spotify.com/playlist/"
+                                                        + playlistId);
+                                        desktop.browse(new URIBuilder().setPath(
+                                                        "https://open.spotify.com/playlist/"
+                                                                        + playlistId)
+                                                        .build());
+                                    }
 
 
                                 } else {

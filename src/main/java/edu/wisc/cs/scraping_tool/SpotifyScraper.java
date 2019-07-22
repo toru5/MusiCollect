@@ -108,11 +108,11 @@ public class SpotifyScraper {
      * that the authentication was sucessful and that they can return to the program -- right now it
      * just says that the connection failed.
      */
-    private static void authenticate() {
+    private static boolean authenticate(int portNumber) {
         client = HttpClients.createDefault();
 
         try {
-            redirectUri = new URIBuilder().setScheme("http").setHost("localhost:8080")
+            redirectUri = new URIBuilder().setScheme("http").setHost("localhost:" + portNumber)
                             .setPath("Callback").build();
             uri = new URIBuilder().setScheme("https").setHost("accounts.spotify.com")
                             .setPath("authorize").setParameter("client_id", CLIENT_ID)
@@ -123,7 +123,7 @@ public class SpotifyScraper {
             httpGet = new HttpGet(uri);
             response = client.execute(httpGet);
 
-            ServerSocket serverSocket = new ServerSocket(8080);
+            ServerSocket serverSocket = new ServerSocket(portNumber);
             Main.openWebpage(uri);
             Socket socket = serverSocket.accept();
             InputStreamReader input = new InputStreamReader(socket.getInputStream());
@@ -176,7 +176,9 @@ public class SpotifyScraper {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -188,7 +190,9 @@ public class SpotifyScraper {
      * @return a valid spotify playlist ID
      */
     public static String createPlaylist(ArrayList<Song> songs, String playlistName) {
-        authenticate();
+        if (!authenticate(8080)) {
+            return null;
+        }
 
         ArrayList<String> ids;
         String playlistId = null;
@@ -272,7 +276,7 @@ public class SpotifyScraper {
      */
     public static ArrayList<Song> playlistToSongObjects(String playlistID) {
         ArrayList<Song> results = new ArrayList<Song>();
-        authenticate();
+        authenticate(8080);
         int limit = 100; // max limit set by spotify
         int offset = 0;
         int totalSongs;
