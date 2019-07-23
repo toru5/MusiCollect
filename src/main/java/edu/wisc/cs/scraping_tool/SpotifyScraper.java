@@ -1,6 +1,7 @@
 package edu.wisc.cs.scraping_tool;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -47,6 +48,7 @@ public class SpotifyScraper {
     private static String userId;
     static final String CLIENT_ID = "f0d4411e78e74a61ac8b205bd3d21b61";
     static final String CLIENT_SECRET = "264bb63e909b44afa6cec4fe52238174";
+    static int PORT_NUMBER = 8080;
 
     /**
      * Method for retrieving music from spotify. Will return an exact match, if found. Keeps track
@@ -110,7 +112,10 @@ public class SpotifyScraper {
      */
     private static boolean authenticate(int portNumber) {
         client = HttpClients.createDefault();
-
+        PrintWriter webOut = null;
+        ServerSocket serverSocket = null;
+        Socket socket = null;
+        
         try {
             redirectUri = new URIBuilder().setScheme("http").setHost("localhost:" + portNumber)
                             .setPath("Callback").build();
@@ -123,9 +128,9 @@ public class SpotifyScraper {
             httpGet = new HttpGet(uri);
             response = client.execute(httpGet);
 
-            ServerSocket serverSocket = new ServerSocket(portNumber);
+            serverSocket = new ServerSocket(portNumber);
             Main.openWebpage(uri);
-            Socket socket = serverSocket.accept();
+            socket = serverSocket.accept();
             InputStreamReader input = new InputStreamReader(socket.getInputStream());
             BufferedReader info = new BufferedReader(input);
             String s = null;
@@ -139,11 +144,11 @@ public class SpotifyScraper {
             }
 
             // code was successfully read -- print output in tab letting user know
-            PrintWriter webOut = new PrintWriter(socket.getOutputStream());
+            webOut = new PrintWriter(socket.getOutputStream());
             webOut.println("HTTP/1.1 200 OK");
             webOut.println("Content-Type: text/html");
             webOut.println("\r\n");
-            webOut.println("<p>Verification code successfully received. You may now close this tab.</p>");
+            webOut.println("<p>Verification code received successfully. You may now close this tab.</p>");
 
             webOut.close();
             socket.close();
@@ -176,6 +181,14 @@ public class SpotifyScraper {
 
         } catch (Exception e) {
             e.printStackTrace();
+            webOut.close();
+            try {
+                socket.close();
+                serverSocket.close();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             return false;
         }
         return true;
@@ -190,13 +203,15 @@ public class SpotifyScraper {
      * @return a valid spotify playlist ID
      */
     public static String createPlaylist(ArrayList<Song> songs, String playlistName) {
-        if (!authenticate(8080)) {
+
+        if (!authenticateHelper()) {
             return null;
         }
 
         ArrayList<String> ids;
         String playlistId = null;
 
+        
         httpPost = new HttpPost("https://api.spotify.com/v1/users/" + userId + "/playlists");
         httpPost.addHeader("Authorization", "Bearer " + token);
         httpPost.addHeader("Content-type", "application/json");
@@ -276,7 +291,10 @@ public class SpotifyScraper {
      */
     public static ArrayList<Song> playlistToSongObjects(String playlistID) {
         ArrayList<Song> results = new ArrayList<Song>();
-        authenticate(8080);
+        if (!authenticateHelper()) {
+            return null;
+        }
+        
         int limit = 100; // max limit set by spotify
         int offset = 0;
         int totalSongs;
@@ -357,6 +375,25 @@ public class SpotifyScraper {
         }
         
         return results;
+    }
+    
+    /**
+     * Small helper method to attempt authentication on ports 8080-8089
+     * @return true if authentication succeeds or false if authentication fails.
+     */
+    private static boolean authenticateHelper() {
+        if (!authenticate(PORT_NUMBER)) {
+            for (int i = 0; i < 9;) {
+                Main.output("Activity detected on port " + PORT_NUMBER + ".\n"
+                                + "Attempting to connect on" + (PORT_NUMBER + 1));
+                if (authenticate(++PORT_NUMBER)) {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
 }

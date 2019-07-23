@@ -301,9 +301,15 @@ public class Main extends Application {
                             Main.output("ERROR: Spotify playlist ID cannot be empty");
                             return;
                         }
+
                         ArrayList<Song> songs = SpotifyScraper.playlistToSongObjects(
                                         parseSpotifyPlaylistURI(spotifyPlaylistID.getText()));
-
+                        if (songs == null) {
+                            Main.output("Error trying to authenticate with Spotify.  "
+                                            + "Please try again later or kill the processes "
+                                            + "using ports 8080 - 8089");
+                            return;
+                        }
                         // create youtube playlist from song list
                         YouTubeScraper.createPlaylist(songs, "MusiCollect Converted Playlist");
                     }
