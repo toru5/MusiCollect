@@ -21,12 +21,12 @@ public class HypeMachineScraper {
     Date date = new Date();
     String strDate = sdf.format(date);
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        HypeMachineScraper h = new HypeMachineScraper();
-        h.fetch(500);
-
-    }
+//    public static void main(String[] args) {
+//        // TODO Auto-generated method stub
+//        HypeMachineScraper h = new HypeMachineScraper();
+//        h.fetch(500);
+//
+//    }
 
     /**
      * Main method that fetches an arbitrary number of songs (up to 15) from each given genre.
@@ -39,7 +39,7 @@ public class HypeMachineScraper {
      * @throws FailingHttpStatusCodeException
      */
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
-        // Main.output("Fetching from Hype Machine");
+        Main.output("Fetching from Hype Machine");
 
         String baseUrl = "https://hypem.com";
         WebClient client = new WebClient();
@@ -80,7 +80,7 @@ public class HypeMachineScraper {
                         allSongs.add(song);
 
                          // print detailed information to console
-                         Main.output(song.getGenre() + " - Position " + (songCount + 1) + ": "
+                         Main.output("Position " + (songCount + 1) + ": "
                          + song.getArtist() + " - " + song.getTitle());
 
                         TimeUnit.MILLISECONDS.sleep(50);
@@ -103,6 +103,15 @@ public class HypeMachineScraper {
         client.close();
         fetchedInfo = "Hype Machine";
         return allSongs;
+    }
+    
+    public String getFetchedInfo() {
+        return fetchedInfo;
+    }
+
+
+    public void setFetchedInfo(String fetchedInfo) {
+        this.fetchedInfo = fetchedInfo;
     }
 
 }
