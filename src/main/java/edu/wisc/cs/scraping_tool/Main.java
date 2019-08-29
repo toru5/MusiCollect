@@ -57,11 +57,12 @@ public class Main extends Application {
     ArrayList<Song> allSongs;
 
     // initialize scrapers
-    BeatportScraper b;
-    IndieShuffleScraper i;
-    Billboard100Scraper bill;
-    RedditScraper r;
-    LastFmScraper l;
+    BeatportScraper beatportScraper;
+    IndieShuffleScraper indieShuffleScraper;
+    Billboard100Scraper billboardScraper;
+    RedditScraper redditScraper;
+    LastFmScraper lastfmScraper;
+    HypeMachineScraper hypeMachineScraper;
 
     String playlistId = "";
 
@@ -86,6 +87,7 @@ public class Main extends Application {
     TextField similarSongsToFetch = new TextField();
     TextField similarArtists = new TextField();
     TextField spotifyPlaylistID = new TextField();
+    TextField hypeMachineSongsToFetch = new TextField();
 
     static TextArea ta;
 
@@ -97,6 +99,7 @@ public class Main extends Application {
     CheckBox lastFmCheck = new CheckBox("Last.FM Suggested Tracks");
     CheckBox lastFmFriendsCheck = new CheckBox("Last.FM Friend's Top Tracks");
     CheckBox similarCheck = new CheckBox("Similar Music");
+    CheckBox hypeCheck = new CheckBox("Hype Machine");
 
     // output toggle buttons
     ToggleGroup outputSites = new ToggleGroup();
@@ -140,7 +143,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 
     /**
      * Big method to setup the GUI and event handlers for buttons
@@ -200,6 +202,7 @@ public class Main extends Application {
         similarSongsToFetch.setPromptText("Songs to be fetched (MAX 200)");
         similarArtists.setPromptText("*artist1; artist2; etc");
         spotifyPlaylistID.setPromptText("Spotify playlist ID or URI to convert");
+        hypeMachineSongsToFetch.setPromptText("Songs to be fetched");
 
         youtubeBtn.setPrefWidth(200);
         spotifyBtn.setPrefWidth(200);
@@ -227,12 +230,12 @@ public class Main extends Application {
 
         sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
                         lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck,
-                        spotifyToYouTube);
+                        hypeCheck, spotifyToYouTube);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch,
                         lastFmFriendsSongsToFetch, lastFmUsername, lastFmPassword,
-                        similarSongsToFetch, spotifyPlaylistID);
+                        similarSongsToFetch, hypeMachineSongsToFetch, spotifyPlaylistID);
 
         upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
                         new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
@@ -370,9 +373,12 @@ public class Main extends Application {
                                 lastFmFriendsFetch();
                             }
 
+                            if (hypeCheck.isSelected()) {
+                                hypeMachineFetch();
+                            }
+
                         } catch (Exception e) {
-                            Main.output(e.getStackTrace().toString());
-                            System.out.println(e.getStackTrace().toString());
+                            Main.output(e.getMessage());
                         }
                         if (allSongs.size() != 0) {
                             if (textFileOutputCheck.isSelected()) {
@@ -477,15 +483,15 @@ public class Main extends Application {
      */
     private void beatportFetch() {
         try {
-            allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()), bpUserGenres,
-                            bpRandomCheck.isSelected(), false));
-            playListName += b.getFetchedInfo() + ", ";
+            allSongs.addAll(beatportScraper.fetch(Integer.parseInt(bpSongsToFetch.getText()),
+                            bpUserGenres, bpRandomCheck.isSelected(), false));
+            playListName += beatportScraper.getFetchedInfo() + ", ";
         } catch (FailingHttpStatusCodeException e) {
             Main.output("HTTP ERROR: Trying again...");
             try {
-                allSongs.addAll(b.fetch(Integer.parseInt(bpSongsToFetch.getText()), bpUserGenres,
-                                bpRandomCheck.isSelected(), false));
-                playListName += b.getFetchedInfo() + ", ";
+                allSongs.addAll(beatportScraper.fetch(Integer.parseInt(bpSongsToFetch.getText()),
+                                bpUserGenres, bpRandomCheck.isSelected(), false));
+                playListName += beatportScraper.getFetchedInfo() + ", ";
             } catch (FailingHttpStatusCodeException e1) {
                 Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
             }
@@ -497,17 +503,17 @@ public class Main extends Application {
      * Helper method that fetches from billboard and adds the songs it retrieved to allSongs
      */
     private void billboardFetch() {
-        allSongs.addAll(bill.fetch(Integer.parseInt(billSongsToFetch.getText()), billUserGenres,
-                        billRandomCheck.isSelected()));
-        playListName += bill.getFetchedInfo() + ", ";
+        allSongs.addAll(billboardScraper.fetch(Integer.parseInt(billSongsToFetch.getText()),
+                        billUserGenres, billRandomCheck.isSelected()));
+        playListName += billboardScraper.getFetchedInfo() + ", ";
     }
 
     /**
      * Helper method that fetches from indieshuffle and adds the songs it retrieved to allSongs
      */
     private void indieShuffleFetch() {
-        allSongs.addAll(i.fetch(Integer.parseInt(indieSongsToFetch.getText())));
-        playListName += i.getFetchedInfo() + ", ";
+        allSongs.addAll(indieShuffleScraper.fetch(Integer.parseInt(indieSongsToFetch.getText())));
+        playListName += indieShuffleScraper.getFetchedInfo() + ", ";
     }
 
     /**
@@ -516,23 +522,25 @@ public class Main extends Application {
     private void redditFetch() {
         // check if textbox is empty -- if so -- default to 1 min upvote
         if (redditMinUpvotes.getText().equals("")) {
-            allSongs.addAll(r.fetch(uniqueSubreddit.getText().replaceAll("/", "").trim(),
+            allSongs.addAll(redditScraper.fetch(
+                            uniqueSubreddit.getText().replaceAll("/", "").trim(),
                             Integer.parseInt(redditSongsToFetch.getText()), 1));
         } else {
-            allSongs.addAll(r.fetch(uniqueSubreddit.getText().replaceAll("/", "").trim(),
+            allSongs.addAll(redditScraper.fetch(
+                            uniqueSubreddit.getText().replaceAll("/", "").trim(),
                             Integer.parseInt(redditSongsToFetch.getText()),
                             Integer.parseInt(redditMinUpvotes.getText())));
         }
 
-        playListName += r.getFetchedInfo() + ", ";
+        playListName += redditScraper.getFetchedInfo() + ", ";
     }
 
     /**
      * Helper method that fetches from last.fm and adds the songs it retrieved to allSongs
      */
     private void lastFmFetch() {
-        allSongs.addAll(l.fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
-        playListName += l.getFetchedInfo() + ", ";
+        allSongs.addAll(lastfmScraper.fetch(Integer.parseInt(lastFmSongsToFetch.getText())));
+        playListName += lastfmScraper.getFetchedInfo() + ", ";
     }
 
     /**
@@ -544,7 +552,7 @@ public class Main extends Application {
         String artistList = "";
         for (String artist : tokens) {
             if (!(artist = artist.trim()).equals("")) {
-                allSongs.addAll(l.fetchSimilar(artist,
+                allSongs.addAll(lastfmScraper.fetchSimilar(artist,
                                 Integer.parseInt(similarSongsToFetch.getText())));
                 artistList += artist + ", ";
             }
@@ -567,12 +575,30 @@ public class Main extends Application {
             timePeriod = "12month";
         }
 
-        allSongs.addAll(l.fetchFriendsMusic(lastFmUsername.getText(), timePeriod,
+        allSongs.addAll(lastfmScraper.fetchFriendsMusic(lastFmUsername.getText(), timePeriod,
                         Integer.parseInt(lastFmFriendsSongsToFetch.getText())));
-        playListName += l.getFetchedInfo() + ", ";
+        playListName += lastfmScraper.getFetchedInfo() + ", ";
     }
 
+    /**
+     * Helper method that fetches from beatport and adds the songs it retrieved to allSongs
+     */
+    private void hypeMachineFetch() {
+        try {
+            allSongs.addAll(hypeMachineScraper.fetch(Integer.parseInt(hypeMachineSongsToFetch.getText())));
+            playListName += hypeMachineScraper.getFetchedInfo() + ", ";
+        } catch (FailingHttpStatusCodeException e) {
+            Main.output("HTTP ERROR: Trying again...");
+            try {
+                allSongs.addAll(hypeMachineScraper
+                                .fetch(Integer.parseInt(hypeMachineSongsToFetch.getText())));
+                playListName += hypeMachineScraper.getFetchedInfo() + ", ";
+            } catch (FailingHttpStatusCodeException e1) {
+                Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
+            }
 
+        }
+    }
 
     /**
      * Method to shuffle the order of songs into a new ArrayList
@@ -777,11 +803,12 @@ public class Main extends Application {
      */
     private boolean verifyLastFm() {
         if (lastFmCheck.isSelected()) {
-            l.setUserLogin(lastFmUsername.getText(), lastFmPassword.getText());
+            lastfmScraper.setUserLogin(lastFmUsername.getText(), lastFmPassword.getText());
             if (!StringUtils.isNumeric(lastFmSongsToFetch.getText())
                             || Integer.parseInt(lastFmSongsToFetch.getText()) <= 0
                             || lastFmUsername.getText().equals("")
-                            || lastFmPassword.getText().equals("") || !l.verifyUserNamePassword()) {
+                            || lastFmPassword.getText().equals("")
+                            || !lastfmScraper.verifyUserNamePassword()) {
                 return false;
             }
         }
@@ -823,6 +850,22 @@ public class Main extends Application {
     }
 
     /**
+     * helper method that ensures all paramters required for scraping IndieShuffle are met
+     * 
+     * @return true if it is okay to continue or false if there is an error
+     */
+    private boolean verifyHypeMachine() {
+        if (hypeCheck.isSelected()) {
+            if (!StringUtils.isNumeric(hypeMachineSongsToFetch.getText())
+                            || Integer.parseInt(hypeMachineSongsToFetch.getText()) <= 0) {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    /**
      * Method that ensures no bad input, or missed checkboxes are being submitted to the program.
      * can be broken up into smaller methods in the future
      * 
@@ -832,12 +875,14 @@ public class Main extends Application {
 
         if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
                         && !redditCheck.isSelected() && !lastFmCheck.isSelected()
-                        && !similarCheck.isSelected() && !lastFmFriendsCheck.isSelected()) {
+                        && !similarCheck.isSelected() && !lastFmFriendsCheck.isSelected()
+                        && !hypeCheck.isSelected()) {
             Main.output("Error: Please select something to scrape.");
             return false;
         } else {
             return verifyBeatport() && verifyBillboard() && verifyIndieShuffle() && verifyReddit()
-                            && verifyLastFm() && verifyRelatedMusic() && verifyLastFmFriendsMusic();
+                            && verifyLastFm() && verifyRelatedMusic() && verifyLastFmFriendsMusic()
+                            && verifyHypeMachine();
         }
     }
 
@@ -857,15 +902,16 @@ public class Main extends Application {
     private void reset() {
 
         // reset everything
-        b = new BeatportScraper();
-        i = new IndieShuffleScraper();
-        bill = new Billboard100Scraper();
-        r = new RedditScraper();
-        l = new LastFmScraper();
+        beatportScraper = new BeatportScraper();
+        indieShuffleScraper = new IndieShuffleScraper();
+        billboardScraper = new Billboard100Scraper();
+        redditScraper = new RedditScraper();
+        lastfmScraper = new LastFmScraper();
+        hypeMachineScraper = new HypeMachineScraper();
 
         // set hashmaps
-        b.setGenreMap(bpGenreMap);
-        bill.setGenreMap(billGenreMap);
+        beatportScraper.setGenreMap(bpGenreMap);
+        billboardScraper.setGenreMap(billGenreMap);
 
         bpUserGenres = new ArrayList<String>();
         billUserGenres = new ArrayList<String>();

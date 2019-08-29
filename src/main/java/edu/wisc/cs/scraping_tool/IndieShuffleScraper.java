@@ -1,8 +1,5 @@
 package edu.wisc.cs.scraping_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class IndieShuffleScraper {
     String strDate = sdf.format(date);
 
     /**
-     * Main method that fetches an arbitrary number of songs (up to 100) from each given genre.
+     * Main method that fetches an arbitrary number of songs (up to 15) from each given genre.
      * Genres are passed via ArrayList and must be a particular string (associated with Beatport's
      * Genre conventions)
      * 
