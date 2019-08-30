@@ -35,7 +35,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import com.guigarage.flatterfx.*;
 
 /**
  * Main class that launches the GUI and handles requests made by the user.
@@ -192,7 +191,7 @@ public class Main extends Application {
         bpSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         billSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
         indieSongsToFetch.setPromptText("Songs to be fetched (MAX 15)");
-        redditSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
+        redditSongsToFetch.setPromptText("Songs to be fetched");
         redditMinUpvotes.setPromptText("minimum upvotes (defaults to 1)");
         uniqueSubreddit.setText("listentothis");
         lastFmSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");

@@ -192,8 +192,8 @@ public class BeatportScraper {
                         song.setGenre(genres.get(genreCount));
                         allSongs.add(song);
                         // print detailed information to console
-                        Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
-                                        + song.getArtist() + " - " + song.getTitle());
+                        Main.output("Position " + (count + 1) + ": "
+                                        + song.getArtist() + " - " + song.getTitle() + " [" + song.getGenre() + "]");
                         try {
                             TimeUnit.MILLISECONDS.sleep(50);
                         } catch (InterruptedException e) {

@@ -1,15 +1,10 @@
 package edu.wisc.cs.scraping_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -157,8 +152,9 @@ public class Billboard100Scraper {
                         allSongs.add(song);
 
                         // print detailed information to console
-                        Main.output(song.getGenre() + " - Position " + songPos + ": "
-                                        + song.getArtist() + " - " + song.getTitle());
+                        Main.output("Position " + songPos + ": "
+                                        + song.getArtist() + " - " + song.getTitle() + 
+                                        " [" + song.getGenre() + "]");
 
                         TimeUnit.MILLISECONDS.sleep(50); // be nice
 

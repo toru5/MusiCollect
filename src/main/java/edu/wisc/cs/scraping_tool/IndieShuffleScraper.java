@@ -94,16 +94,14 @@ public class IndieShuffleScraper {
                     allSongs.add(song);
 
                     // print detailed information to console
-                    Main.output(song.getGenre() + " - Position " + (count + 1) + ": "
-                                    + song.getArtist() + " - " + song.getTitle());
+                    Main.output("Position " + (++count) + ": " + song.getArtist() + " - "
+                                    + song.getTitle() + " [" + song.getGenre() + "]");
 
                     TimeUnit.MILLISECONDS.sleep(50);
 
-                    if (count == songsToFetch - 1) {
+                    if (count == songsToFetch) {
                         break;
                     }
-
-                    count++;
                 }
             }
 

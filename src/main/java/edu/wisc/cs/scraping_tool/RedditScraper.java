@@ -1,8 +1,5 @@
 package edu.wisc.cs.scraping_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.entity.User;
+import com.github.jreddit.exception.RetrievalFailedException;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.retrieval.params.SubmissionSort;
 import com.github.jreddit.utils.restclient.HttpRestClient;
@@ -46,24 +44,6 @@ public class RedditScraper {
     }
 
     /**
-     * Method that retrieves top, hot, or any other enumeration of submissions, up to 100 items
-     * (limited by the reddit API)
-     * 
-     * @param subreddit the subreddit to fetch from
-     * @return a List of submissions
-     */
-    public List<Submission> getTopSubmissions(String subreddit) {
-        connect();
-        Submissions subs = new Submissions(restClient, user);
-
-        List<Submission> subsOfSub =
-                        subs.ofSubreddit(subreddit, SubmissionSort.HOT, -1, 100, null, null, true);
-
-
-        return subsOfSub;
-    }
-
-    /**
      * Fetching method that retrieves a list of (up to) 100 songs from any valid subreddit
      * 
      * @param subreddit the subreddit string to use for scraping
@@ -72,75 +52,106 @@ public class RedditScraper {
      * @return a list of Song objects
      */
     public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
-        List<Submission> songs = getTopSubmissions(subreddit);
         Main.output("Fetching from: reddit/r/" + subreddit);
+        connect();
+        Submissions subs = new Submissions(restClient, user);
 
+        final int redditListingLimit = 100;
+
+        List<Submission> submissions = null;
         ArrayList<Song> allSongs = new ArrayList<Song>();
-        int count = 0;
-        for (Submission s : songs) {
-            String title = "";
-            String artist = "";
-            String genre = "";
+        int songCount = 0;
+        Submission after = null; // used when we can't meet the song requirement in the first 100
+                                 // subs
+        boolean lastCall = false;
 
-            if (s.getUpVotes() >= minUpvotes) {
-                if (s.getTitle().contains("-")) {
-                    String[] tokens = s.getTitle().split("-");
-                    artist = tokens[0];
-                    title = tokens[1];
-                    if (title.equals("")) {
-                        title = tokens[2];
+        while (songCount < songsToFetch && !lastCall) {
+            submissions = subs.ofSubreddit(subreddit, SubmissionSort.HOT, -1, redditListingLimit,
+                            after, null, true);
+
+            if (submissions.size() < redditListingLimit) {
+                lastCall = true; // when < 100 songs are retrieved it means the reddit API can no
+                                 // longer fetch songs after this
+            }
+
+            for (Submission s : submissions) {
+
+                after = s; // set after to be the last submission
+
+                String title = "";
+                String artist = "";
+                String genre = "";
+
+                if (s.getUpVotes() >= minUpvotes) {
+                    if (s.getTitle().contains("-")) {
+                        String[] tokens = s.getTitle().split("-");
+                        artist = tokens[0];
+                        title = tokens[1];
+                        if (title.equals("")) {
+                            title = tokens[2];
+                        }
+
+                        // attempt to collect genre info
+                        if (title.contains("[") && title.contains("]")) {
+                            tokens = title.split("\\[");
+                            title = tokens[0];
+                            tokens = tokens[1].split("\\]");
+                            genre = tokens[0];
+                        } else {
+                            tokens = title.split("\\[");
+                            title = tokens[0];
+                        }
+
+                        title = title.trim();
+                        artist = artist.trim();
+
+                        // only increment count if we correctly find a song with the minimum
+                        // number of
+                        // upvotes
+                        songCount++;
                     }
-
-                    if (title.contains("[") && title.contains("]")) {
-                        tokens = title.split("\\[");
-                        title = tokens[0];
-                        tokens = tokens[1].split("\\]");
-                        genre = tokens[0];
-                    } else {
-                        tokens = title.split("\\[");
-                        title = tokens[0];
-                    }
-
-                    title = title.trim();
-                    artist = artist.trim();
 
                 }
-            } else {
-                count++;
-                continue;
+
+                if (title.equals("") || artist.equals("")) {
+                    // do nothing
+                } else {
+
+                    if (genre.equals("")) {
+                        genre = "Unknown Genre";
+                    }
+
+                    // create song object
+                    Song song = new Song();
+
+                    song.setTitle(title);
+                    song.setArtist(artist);
+                    song.setGenre(genre);
+
+                    allSongs.add(song);
+
+                    // print detailed information to console
+                    Main.output("Song " + songCount + ": " + song.getArtist()
+                                    + " - " + song.getTitle() + " [" + song.getGenre() + "]");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    if (songCount >= songsToFetch) {
+                        break;
+                    }
+                }
             }
 
-            if (title.equals("") || artist.equals("")) {
-                continue;
-            }
+        }
 
-            if (genre.equals("")) {
-                genre = "No Genre";
-            }
-
-            // create song object
-            Song song = new Song();
-
-            song.setTitle(title);
-            song.setArtist(artist);
-            song.setGenre(genre);
-
-            allSongs.add(song);
-
-            // print detailed information to console
-            Main.output(song.getGenre() + " - Song " + (count + 1) + ": " + song.getArtist() + " - "
-                            + song.getTitle());
-            count++;
-            try {
-                TimeUnit.MILLISECONDS.sleep(50);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            if (count == songsToFetch) {
-                break;
-            }
-
+        if (songCount < songsToFetch) {
+            Main.output("\n*** Sorry, we could only find " + songCount + " songs with over "
+                            + minUpvotes + " minimum upvotes on /r/" + subreddit
+                            + ".  This is due to limits imposed by the reddit API.  "
+                            + "For more listings, try reducing the minimum number of upvotes. ***\n");
         }
 
         fetchedInfo = "reddit/" + subreddit;

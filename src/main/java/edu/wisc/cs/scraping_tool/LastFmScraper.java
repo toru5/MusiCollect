@@ -152,8 +152,8 @@ public class LastFmScraper {
                         allSongs.add(song);
 
                         // print detailed information to console
-                        Main.output("Friend: " + currentFriend + " // Song " + allSongs.size()
-                                        + ": " + song.getArtist() + " - " + song.getTitle());
+                        Main.output("Song " + allSongs.size()
+                                        + ": " + song.getArtist() + " - " + song.getTitle() + " [from friend: " + currentFriend + "]");
 
                         if (allSongs.size() >= songsToFetch) {
                             // in the case where songsToFetch is an odd number we don't want to
