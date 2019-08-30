@@ -247,7 +247,7 @@ public class SpotifyScraper {
                                     songs.get(j + (i * chunk)).getTitle());
                     if (uriId != null) {
                         ids.add(uriId);
-                        Main.output("Adding PlaylistItem " + (j + (i * chunk) + 1) + ": "
+                        Main.output("Adding playlist item " + (j + (i * chunk)) + ": "
                                         + songs.get(j + (i * chunk)).getArtist() + " - "
                                         + songs.get(j + i).getTitle());
                     } else {

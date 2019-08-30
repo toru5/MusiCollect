@@ -51,7 +51,7 @@ public class BeatportScraper {
 
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
-        Main.output("Fetching from Beatport: " + prettyGenreList);
+        Main.output("\nFetching from Beatport: " + prettyGenreList);
 
         String baseUrl = "https://www.beatport.com/genre/";
         WebClient client = new WebClient();

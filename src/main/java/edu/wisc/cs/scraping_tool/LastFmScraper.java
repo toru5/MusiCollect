@@ -75,7 +75,7 @@ public class LastFmScraper {
      */
     public ArrayList<Song> fetchFriendsMusic(String username, String timePeriod, int songsToFetch) {
 
-        Main.output("Fetching music from friends of " + username);
+        Main.output("\nFetching music from friends of " + username);
         ArrayList<Song> allSongs = new ArrayList<Song>();
         int songsFromEachUser;
 
@@ -194,7 +194,7 @@ public class LastFmScraper {
                     throws FailingHttpStatusCodeException {
 
         artistName = artistName.trim();
-        Main.output("Fetching songs similar to " + artistName);
+        Main.output("\nFetching songs similar to " + artistName);
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
@@ -309,7 +309,7 @@ public class LastFmScraper {
     @SuppressWarnings("unchecked")
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
-        Main.output("Fetching from Last.fm suggested tracks: ");
+        Main.output("\nFetching from Last.fm suggested tracks: ");
         ArrayList<Song> allSongs = new ArrayList<Song>();
         Song song = null;
 

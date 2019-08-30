@@ -39,7 +39,7 @@ public class HypeMachineScraper {
      * @throws FailingHttpStatusCodeException
      */
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
-        Main.output("Fetching from Hype Machine");
+        Main.output("\nFetching from Hype Machine");
 
         String baseUrl = "https://hypem.com";
         WebClient client = new WebClient();

@@ -46,7 +46,8 @@ public class Billboard100Scraper {
 
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
-        Main.output("Fetching from Billboard: " + prettyGenreList);
+        
+        Main.output("\nFetching from Billboard: " + prettyGenreList);
 
         String baseUrl = "https://www.billboard.com/charts/";
         WebClient client = new WebClient();

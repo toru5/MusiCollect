@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.entity.User;
-import com.github.jreddit.exception.RetrievalFailedException;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.retrieval.params.SubmissionSort;
 import com.github.jreddit.utils.restclient.HttpRestClient;
@@ -52,7 +51,7 @@ public class RedditScraper {
      * @return a list of Song objects
      */
     public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
-        Main.output("Fetching from: reddit/r/" + subreddit);
+        Main.output("\nFetching from: reddit/r/" + subreddit);
         connect();
         Submissions subs = new Submissions(restClient, user);
 
@@ -151,7 +150,7 @@ public class RedditScraper {
             Main.output("\n*** Sorry, we could only find " + songCount + " songs with over "
                             + minUpvotes + " minimum upvotes on /r/" + subreddit
                             + ".  This is due to limits imposed by the reddit API.  "
-                            + "For more listings, try reducing the minimum number of upvotes. ***\n");
+                            + "For more listings, try reducing the minimum number of upvotes. ***");
         }
 
         fetchedInfo = "reddit/" + subreddit;

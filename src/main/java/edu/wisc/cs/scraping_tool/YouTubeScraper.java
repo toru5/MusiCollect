@@ -38,6 +38,7 @@ public class YouTubeScraper {
     public static String createPlaylist(List<Song> tracks, String playlistName) {
         // This OAuth 2.0 access scope allows for full read/write access to the
         // authenticated user's account.
+
         ArrayList<String> videoIds = new ArrayList<String>();
         for (Song s : tracks) {
             List<String> id = ySearch(s.getArtist(), s.getTitle());
@@ -317,7 +318,7 @@ public class YouTubeScraper {
         // item's unique playlistItem ID.
 
         try {
-            Main.output("Adding PlaylistItem: " + returnedPlaylistItem.getSnippet().getTitle());
+            Main.output("Adding playlist item: " + returnedPlaylistItem.getSnippet().getTitle());
         } catch (Exception e) {
             e.printStackTrace();
         }
