@@ -39,7 +39,7 @@ public class HypeMachineScraper {
      * @throws FailingHttpStatusCodeException
      */
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
-        Main.output("\nFetching from Hype Machine");
+        Main.printLine("\nFetching from Hype Machine");
 
         String baseUrl = "https://hypem.com";
         WebClient client = new WebClient();
@@ -60,7 +60,7 @@ public class HypeMachineScraper {
                 List<HtmlElement> items = (List<HtmlElement>) mainPage
                                 .getByXPath(".//h3[@class='track_name']");
                 if (items.isEmpty()) {
-                    Main.output("No more items found.  Ending search");
+                    Main.printLine("No more items found.  Ending search");
                     songCount = songsToFetch - 1; // break out of the while loop as well
                     break;
                 } else {
@@ -80,7 +80,7 @@ public class HypeMachineScraper {
                         allSongs.add(song);
 
                          // print detailed information to console
-                         Main.output("Position " + (songCount + 1) + ": "
+                         Main.printLine("Position " + (songCount + 1) + ": "
                          + song.getArtist() + " - " + song.getTitle());
 
                         TimeUnit.MILLISECONDS.sleep(50);

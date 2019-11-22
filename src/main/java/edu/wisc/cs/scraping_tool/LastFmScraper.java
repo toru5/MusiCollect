@@ -74,16 +74,15 @@ public class LastFmScraper {
      * @return returns a list of Song objects
      */
     public ArrayList<Song> fetchUserMusic(String[] usernames, String timePeriod, int songsToFetch) {
-        Main.output("\nFetching music from: ");
+        Main.printLine("\nFetching music from: ");
         for (String user : usernames) {
-            Main.output(" " + user);
+            Main.printLine(" " + user);
         }
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
         for (String user : usernames) {
             // loop through users and fetch songs
-            int iteration = 0;
             ArrayList<Song> userSongs = new ArrayList<Song>();
 
             try {
@@ -96,6 +95,16 @@ public class LastFmScraper {
                 response = httpClient.execute(httpGet);
                 jsonResponse = EntityUtils.toString(response.getEntity());
                 jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+
+                try {
+                    if (jsonObj.get("error").toString().equals("6")) {
+                        Main.printLine("ERROR: We couldn't find any users with name: " + user);
+                        return allSongs;
+                    }
+                } catch (NullPointerException e) {
+                    // this just means no errors were thrown... proceed as usual.
+                }
+                
                 jsonObj = (JSONObject) jsonObj.get("toptracks");
                 JSONArray songArray = (JSONArray) jsonObj.get("track");
 
@@ -107,10 +116,12 @@ public class LastFmScraper {
                     song.setTitle(currentSong.get("name").toString()); // fetch song name
                     currentSong = (JSONObject) currentSong.get("artist");
                     song.setArtist(currentSong.get("name").toString()); // fetch artist name
-                    allSongs.add(song);
+                    userSongs.add(song);
+                    
+                    int count = userSongs.size() + allSongs.size();
 
                     // print detailed information to console
-                    Main.output("Song " + allSongs.size() + ": " + song.getArtist() + " - "
+                    Main.printLine("Song " + count + ": " + song.getArtist() + " - "
                                     + song.getTitle() + " [from user: " + user + "]");
 
                 
@@ -128,23 +139,25 @@ public class LastFmScraper {
 
             } catch (URISyntaxException e) {
                 // TODO Auto-generated catch block
-                Main.output("UriSyntaxException ENCOUNTERED\n");
+                Main.printLine("UriSyntaxException ENCOUNTERED\n");
             } catch (ClientProtocolException e) {
                 // TODO Auto-generated catch block
-                Main.output("ClientProtocolException ENCOUNTERED\n");
+                Main.printLine("ClientProtocolException ENCOUNTERED\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                Main.output("IOException ENCOUNTERED\n");
+                Main.printLine("IOException ENCOUNTERED\n");
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
-                Main.output("ParseException ENCOUNTERED\n");
+                Main.printLine("ParseException ENCOUNTERED\n");
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
-                Main.output("InterruptedException ENCOUNTERED\n");
+                Main.printLine("InterruptedException ENCOUNTERED\n");
             }
 
         }
 
+        fetchedInfo = "Last.fm user top tracks";
+        client.close();
         return allSongs;
 
     }
@@ -163,7 +176,7 @@ public class LastFmScraper {
      */
     public ArrayList<Song> fetchFriendsMusic(String username, String timePeriod, int songsToFetch) {
 
-        Main.output("\nFetching music from friends of " + username);
+        Main.printLine("\nFetching music from friends of " + username);
         ArrayList<Song> allSongs = new ArrayList<Song>();
         int songsFromEachUser;
 
@@ -179,7 +192,7 @@ public class LastFmScraper {
 
             try {
                 if (jsonObj.get("error").toString().equals("6")) {
-                    Main.output("ERROR: We couldn't find any users with name: " + username);
+                    Main.printLine("ERROR: We couldn't find any users with name: " + username);
                     return allSongs;
                 }
             } catch (NullPointerException e) {
@@ -188,7 +201,7 @@ public class LastFmScraper {
 
             jsonObj = (JSONObject) jsonObj.get("friends");
             if (jsonObj == null) {
-                Main.output("ERROR: This is awkward.. you don't have any friends");
+                Main.printLine("ERROR: This is awkward.. you don't have any friends");
                 return allSongs;
             }
 
@@ -222,7 +235,7 @@ public class LastFmScraper {
                         if ((iteration * songsFromEachUser) > skip) {
                             skip++;
                             if (skip >= songArray.size()) {
-                                Main.output("ERROR: You do not have enough friends with music "
+                                Main.printLine("ERROR: You do not have enough friends with music "
                                                 + "to meet the song request quota of: "
                                                 + songsToFetch
                                                 + "\nPlease try again with a lower number.");
@@ -240,7 +253,7 @@ public class LastFmScraper {
                         allSongs.add(song);
 
                         // print detailed information to console
-                        Main.output("Song " + allSongs.size() + ": " + song.getArtist() + " - "
+                        Main.printLine("Song " + allSongs.size() + ": " + song.getArtist() + " - "
                                         + song.getTitle() + " [from friend: " + currentFriend
                                         + "]");
 
@@ -283,7 +296,7 @@ public class LastFmScraper {
                     throws FailingHttpStatusCodeException {
 
         artistName = artistName.trim();
-        Main.output("\nFetching songs similar to " + artistName);
+        Main.printLine("\nFetching songs similar to " + artistName);
 
         ArrayList<Song> allSongs = new ArrayList<Song>();
 
@@ -302,7 +315,7 @@ public class LastFmScraper {
             // convert large piece of json to an array of artists
             jsonObj = (JSONObject) jsonObj.get("similarartists");
             if (jsonObj == null) {
-                Main.output("ERROR: Could not find any artists similar to " + artistName
+                Main.printLine("ERROR: Could not find any artists similar to " + artistName
                                 + "\nCheck spelling and try again.");
                 return allSongs;
             }
@@ -312,12 +325,12 @@ public class LastFmScraper {
             if (artistArray.size() == 0) {
                 if (artistName.contains(" ")) {
                     artistName = artistName.replaceAll(" ", "_");
-                    Main.output("Re-running with new parameters: " + artistName + ", "
+                    Main.printLine("Re-running with new parameters: " + artistName + ", "
                                     + songsToFetch);
                     return fetchSimilar(artistName, songsToFetch);
                 }
 
-                Main.output("ERROR: last.fm returned nothing with search: " + artistName
+                Main.printLine("ERROR: last.fm returned nothing with search: " + artistName
                                 + "\nThis is probably a server-side error. Try searching again with"
                                 + " a different artist that is similar to " + artistName
                                 + " for comparable results.");
@@ -361,11 +374,11 @@ public class LastFmScraper {
 
                     allSongs.add(song);
                     // print detailed information to console
-                    Main.output("Song " + (i + 1) + ": " + song.getArtist() + " - "
+                    Main.printLine("Song " + (i + 1) + ": " + song.getArtist() + " - "
                                     + song.getTitle());
 
                 } catch (IndexOutOfBoundsException e) {
-                    Main.output("Narrowing search parameters to meet measly number of similar "
+                    Main.printLine("Narrowing search parameters to meet measly number of similar "
                                     + "artists and songs...");
                     topArtists = artistArray.size();
                     topSongs -= 1; // just to make sure :))
@@ -398,7 +411,7 @@ public class LastFmScraper {
     @SuppressWarnings("unchecked")
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
 
-        Main.output("\nFetching from Last.fm suggested tracks: ");
+        Main.printLine("\nFetching from Last.fm suggested tracks: ");
         ArrayList<Song> allSongs = new ArrayList<Song>();
         Song song = null;
 
@@ -409,13 +422,13 @@ public class LastFmScraper {
             items = (List<HtmlElement>) mainPage
                             .getByXPath(".//div[@class='recs-feed-inner-wrap']");
         } catch (Exception e) {
-            Main.output("ERROR: Invalid username or password");
+            Main.printLine("ERROR: Invalid username or password");
             client.close();
             return null;
         }
 
         if (items.size() == 0) {
-            Main.output("Error fetching from last.fm -- username or password may be typed incorrectly.");
+            Main.printLine("Error fetching from last.fm -- username or password may be typed incorrectly.");
         }
 
         int songPos = 1;
@@ -452,7 +465,7 @@ public class LastFmScraper {
             allSongs.add(song);
 
             // print detailed information to console
-            Main.output("Song " + songPos + ": " + song.getArtist() + " - " + song.getTitle());
+            Main.printLine("Song " + songPos + ": " + song.getArtist() + " - " + song.getTitle());
             try {
                 TimeUnit.MILLISECONDS.sleep(50);
             } catch (InterruptedException e) {
@@ -547,13 +560,13 @@ public class LastFmScraper {
                 items = (List<HtmlElement>) mainPage
                                 .getByXPath(".//div[@class='recs-feed-inner-wrap']");
             } catch (Exception e) {
-                Main.output("ERROR: Invalid username or password");
+                Main.printLine("ERROR: Invalid username or password");
                 client.close();
                 return false;
             }
 
             if (items.size() == 0) {
-                Main.output("Error fetching from last.fm -- username or password may be typed incorrectly.");
+                Main.printLine("Error fetching from last.fm -- username or password may be typed incorrectly.");
                 return false;
             }
         } catch (Exception e) {

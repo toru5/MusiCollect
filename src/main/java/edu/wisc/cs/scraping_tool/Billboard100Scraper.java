@@ -47,7 +47,7 @@ public class Billboard100Scraper {
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
         
-        Main.output("\nFetching from Billboard: " + prettyGenreList);
+        Main.printLine("\nFetching from Billboard: " + prettyGenreList);
 
         String baseUrl = "https://www.billboard.com/charts/";
         WebClient client = new WebClient();
@@ -153,7 +153,7 @@ public class Billboard100Scraper {
                         allSongs.add(song);
 
                         // print detailed information to console
-                        Main.output("Position " + songPos + ": "
+                        Main.printLine("Position " + songPos + ": "
                                         + song.getArtist() + " - " + song.getTitle() + 
                                         " [" + song.getGenre() + "]");
 

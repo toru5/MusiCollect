@@ -51,7 +51,7 @@ public class BeatportScraper {
 
         collectGenres(userGenres);
         String prettyGenreList = createGenreList(genres);
-        Main.output("\nFetching from Beatport: " + prettyGenreList);
+        Main.printLine("\nFetching from Beatport: " + prettyGenreList);
 
         String baseUrl = "https://www.beatport.com/genre/";
         WebClient client = new WebClient();
@@ -93,7 +93,7 @@ public class BeatportScraper {
             List<HtmlElement> items = (List<HtmlElement>) mainPage
                             .getByXPath(".//li[@class='bucket-item ec-item track']");
             if (items.isEmpty()) {
-                Main.output("No items found");
+                Main.printLine("No items found");
                 break;
             } else {
                 for (HtmlElement htmlItem : items) {
@@ -192,7 +192,7 @@ public class BeatportScraper {
                         song.setGenre(genres.get(genreCount));
                         allSongs.add(song);
                         // print detailed information to console
-                        Main.output("Position " + (count + 1) + ": "
+                        Main.printLine("Position " + (count + 1) + ": "
                                         + song.getArtist() + " - " + song.getTitle() + " [" + song.getGenre() + "]");
                         try {
                             TimeUnit.MILLISECONDS.sleep(50);
