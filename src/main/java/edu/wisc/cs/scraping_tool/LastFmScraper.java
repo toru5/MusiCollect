@@ -1,6 +1,8 @@
 package edu.wisc.cs.scraping_tool;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -22,6 +25,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Class used to fetch music from last.fm by 3 different methods. User's can fetch their friends
@@ -59,6 +63,90 @@ public class LastFmScraper {
     public void setUserLogin(String uName, String password) {
         this.userName = uName;
         this.password = password;
+    }
+
+    /**
+     * Method that fetches top songs from a specified user (or users).
+     * 
+     * @param timePeriod time interval to fetch songs from, valid identifiers are: "7day", "1month",
+     *        "3month", "12month"
+     * @param songsToFetch the song quota to be met
+     * @return returns a list of Song objects
+     */
+    public ArrayList<Song> fetchUserMusic(String[] usernames, String timePeriod, int songsToFetch) {
+        Main.output("\nFetching music from: ");
+        for (String user : usernames) {
+            Main.output(" " + user);
+        }
+
+        ArrayList<Song> allSongs = new ArrayList<Song>();
+
+        for (String user : usernames) {
+            // loop through users and fetch songs
+            int iteration = 0;
+            ArrayList<Song> userSongs = new ArrayList<Song>();
+
+            try {
+                uri = new URIBuilder().setScheme("http").setHost("ws.audioscrobbler.com")
+                                .setPath("2.0/").setParameter("method", "user.gettoptracks")
+                                .setParameter("user", user).setParameter("period", timePeriod)
+                                .setParameter("api_key", API_KEY).setParameter("format", "json")
+                                .build();
+                httpGet = new HttpGet(uri);
+                response = httpClient.execute(httpGet);
+                jsonResponse = EntityUtils.toString(response.getEntity());
+                jsonObj = (JSONObject) jsonParse.parse(jsonResponse);
+                jsonObj = (JSONObject) jsonObj.get("toptracks");
+                JSONArray songArray = (JSONArray) jsonObj.get("track");
+
+                for (Object currentObject : songArray) {
+
+                    Song song = new Song();
+                    JSONObject currentSong = (JSONObject) currentObject;
+
+                    song.setTitle(currentSong.get("name").toString()); // fetch song name
+                    currentSong = (JSONObject) currentSong.get("artist");
+                    song.setArtist(currentSong.get("name").toString()); // fetch artist name
+                    allSongs.add(song);
+
+                    // print detailed information to console
+                    Main.output("Song " + allSongs.size() + ": " + song.getArtist() + " - "
+                                    + song.getTitle() + " [from user: " + user + "]");
+
+                
+                    if (userSongs.size() >= songsToFetch) {
+                        // in the case where songsToFetch is an odd number we don't want to
+                        // fetch an extra song
+                        break;
+                    }
+
+                    TimeUnit.MILLISECONDS.sleep(50);
+                
+                }
+                
+                allSongs.addAll(userSongs);
+
+            } catch (URISyntaxException e) {
+                // TODO Auto-generated catch block
+                Main.output("UriSyntaxException ENCOUNTERED\n");
+            } catch (ClientProtocolException e) {
+                // TODO Auto-generated catch block
+                Main.output("ClientProtocolException ENCOUNTERED\n");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                Main.output("IOException ENCOUNTERED\n");
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                Main.output("ParseException ENCOUNTERED\n");
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                Main.output("InterruptedException ENCOUNTERED\n");
+            }
+
+        }
+
+        return allSongs;
+
     }
 
     /**
@@ -152,8 +240,9 @@ public class LastFmScraper {
                         allSongs.add(song);
 
                         // print detailed information to console
-                        Main.output("Song " + allSongs.size()
-                                        + ": " + song.getArtist() + " - " + song.getTitle() + " [from friend: " + currentFriend + "]");
+                        Main.output("Song " + allSongs.size() + ": " + song.getArtist() + " - "
+                                        + song.getTitle() + " [from friend: " + currentFriend
+                                        + "]");
 
                         if (allSongs.size() >= songsToFetch) {
                             // in the case where songsToFetch is an odd number we don't want to
