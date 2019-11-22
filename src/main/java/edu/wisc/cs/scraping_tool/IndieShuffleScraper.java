@@ -38,10 +38,10 @@ public class IndieShuffleScraper {
      * @throws FailingHttpStatusCodeException
      */
     public ArrayList<Song> fetch(int songsToFetch) throws FailingHttpStatusCodeException {
-        Main.output("\nFetching from Indie Shuffle");
+        Main.printLine("\nFetching from Indie Shuffle");
         
         if (songsToFetch > 15) {
-            Main.output("Maximum amount of songs IndieShuffle can send is 15\nSetting "
+            Main.printLine("Maximum amount of songs IndieShuffle can send is 15\nSetting "
                             + "that number to 15 now.");
             songsToFetch = 15;
         }
@@ -61,7 +61,7 @@ public class IndieShuffleScraper {
             List<HtmlElement> items = (List<HtmlElement>) mainPage
                             .getByXPath(".//div[@class='sortable-item']");
             if (items.isEmpty()) {
-                Main.output("No items found");
+                Main.printLine("No items found");
             } else {
                 int count = 0;
                 for (HtmlElement htmlItem : items) {
@@ -93,7 +93,7 @@ public class IndieShuffleScraper {
                     allSongs.add(song);
 
                     // print detailed information to console
-                    Main.output("Position " + (++count) + ": " + song.getArtist() + " - "
+                    Main.printLine("Position " + (++count) + ": " + song.getArtist() + " - "
                                     + song.getTitle() + " [" + song.getGenre() + "]");
 
                     TimeUnit.MILLISECONDS.sleep(50);

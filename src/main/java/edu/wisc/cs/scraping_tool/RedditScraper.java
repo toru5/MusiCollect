@@ -51,7 +51,7 @@ public class RedditScraper {
      * @return a list of Song objects
      */
     public ArrayList<Song> fetch(String subreddit, int songsToFetch, int minUpvotes) {
-        Main.output("\nFetching from: reddit/r/" + subreddit);
+        Main.printLine("\nFetching from: reddit/r/" + subreddit);
         connect();
         Submissions subs = new Submissions(restClient, user);
 
@@ -130,7 +130,7 @@ public class RedditScraper {
                     allSongs.add(song);
 
                     // print detailed information to console
-                    Main.output("Song " + songCount + ": " + song.getArtist()
+                    Main.printLine("Song " + songCount + ": " + song.getArtist()
                                     + " - " + song.getTitle() + " [" + song.getGenre() + "]");
                     try {
                         TimeUnit.MILLISECONDS.sleep(50);
@@ -147,7 +147,7 @@ public class RedditScraper {
         }
 
         if (songCount < songsToFetch) {
-            Main.output("\n*** Sorry, we could only find " + songCount + " songs with over "
+            Main.printLine("\n*** Sorry, we could only find " + songCount + " songs with over "
                             + minUpvotes + " minimum upvotes on /r/" + subreddit
                             + ".  This is due to limits imposed by the reddit API.  "
                             + "For more listings, try reducing the minimum number of upvotes. ***");

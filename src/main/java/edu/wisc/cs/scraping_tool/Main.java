@@ -87,6 +87,8 @@ public class Main extends Application {
     TextField similarArtists = new TextField();
     TextField spotifyPlaylistID = new TextField();
     TextField hypeMachineSongsToFetch = new TextField();
+    TextField lastFmUserSongsToFetch = new TextField();
+    TextField lastFmUsernames = new TextField();
 
     static TextArea ta;
 
@@ -99,6 +101,7 @@ public class Main extends Application {
     CheckBox lastFmFriendsCheck = new CheckBox("Last.FM Friend's Top Tracks");
     CheckBox similarCheck = new CheckBox("Similar Music");
     CheckBox hypeCheck = new CheckBox("Hype Machine");
+    CheckBox lastFmUserCheck = new CheckBox("Last.FM User Top Tracks");
 
     // output toggle buttons
     ToggleGroup outputSites = new ToggleGroup();
@@ -106,10 +109,16 @@ public class Main extends Application {
     ToggleButton spotifyBtn = new ToggleButton("Post playlist to Spotify  ");
 
     // last.fm friend time period buttons
-    ToggleGroup lastFmTimePeriods = new ToggleGroup();
-    ToggleButton weekBtn = new ToggleButton("Week");
-    ToggleButton monthBtn = new ToggleButton("Month");
-    ToggleButton yearBtn = new ToggleButton("Year");
+    ToggleGroup lastFmFriendsTimePeriods = new ToggleGroup();
+    ToggleButton lfmFriendsWeekBtn = new ToggleButton("Week");
+    ToggleButton lfmFriendsMonthBtn = new ToggleButton("Month");
+    ToggleButton lfmFriendsYearBtn = new ToggleButton("Year");
+
+    // last.fm user time period buttons
+    ToggleGroup lastFmUsersTimePeriods = new ToggleGroup();
+    ToggleButton lfmUsersWeekBtn = new ToggleButton("Week");
+    ToggleButton lfmUsersMonthBtn = new ToggleButton("Month");
+    ToggleButton lfmUsersYearBtn = new ToggleButton("Year");
 
     // modifier checks
     CheckBox billRandomCheck = new CheckBox("BILLBOARD Random Song Order?");
@@ -186,6 +195,7 @@ public class Main extends Application {
         Label subredditLbl = new Label("Subreddit to scrape:");
         Label lfmUsername = new Label("Last.fm Username:");
         Label lfmPassword = new Label("Last.fm Password:");
+        Label lfmUsernames = new Label("Last.fm Usernames to Fetch From");
 
         // prompt text
         bpSongsToFetch.setPromptText("Songs to be fetched (MAX 100)");
@@ -202,6 +212,8 @@ public class Main extends Application {
         similarArtists.setPromptText("*artist1; artist2; etc");
         spotifyPlaylistID.setPromptText("Spotify playlist ID or URI to convert");
         hypeMachineSongsToFetch.setPromptText("Songs to be fetched");
+        lastFmUserSongsToFetch.setPromptText("Songs to be fetched");
+        lastFmUsernames.setPromptText("*user1; user2; etc.");
 
         youtubeBtn.setPrefWidth(200);
         spotifyBtn.setPrefWidth(200);
@@ -210,12 +222,24 @@ public class Main extends Application {
         youtubeBtn.setToggleGroup(outputSites);
         spotifyBtn.setToggleGroup(outputSites);
 
-        weekBtn.setToggleGroup(lastFmTimePeriods);
-        monthBtn.setToggleGroup(lastFmTimePeriods);
-        yearBtn.setToggleGroup(lastFmTimePeriods);
-        weekBtn.setSelected(true);
-        HBox times = new HBox();
-        times.getChildren().addAll(weekBtn, monthBtn, yearBtn);
+        // Last.fm Friends Timeframe Toggles
+        lfmFriendsWeekBtn.setToggleGroup(lastFmFriendsTimePeriods);
+        lfmFriendsMonthBtn.setToggleGroup(lastFmFriendsTimePeriods);
+        lfmFriendsYearBtn.setToggleGroup(lastFmFriendsTimePeriods);
+        lfmFriendsWeekBtn.setSelected(true);
+
+        // Last.fm Users Timeframe Toggles
+        lfmUsersWeekBtn.setToggleGroup(lastFmUsersTimePeriods);
+        lfmUsersMonthBtn.setToggleGroup(lastFmUsersTimePeriods);
+        lfmUsersYearBtn.setToggleGroup(lastFmUsersTimePeriods);
+        lfmUsersWeekBtn.setSelected(true);
+
+        // Add timeframes to HBox
+        HBox friendTimes = new HBox();
+        friendTimes.getChildren().addAll(lfmFriendsWeekBtn, lfmFriendsMonthBtn, lfmFriendsYearBtn);
+
+        HBox userTimes = new HBox();
+        userTimes.getChildren().addAll(lfmUsersWeekBtn, lfmUsersMonthBtn, lfmUsersYearBtn);
 
         // buttons
         final Button submit = new Button("Submit");
@@ -228,18 +252,20 @@ public class Main extends Application {
         submit.setPrefSize(400, 100);
 
         sites.getChildren().addAll(col1, bCheck, iCheck, billCheck, redditCheck, subredditLbl,
-                        lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, similarCheck,
-                        hypeCheck, spotifyToYouTube);
+                        lastFmCheck, lastFmFriendsCheck, lfmUsername, lfmPassword, lastFmUserCheck,
+                        lfmUsernames, similarCheck, hypeCheck, spotifyToYouTube);
 
         fetch.getChildren().addAll(col2, bpSongsToFetch, indieSongsToFetch, billSongsToFetch,
                         redditSongsToFetch, uniqueSubreddit, lastFmSongsToFetch,
                         lastFmFriendsSongsToFetch, lastFmUsername, lastFmPassword,
-                        similarSongsToFetch, hypeMachineSongsToFetch, spotifyPlaylistID);
+                        lastFmUserSongsToFetch, lastFmUsernames, similarSongsToFetch,
+                        hypeMachineSongsToFetch, spotifyPlaylistID);
 
         upvotes.getChildren().addAll(col3, new HiddenTextField(), new HiddenTextField(),
                         new HiddenTextField(), new HiddenTextField(), redditMinUpvotes,
-                        new HiddenTextField(), times, new HiddenTextField(), new HiddenTextField(),
-                        similarArtists);
+                        new HiddenTextField(), friendTimes, new HiddenTextField(),
+                        new HiddenTextField(), userTimes, new HiddenTextField(),
+                        new HiddenTextField(), similarArtists);
         bpGenres.getChildren().add(col4);
         billboardGenres.getChildren().add(col5);
 
@@ -298,16 +324,16 @@ public class Main extends Application {
                 Runnable convertPlaylist = new Runnable() {
                     public void run() {
                         reset();
-                        Main.output("Verifying input parameters..");
+                        Main.printLine("Verifying input parameters..");
                         if (spotifyPlaylistID.getText().equals("")) {
-                            Main.output("ERROR: Spotify playlist ID cannot be empty");
+                            Main.printLine("ERROR: Spotify playlist ID cannot be empty");
                             return;
                         }
 
                         ArrayList<Song> songs = SpotifyScraper.playlistToSongObjects(
                                         parseSpotifyPlaylistURI(spotifyPlaylistID.getText()));
                         if (songs == null) {
-                            Main.output("Error trying to authenticate with Spotify.  "
+                            Main.printLine("Error trying to authenticate with Spotify.  "
                                             + "Please try again later or kill the processes "
                                             + "using ports 8080 - 8089");
                             return;
@@ -334,14 +360,14 @@ public class Main extends Application {
                 Runnable fetchMusic = new Runnable() {
                     public void run() {
                         reset();
-                        Main.output("Verifying input parameters..");
+                        Main.printLine("Verifying input parameters..");
                         // check user input and do not continue if it is invalid
                         if (!verifyInput()) {
                             inputError();
                             return;
                         }
 
-                        Main.output("Initializing request...");
+                        Main.printLine("Initializing request...");
 
                         try {
                             if (bCheck.isSelected()) {
@@ -376,8 +402,12 @@ public class Main extends Application {
                                 hypeMachineFetch();
                             }
 
+                            if (lastFmUserCheck.isSelected()) {
+                                lastFmUsersFetch();
+                            }
+
                         } catch (Exception e) {
-                            Main.output(e.getMessage());
+                            Main.printLine(e.getMessage());
                         }
                         if (allSongs.size() != 0) {
                             if (textFileOutputCheck.isSelected()) {
@@ -391,7 +421,7 @@ public class Main extends Application {
                             // shed off extra comma from end
                             playListName = playListName.substring(0, playListName.length() - 2);
 
-                            Main.output("Getting ready to create your playlist\n"
+                            Main.printLine("Getting ready to create your playlist\n"
                                             + "Authentication process will begin soon...\nThis can sometimes take a minute...");
                             playListName = "MusiCollect Results - " + strDate + ": " + playListName;
 
@@ -405,12 +435,12 @@ public class Main extends Application {
                                                     playListName);
 
                                     if (playlistId == null) {
-                                        Main.output("An error occured with Spotify authentication."
+                                        Main.printLine("An error occured with Spotify authentication."
                                                         + "  Please ensure port 8080 on your "
                                                         + "computer is not being used and"
                                                         + " try again.");
                                     } else {
-                                        Main.output("Fetching complete. Your Spotify playlist can be found"
+                                        Main.printLine("Fetching complete. Your Spotify playlist can be found"
                                                         + " here: https://open.spotify.com/playlist/"
                                                         + playlistId);
                                         desktop.browse(new URIBuilder().setPath(
@@ -424,7 +454,7 @@ public class Main extends Application {
                                     playlistId = YouTubeScraper.createPlaylist(allSongs,
                                                     playListName);
 
-                                    Main.output("Fetching complete. Your YouTube playlist can be found"
+                                    Main.printLine("Fetching complete. Your YouTube playlist can be found"
                                                     + " here: https://www.youtube.com/playlist?list="
                                                     + playlistId);
                                     desktop.browse(new URI("https://www.youtube.com/playlist?list="
@@ -440,6 +470,7 @@ public class Main extends Application {
                             }
                         }
                     }
+
                 };
 
                 try {
@@ -486,13 +517,13 @@ public class Main extends Application {
                             bpUserGenres, bpRandomCheck.isSelected(), false));
             playListName += beatportScraper.getFetchedInfo() + ", ";
         } catch (FailingHttpStatusCodeException e) {
-            Main.output("HTTP ERROR: Trying again...");
+            Main.printLine("HTTP ERROR: Trying again...");
             try {
                 allSongs.addAll(beatportScraper.fetch(Integer.parseInt(bpSongsToFetch.getText()),
                                 bpUserGenres, bpRandomCheck.isSelected(), false));
                 playListName += beatportScraper.getFetchedInfo() + ", ";
             } catch (FailingHttpStatusCodeException e1) {
-                Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
+                Main.printLine("HTTP ERROR: Exiting Beatport Scraping procedure.");
             }
 
         }
@@ -561,14 +592,14 @@ public class Main extends Application {
     }
 
     /**
-     * Helper method that fetches from last.fm's API and database of user's and top tracks and adds
+     * Helper method that fetches from last.fm's API and database of users and top tracks and adds
      * songs from the user's friends list
      */
     private void lastFmFriendsFetch() {
         String timePeriod;
-        if (weekBtn.isSelected()) {
+        if (lfmFriendsWeekBtn.isSelected()) {
             timePeriod = "7day";
-        } else if (monthBtn.isSelected()) {
+        } else if (lfmFriendsMonthBtn.isSelected()) {
             timePeriod = "1month";
         } else {
             timePeriod = "12month";
@@ -580,20 +611,42 @@ public class Main extends Application {
     }
 
     /**
+     * Helper method that fetches top songs from a specified list of users
+     */
+    private void lastFmUsersFetch() {
+        String timePeriod;
+        if (lfmUsersWeekBtn.isSelected()) {
+            timePeriod = "7day";
+        } else if (lfmUsersMonthBtn.isSelected()) {
+            timePeriod = "1month";
+        } else {
+            timePeriod = "12month";
+        }
+
+        String[] userTokens = lastFmUsernames.getText().trim().split(";");
+
+        allSongs.addAll(lastfmScraper.fetchUserMusic(userTokens, timePeriod,
+                        Integer.parseInt(lastFmUserSongsToFetch.getText())));
+        
+        playListName += lastfmScraper.getFetchedInfo() + ", ";
+    }
+
+    /**
      * Helper method that fetches from beatport and adds the songs it retrieved to allSongs
      */
     private void hypeMachineFetch() {
         try {
-            allSongs.addAll(hypeMachineScraper.fetch(Integer.parseInt(hypeMachineSongsToFetch.getText())));
+            allSongs.addAll(hypeMachineScraper
+                            .fetch(Integer.parseInt(hypeMachineSongsToFetch.getText())));
             playListName += hypeMachineScraper.getFetchedInfo() + ", ";
         } catch (FailingHttpStatusCodeException e) {
-            Main.output("HTTP ERROR: Trying again...");
+            Main.printLine("HTTP ERROR: Trying again...");
             try {
                 allSongs.addAll(hypeMachineScraper
                                 .fetch(Integer.parseInt(hypeMachineSongsToFetch.getText())));
                 playListName += hypeMachineScraper.getFetchedInfo() + ", ";
             } catch (FailingHttpStatusCodeException e1) {
-                Main.output("HTTP ERROR: Exiting Beatport Scraping procedure.");
+                Main.printLine("HTTP ERROR: Exiting Beatport Scraping procedure.");
             }
 
         }
@@ -717,6 +770,8 @@ public class Main extends Application {
             if (!StringUtils.isNumeric(bpSongsToFetch.getText())
                             || Integer.parseInt(bpSongsToFetch.getText()) <= 0
                             || Integer.parseInt(bpSongsToFetch.getText()) > 100) {
+                Main.printLine("Error trying to parse information for Beatport music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
 
@@ -739,6 +794,8 @@ public class Main extends Application {
             if (!StringUtils.isNumeric(billSongsToFetch.getText())
                             || Integer.parseInt(billSongsToFetch.getText()) <= 0
                             || Integer.parseInt(billSongsToFetch.getText()) > 200) {
+                Main.printLine("Error trying to parse information for Billboard music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
 
@@ -760,6 +817,8 @@ public class Main extends Application {
         if (iCheck.isSelected()) {
             if (!StringUtils.isNumeric(indieSongsToFetch.getText())
                             || Integer.parseInt(indieSongsToFetch.getText()) <= 0) {
+                Main.printLine("Error trying to parse information for IndieShuffle music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
 
@@ -778,6 +837,8 @@ public class Main extends Application {
                 if (!StringUtils.isNumeric(redditSongsToFetch.getText())
                                 || Integer.parseInt(redditSongsToFetch.getText()) <= 0
                                 || Integer.parseInt(redditSongsToFetch.getText()) > 100) {
+                    Main.printLine("Error trying to parse information for Reddit music. Check to ensure you have all boxes properly filled out");
+
                     return false;
                 }
             } else {
@@ -788,6 +849,8 @@ public class Main extends Application {
                                 || Integer.parseInt(redditSongsToFetch.getText()) > 100
                                 || Integer.parseInt(redditMinUpvotes.getText()) <= 0
                                 || Integer.parseInt(redditMinUpvotes.getText()) > 100000) {
+                    Main.printLine("Error trying to parse information for Reddit music. Check to ensure you have all boxes properly filled out");
+
                     return false;
                 }
             }
@@ -808,6 +871,8 @@ public class Main extends Application {
                             || lastFmUsername.getText().equals("")
                             || lastFmPassword.getText().equals("")
                             || !lastfmScraper.verifyUserNamePassword()) {
+                Main.printLine("Error trying to parse information for Last.fm Recommended music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
         }
@@ -825,6 +890,8 @@ public class Main extends Application {
             if (!StringUtils.isNumeric(similarSongsToFetch.getText())
                             || Integer.parseInt(similarSongsToFetch.getText()) <= 0
                             || similarArtists.getText().equals("")) {
+                Main.printLine("Error trying to parse information for Similar music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
         }
@@ -842,6 +909,20 @@ public class Main extends Application {
             if (!StringUtils.isNumeric(lastFmFriendsSongsToFetch.getText())
                             || Integer.parseInt(lastFmFriendsSongsToFetch.getText()) <= 0
                             || lastFmUsername.getText().equals("")) {
+                Main.printLine("Error trying to parse information for Last.fm Friends music. Check to ensure you have all boxes properly filled out");
+
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean verifyLastFmUserMusic() {
+        if (lastFmUserCheck.isSelected()) {
+            if (!StringUtils.isNumeric(lastFmUserSongsToFetch.getText())
+                            || Integer.parseInt(lastFmUserSongsToFetch.getText()) <= 0
+                            || lastFmUsernames.getText().equals("")) {
+                Main.printLine("Error trying to parse information for Last.fm User music. Check to ensure you have all boxes properly filled out");
                 return false;
             }
         }
@@ -857,6 +938,8 @@ public class Main extends Application {
         if (hypeCheck.isSelected()) {
             if (!StringUtils.isNumeric(hypeMachineSongsToFetch.getText())
                             || Integer.parseInt(hypeMachineSongsToFetch.getText()) <= 0) {
+                Main.printLine("Error trying to parse information for Hype Machine music. Check to ensure you have all boxes properly filled out");
+
                 return false;
             }
 
@@ -875,13 +958,13 @@ public class Main extends Application {
         if (!bCheck.isSelected() && !iCheck.isSelected() && !billCheck.isSelected()
                         && !redditCheck.isSelected() && !lastFmCheck.isSelected()
                         && !similarCheck.isSelected() && !lastFmFriendsCheck.isSelected()
-                        && !hypeCheck.isSelected()) {
-            Main.output("Error: Please select something to scrape.");
+                        && !hypeCheck.isSelected() && !lastFmUserCheck.isSelected()) {
+            Main.printLine("Error: Please select something to scrape.");
             return false;
         } else {
             return verifyBeatport() && verifyBillboard() && verifyIndieShuffle() && verifyReddit()
                             && verifyLastFm() && verifyRelatedMusic() && verifyLastFmFriendsMusic()
-                            && verifyHypeMachine();
+                            && verifyHypeMachine() && verifyLastFmUserMusic();
         }
     }
 
@@ -889,7 +972,7 @@ public class Main extends Application {
      * Simple method to output generic text relating to invalid input
      */
     private void inputError() {
-        Main.output("Input error -- Fields missing or entered incorrectly.\nMake sure a website is "
+        Main.printLine("Input error -- Fields missing or entered incorrectly.\nMake sure a website is "
                         + "selected and a number of songs to be "
                         + "fetched is correctly typed into the input box, as well as any other"
                         + " information required for that website\n");
@@ -926,7 +1009,7 @@ public class Main extends Application {
      * @param msg the String to be displayed in the text area. The String will be appeneded to the
      *        pre-existing text in the text area.
      */
-    public static synchronized void output(String msg) {
+    public static synchronized void printLine(String msg) {
         if (ta.getText().equals("")) {
             ta.setText(msg);
         } else {

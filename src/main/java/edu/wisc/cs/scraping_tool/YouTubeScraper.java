@@ -49,7 +49,7 @@ public class YouTubeScraper {
             }
         }
         
-        Main.output("Songs successfully prepared for YouTube. Getting ready to create the new playlist...");
+        Main.printLine("Songs successfully prepared for YouTube. Getting ready to create the new playlist...");
         
         List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube");
         String playlistId = "";
@@ -71,15 +71,15 @@ public class YouTubeScraper {
             // System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
             // + e.getDetails().getMessage());
             // e.printStackTrace();
-            Main.output("GoogleJsonResponseException: " + e.getMessage());
+            Main.printLine("GoogleJsonResponseException: " + e.getMessage());
         } catch (IOException e) {
-            Main.output("IOException: " + e.getMessage());
-            Main.output(e.getStackTrace().toString());
+            Main.printLine("IOException: " + e.getMessage());
+            Main.printLine(e.getStackTrace().toString());
         } catch (Exception e) {
             // e.printStackTrace();
-            Main.output("Exception: " + e.getMessage());
+            Main.printLine("Exception: " + e.getMessage());
         }
-        Main.output("Playlist complete.\nListen to your new playlist here: https://www.youtube.com/playlist?list="
+        Main.printLine("Playlist complete.\nListen to your new playlist here: https://www.youtube.com/playlist?list="
                         + playlistId);
         return playlistId;
     }
@@ -318,7 +318,7 @@ public class YouTubeScraper {
         // item's unique playlistItem ID.
 
         try {
-            Main.output("Adding playlist item: " + returnedPlaylistItem.getSnippet().getTitle());
+            Main.printLine("Adding playlist item: " + returnedPlaylistItem.getSnippet().getTitle());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -340,12 +340,12 @@ public class YouTubeScraper {
         try {
             videoIds = search(artist, title, 1); // fetch 1 video
         } catch (NoSuchElementException e) {
-            Main.output("No videos found for: " + artist + " " + title + "\nSearching for: "
+            Main.printLine("No videos found for: " + artist + " " + title + "\nSearching for: "
                             + title);
             try {
                 videoIds = search("", title, 1); // simplify parameters
             } catch (NoSuchElementException ee) {
-                Main.output("Error finding song: " + title + "\nSkipping to next track...");
+                Main.printLine("Error finding song: " + title + "\nSkipping to next track...");
                 return null;
             }
         }

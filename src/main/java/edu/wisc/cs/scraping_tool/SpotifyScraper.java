@@ -78,7 +78,7 @@ public class SpotifyScraper {
                 rateLimit = response.getFirstHeader("Retry-After").toString();
                 String[] tokens = rateLimit.split(":");
                 int timeout = (int) Integer.parseInt(tokens[1].trim());
-                Main.output("API RATE LIMIT EXCEEDED // Pausing for " + timeout + " second(s).");
+                Main.printLine("API RATE LIMIT EXCEEDED // Pausing for " + timeout + " second(s).");
                 TimeUnit.SECONDS.sleep(timeout);
                 return search(artist, track); // recursively retry
             }
@@ -247,7 +247,7 @@ public class SpotifyScraper {
                                     songs.get(j + (i * chunk)).getTitle());
                     if (uriId != null) {
                         ids.add(uriId);
-                        Main.output("Adding playlist item " + (j + (i * chunk)) + ": "
+                        Main.printLine("Adding playlist item " + (j + (i * chunk)) + ": "
                                         + songs.get(j + (i * chunk)).getArtist() + " - "
                                         + songs.get(j + i).getTitle());
                     } else {
@@ -272,7 +272,7 @@ public class SpotifyScraper {
                 response = client.execute(httpPost);
                 jsonResponse = EntityUtils.toString(response.getEntity());
             }
-            Main.output(songs.size() - songsNotFound + " songs successfully added to playlist\n"
+            Main.printLine(songs.size() - songsNotFound + " songs successfully added to playlist\n"
                             + songsNotFound + " songs not found on Spotify");
 
         } catch (Exception e) {
@@ -319,7 +319,7 @@ public class SpotifyScraper {
 
             JSONArray songArray = (JSONArray) jsonObj.get("items");
 
-            Main.output("Collecting music from your playlist... this may take a moment.");
+            Main.printLine("Collecting music from your playlist... this may take a moment.");
 
             for (Object j : songArray) {
                 JSONObject j2 = (JSONObject) j;
@@ -384,7 +384,7 @@ public class SpotifyScraper {
     private static boolean authenticateHelper() {
         if (!authenticate(PORT_NUMBER)) {
             for (int i = 0; i < 9;) {
-                Main.output("Activity detected on port " + PORT_NUMBER + ".\n"
+                Main.printLine("Activity detected on port " + PORT_NUMBER + ".\n"
                                 + "Attempting to connect on" + (PORT_NUMBER + 1));
                 if (authenticate(++PORT_NUMBER)) {
                     return true;
